@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TESTIMONIALS } from "@/lib/locationData";
 
 export default function Testimonials() {
@@ -9,50 +9,66 @@ export default function Testimonials() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} style={{ background: "#FAF0E6", position: "relative", overflow: "hidden" }}>
-      {/* Background quote watermark */}
+    <section
+      ref={ref}
+      style={{ background: "#0A1F1F", position: "relative", overflow: "hidden" }}
+    >
+      {/* Subtle concentric circle background elements */}
       <div
         aria-hidden="true"
         style={{
           position: "absolute",
-          top: "40%",
+          top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          fontFamily: "'Playfair Display', serif",
-          fontSize: "clamp(14rem, 28vw, 40rem)",
-          fontWeight: 700,
-          color: "rgba(139,26,26,0.03)",
-          lineHeight: 1,
+          width: "min(600px, 80vw)",
+          height: "min(600px, 80vw)",
+          border: "1px solid rgba(212,175,55,0.04)",
+          borderRadius: "50%",
           pointerEvents: "none",
-          userSelect: "none",
-          whiteSpace: "nowrap",
-          zIndex: 0,
         }}
-      >
-        &ldquo;
-      </div>
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "min(400px, 60vw)",
+          height: "min(400px, 60vw)",
+          border: "1px solid rgba(212,175,55,0.06)",
+          borderRadius: "50%",
+          pointerEvents: "none",
+        }}
+      />
 
       <div className="container section-py" style={{ position: "relative", zIndex: 1 }}>
-        {/* Header */}
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
           style={{ textAlign: "center", marginBottom: "3.5rem" }}
         >
-          <p
+          <span
             className="eyebrow"
-            style={{ color: "#1B7878", marginBottom: "0.875rem" }}
+            style={{
+              color: "#25A0A0",
+              marginBottom: "0.875rem",
+              display: "block",
+              textAlign: "center",
+            }}
           >
             What People Say
-          </p>
+          </span>
           <h2
             style={{
               fontFamily: "'Playfair Display', serif",
               fontWeight: 700,
               fontSize: "clamp(2rem, 4vw, 3rem)",
-              color: "#1A1A1A",
-              lineHeight: 1.15,
+              color: "var(--cream)",
+              textAlign: "center",
               marginBottom: "1.25rem",
             }}
           >
@@ -61,96 +77,147 @@ export default function Testimonials() {
           <div className="gold-divider" />
         </motion.div>
 
-        {/* Desktop 3-col grid */}
-        <div className="hidden md:grid" style={{ gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
-          {TESTIMONIALS.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 28 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
+        {/* Desktop layout */}
+        <div className="hidden md:block">
+          {/* Featured quote — TESTIMONIALS[0] */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            style={{
+              textAlign: "center",
+              maxWidth: 720,
+              margin: "0 auto",
+              marginBottom: "3rem",
+            }}
+          >
+            <div
               style={{
-                background: "rgba(255,255,255,0.82)",
-                border: "1px solid rgba(139,26,26,0.08)",
-                borderRadius: "var(--radius-lg)",
-                padding: "2rem",
-                display: "flex",
-                flexDirection: "column",
-                boxShadow: "0 2px 16px rgba(26,26,26,0.05)",
-                backdropFilter: "blur(8px)",
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "4rem",
+                lineHeight: 0.8,
+                color: "rgba(212,175,55,0.25)",
+                marginBottom: "1rem",
               }}
             >
-              {/* Stars */}
-              <div style={{ display: "flex", gap: 3, marginBottom: "1.25rem" }}>
-                {Array.from({ length: t.rating }).map((_, s) => (
-                  <Star key={s} size={14} fill="var(--gold)" style={{ color: "var(--gold)" }} />
-                ))}
-              </div>
-
-              {/* Quote */}
+              &ldquo;
+            </div>
+            <p
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "clamp(1.35rem, 2.5vw, 1.9rem)",
+                fontStyle: "italic",
+                fontWeight: 400,
+                color: "rgba(250,240,230,0.88)",
+                lineHeight: 1.65,
+                marginBottom: "1.75rem",
+              }}
+            >
+              {TESTIMONIALS[0].text}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 10,
+              }}
+            >
+              <span style={{ color: "rgba(212,175,55,0.5)", fontSize: "0.75rem" }}>✦</span>
               <p
                 style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: "1.1rem",
-                  lineHeight: 1.65,
-                  fontStyle: "italic",
-                  color: "#2A2A2A",
-                  flex: 1,
-                  marginBottom: "1.5rem",
+                  fontSize: "0.8rem",
+                  fontWeight: 500,
+                  letterSpacing: "0.06em",
+                  color: "rgba(212,175,55,0.7)",
                 }}
               >
-                &ldquo;{t.text}&rdquo;
+                — {TESTIMONIALS[0].name}, Jacksonville
               </p>
-
-              {/* Item badge */}
+              <span style={{ color: "rgba(212,175,55,0.5)", fontSize: "0.75rem" }}>✦</span>
+            </div>
+            {TESTIMONIALS[0].item && (
               <span
                 style={{
                   display: "inline-block",
-                  fontSize: "0.7rem",
-                  fontWeight: 600,
-                  letterSpacing: "0.15em",
+                  marginTop: "1rem",
+                  fontSize: "0.6rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  padding: "4px 12px",
-                  borderRadius: 999,
-                  background: "rgba(27,120,120,0.08)",
-                  color: "#1B7878",
-                  border: "1px solid rgba(27,120,120,0.18)",
-                  width: "fit-content",
-                  marginBottom: "1.25rem",
+                  color: "rgba(37,160,160,0.75)",
                 }}
               >
-                {t.item}
+                {TESTIMONIALS[0].item}
               </span>
+            )}
+          </motion.div>
 
-              {/* Author */}
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {/* Gold separator */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={inView ? { scaleX: 1, opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.25 }}
+            style={{
+              width: "100%",
+              height: 1,
+              background:
+                "linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent)",
+              marginBottom: "3rem",
+            }}
+          />
+
+          {/* Two secondary quotes */}
+          <div
+            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.5rem" }}
+          >
+            {[TESTIMONIALS[1], TESTIMONIALS[2]].map((t, i) => (
+              <motion.div
+                key={t.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
+                style={{ textAlign: "center" }}
+              >
                 <div
                   style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: "50%",
-                    background: "#1B7878",
-                    color: "var(--cream)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: 700,
-                    fontSize: "0.875rem",
-                    flexShrink: 0,
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: "2rem",
+                    lineHeight: 0.9,
+                    color: "rgba(212,175,55,0.2)",
+                    marginBottom: "0.75rem",
                   }}
                 >
-                  {t.name[0]}
+                  &ldquo;
                 </div>
-                <div>
-                  <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "#1A1A1A" }}>{t.name}</p>
-                  <p style={{ fontSize: "0.75rem", color: "rgba(26,26,26,0.4)" }}>{t.location}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                <p
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: "1rem",
+                    fontStyle: "italic",
+                    color: "rgba(250,240,230,0.65)",
+                    lineHeight: 1.7,
+                    marginBottom: "1.25rem",
+                  }}
+                >
+                  {t.text}
+                </p>
+                <p
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: 500,
+                    letterSpacing: "0.05em",
+                    color: "rgba(212,175,55,0.55)",
+                  }}
+                >
+                  — {t.name}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
-        {/* Mobile carousel */}
+        {/* Mobile layout */}
         <MobileCarousel inView={inView} />
       </div>
     </section>
@@ -158,24 +225,15 @@ export default function Testimonials() {
 }
 
 function MobileCarousel({ inView }: { inView: boolean }) {
-  const [idx, setIdx] = useState(0);
-  const [dir, setDir] = useState(1);
+  const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  const variants = {
-    enter: (d: number) => ({ opacity: 0, x: d > 0 ? 50 : -50 }),
-    center: { opacity: 1, x: 0 },
-    exit: (d: number) => ({ opacity: 0, x: d > 0 ? -50 : 50 }),
-  };
-
   const next = useCallback(() => {
-    setDir(1);
-    setIdx((i) => (i + 1) % TESTIMONIALS.length);
+    setCurrent((c) => (c + 1) % TESTIMONIALS.length);
   }, []);
 
   const prev = useCallback(() => {
-    setDir(-1);
-    setIdx((i) => (i - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
+    setCurrent((c) => (c - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
   }, []);
 
   useEffect(() => {
@@ -184,117 +242,163 @@ function MobileCarousel({ inView }: { inView: boolean }) {
     return () => clearInterval(id);
   }, [paused, inView, next]);
 
-  const t = TESTIMONIALS[idx];
+  const t = TESTIMONIALS[current];
 
   return (
-    <div
-      className="md:hidden"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <div style={{ position: "relative" }}>
+    <div className="md:hidden">
+      <div
+        style={{ position: "relative", padding: "0 2.5rem" }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        {/* Prev button */}
         <button
           onClick={prev}
-          className="absolute z-10"
+          aria-label="Previous testimonial"
           style={{
-            left: -4,
+            position: "absolute",
+            left: 0,
             top: "50%",
             transform: "translateY(-50%)",
             width: 36,
             height: 36,
             borderRadius: "50%",
-            background: "rgba(255,255,255,0.8)",
-            border: "1px solid rgba(27,120,120,0.2)",
-            color: "#1B7878",
+            background: "rgba(212,175,55,0.08)",
+            border: "1px solid rgba(212,175,55,0.2)",
+            color: "rgba(212,175,55,0.7)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
           }}
-          aria-label="Previous"
         >
           <ChevronLeft size={16} />
         </button>
 
+        {/* Next button */}
         <button
           onClick={next}
-          className="absolute z-10"
+          aria-label="Next testimonial"
           style={{
-            right: -4,
+            position: "absolute",
+            right: 0,
             top: "50%",
             transform: "translateY(-50%)",
             width: 36,
             height: 36,
             borderRadius: "50%",
-            background: "rgba(255,255,255,0.8)",
-            border: "1px solid rgba(27,120,120,0.2)",
-            color: "#1B7878",
+            background: "rgba(212,175,55,0.08)",
+            border: "1px solid rgba(212,175,55,0.2)",
+            color: "rgba(212,175,55,0.7)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
           }}
-          aria-label="Next"
         >
           <ChevronRight size={16} />
         </button>
 
-        <div style={{ padding: "0 2rem", overflow: "hidden" }}>
-          <AnimatePresence mode="wait" custom={dir}>
-            <motion.div
-              key={idx}
-              custom={dir}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        {/* Quote */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            style={{ textAlign: "center" }}
+          >
+            <div
               style={{
-                background: "rgba(255,255,255,0.82)",
-                border: "1px solid rgba(139,26,26,0.08)",
-                borderRadius: "var(--radius-lg)",
-                padding: "1.75rem",
-                boxShadow: "0 2px 16px rgba(26,26,26,0.05)",
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "2.5rem",
+                lineHeight: 0.85,
+                color: "rgba(212,175,55,0.22)",
+                marginBottom: "0.875rem",
               }}
             >
-              <div style={{ display: "flex", gap: 3, marginBottom: "1rem" }}>
-                {Array.from({ length: t.rating }).map((_, s) => (
-                  <Star key={s} size={13} fill="var(--gold)" style={{ color: "var(--gold)" }} />
-                ))}
-              </div>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1rem", lineHeight: 1.65, fontStyle: "italic", color: "#2A2A2A", marginBottom: "1.25rem" }}>
-                &ldquo;{t.text}&rdquo;
+              &ldquo;
+            </div>
+            <p
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "1.1rem",
+                fontStyle: "italic",
+                color: "rgba(250,240,230,0.8)",
+                lineHeight: 1.7,
+                marginBottom: "1.5rem",
+              }}
+            >
+              {t.text}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                marginBottom: "0.75rem",
+              }}
+            >
+              <span style={{ color: "rgba(212,175,55,0.45)", fontSize: "0.7rem" }}>✦</span>
+              <p
+                style={{
+                  fontSize: "0.78rem",
+                  fontWeight: 500,
+                  letterSpacing: "0.05em",
+                  color: "rgba(212,175,55,0.65)",
+                }}
+              >
+                — {t.name}, Jacksonville
               </p>
-              <span style={{ display: "inline-block", fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", padding: "3px 10px", borderRadius: 999, background: "rgba(27,120,120,0.08)", color: "#1B7878", border: "1px solid rgba(27,120,120,0.18)", marginBottom: "1rem" }}>
+              <span style={{ color: "rgba(212,175,55,0.45)", fontSize: "0.7rem" }}>✦</span>
+            </div>
+            {t.item && (
+              <span
+                style={{
+                  display: "inline-block",
+                  fontSize: "0.58rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "rgba(37,160,160,0.7)",
+                }}
+              >
                 {t.item}
               </span>
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#1B7878", color: "var(--cream)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: "0.8rem" }}>
-                  {t.name[0]}
-                </div>
-                <div>
-                  <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "#1A1A1A" }}>{t.name}</p>
-                  <p style={{ fontSize: "0.72rem", color: "rgba(26,26,26,0.4)" }}>{t.location}</p>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: "1.25rem" }}>
+      {/* Dot indicators */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 8,
+          marginTop: "1.75rem",
+        }}
+      >
         {TESTIMONIALS.map((_, i) => (
           <button
             key={i}
-            onClick={() => { setDir(i > idx ? 1 : -1); setIdx(i); }}
+            onClick={() => setCurrent(i)}
+            aria-label={`Go to testimonial ${i + 1}`}
             style={{
-              width: i === idx ? 22 : 7,
+              width: i === current ? 22 : 7,
               height: 7,
               borderRadius: 999,
-              background: i === idx ? "var(--gold)" : "rgba(139,26,26,0.2)",
-              transition: "all 0.3s",
+              background:
+                i === current
+                  ? "rgba(212,175,55,0.75)"
+                  : "rgba(212,175,55,0.18)",
               border: "none",
               cursor: "pointer",
+              transition: "all 0.3s ease",
+              padding: 0,
             }}
-            aria-label={`Go to ${i + 1}`}
           />
         ))}
       </div>

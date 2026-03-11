@@ -17,6 +17,67 @@ export default function Footer() {
 
       <div className="container" style={{ paddingTop: "4rem", paddingBottom: "3rem" }}>
 
+        {/* Brand close — centered identity statement */}
+        <div style={{
+          textAlign: "center",
+          paddingBottom: "3rem",
+          marginBottom: "3rem",
+          borderBottom: "1px solid rgba(212,175,55,0.08)",
+        }}>
+          {/* Logo */}
+          <div style={{
+            width: 72,
+            height: 72,
+            borderRadius: "50%",
+            margin: "0 auto 1.5rem",
+            overflow: "hidden",
+            border: "2px solid rgba(212,175,55,0.35)",
+            boxShadow: "0 0 0 4px rgba(212,175,55,0.06)",
+            background: "#fff",
+          }}>
+            <img
+              src="/images/logo.jpg"
+              alt="Cleopatra Delights"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+          {/* Brand name */}
+          <h2 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: "clamp(1.5rem, 3vw, 2rem)",
+            fontWeight: 700,
+            fontStyle: "italic",
+            color: "var(--gold)",
+            marginBottom: "0.75rem",
+            lineHeight: 1.2,
+          }}>
+            Cleopatra Delights
+          </h2>
+          {/* Ornament */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            marginBottom: "1rem",
+          }}>
+            <div style={{ width: 32, height: 1, background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.4))" }} />
+            <span style={{ color: "rgba(212,175,55,0.5)", fontSize: "0.55rem" }}>◈</span>
+            <div style={{ width: 32, height: 1, background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.4))" }} />
+          </div>
+          {/* Tagline */}
+          <p style={{
+            fontSize: "0.85rem",
+            lineHeight: 1.7,
+            color: "rgba(250,240,230,0.32)",
+            maxWidth: 380,
+            margin: "0 auto",
+            fontStyle: "italic",
+          }}>
+            Made from scratch, in Jacksonville — inspired by the world.
+          </p>
+        </div>
+
         {/* Main grid */}
         <div
           style={{
@@ -243,7 +304,7 @@ export default function Footer() {
             © 2026 Cleopatra Delights. All rights reserved.
           </p>
           <p style={{ fontSize: "0.75rem", color: "rgba(250,240,230,0.18)", fontStyle: "italic" }}>
-            &ldquo;Where Every Bite Tells a Story&rdquo; — Jacksonville, FL
+            Made from scratch in Jacksonville, FL — inspired by the world.
           </p>
         </div>
       </div>

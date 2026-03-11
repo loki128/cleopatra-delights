@@ -308,15 +308,15 @@ export default function OrderPage() {
                       width: 64,
                       height: 64,
                       borderRadius: "50%",
-                      background: "rgba(16,185,129,0.12)",
-                      border: "1px solid rgba(16,185,129,0.25)",
+                      background: "rgba(212,175,55,0.1)",
+                      border: "1px solid rgba(212,175,55,0.2)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       margin: "0 auto 1.75rem",
                     }}
                   >
-                    <CheckCircle size={30} style={{ color: "#10b981" }} />
+                    <CheckCircle size={30} style={{ color: "var(--gold)" }} />
                   </motion.div>
                   <h2
                     style={{
@@ -330,7 +330,7 @@ export default function OrderPage() {
                     Order Request Sent!
                   </h2>
                   <p style={{ fontSize: "0.9rem", lineHeight: 1.75, color: "rgba(250,240,230,0.5)", marginBottom: "2.5rem" }}>
-                    Thank you, <strong style={{ color: "var(--cream)" }}>{form.name}</strong>! We&apos;ve received your request and will reach out to <strong style={{ color: "var(--cream)" }}>{form.email}</strong> within 24 hours.
+                    Thank you, <strong style={{ color: "var(--cream)" }}>{form.name}</strong>! We&apos;ve received your request and will reach out to <strong style={{ color: "var(--cream)" }}>{form.email}</strong> within 24 hours. Every creation at Cleopatra Delights is made to order — yours is next.
                   </p>
                   <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
                     <a
@@ -404,20 +404,20 @@ export default function OrderPage() {
                     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                       {/* Name + Email */}
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "1.25rem" }} className="sm:grid-cols-2-order">
-                        <Field label="Full Name" required error={errors.name}>
+                        <Field label="Your Name" required error={errors.name}>
                           <input type="text" value={form.name} onChange={set("name")} placeholder="Your name" className="input-gold" style={{ ...inputStyle, borderColor: errors.name ? "#f87171" : undefined }} />
                         </Field>
-                        <Field label="Email" required error={errors.email}>
+                        <Field label="Email Address" required error={errors.email}>
                           <input type="email" value={form.email} onChange={set("email")} placeholder="your@email.com" className="input-gold" style={{ ...inputStyle, borderColor: errors.email ? "#f87171" : undefined }} />
                         </Field>
                       </div>
 
                       {/* Phone + Order Type */}
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "1.25rem" }} className="sm:grid-cols-2-order">
-                        <Field label="Phone" error={errors.phone}>
+                        <Field label="Phone (Optional)" error={errors.phone}>
                           <input type="tel" value={form.phone} onChange={set("phone")} placeholder="(904) 555-0000" className="input-gold" style={inputStyle} />
                         </Field>
-                        <Field label="Order Type" required error={errors.orderType}>
+                        <Field label="What Are You Craving?" required error={errors.orderType}>
                           <div style={{ position: "relative" }}>
                             <select value={form.orderType} onChange={set("orderType")} className="input-gold" style={{ ...inputStyle, appearance: "none", paddingRight: 36, borderColor: errors.orderType ? "#f87171" : undefined }}>
                               <option value="">Select type...</option>
@@ -430,16 +430,16 @@ export default function OrderPage() {
 
                       {/* Date + Occasion */}
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "1.25rem" }} className="sm:grid-cols-2-order">
-                        <Field label="Event Date">
+                        <Field label="When Do You Need It?">
                           <input type="date" value={form.eventDate} onChange={set("eventDate")} className="input-gold" style={inputStyle} />
                         </Field>
-                        <Field label="Occasion">
+                        <Field label="What's the Occasion?">
                           <input type="text" value={form.occasion} onChange={set("occasion")} placeholder="Birthday, Wedding, Corporate..." className="input-gold" style={inputStyle} />
                         </Field>
                       </div>
 
                       {/* Notes */}
-                      <Field label="Flavor & Order Notes" required error={errors.notes}>
+                      <Field label="Tell Us Everything" required error={errors.notes}>
                         <textarea
                           value={form.notes}
                           onChange={set("notes")}

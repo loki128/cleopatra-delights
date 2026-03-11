@@ -45,6 +45,8 @@ export default function Navbar() {
   };
 
   const barHeight = announced ? 44 : 0;
+  const isHomepage = pathname === "/" || pathname === "";
+  const isLight = !isHomepage && !scrolled;
 
   return (
     <>
@@ -79,9 +81,18 @@ export default function Navbar() {
         className="fixed left-0 right-0 z-50 transition-all duration-300"
         style={{
           top: barHeight,
-          background: scrolled ? "rgba(20,8,8,0.95)" : "transparent",
-          backdropFilter: scrolled ? "blur(16px)" : "none",
-          borderBottom: scrolled ? "1px solid rgba(212,175,55,0.12)" : "none",
+          background: isLight
+            ? "rgba(242,228,200,0.97)"
+            : scrolled
+            ? "rgba(20,8,8,0.95)"
+            : "transparent",
+          backdropFilter: (isLight || scrolled) ? "blur(16px)" : "none",
+          borderBottom: isLight
+            ? "1px solid rgba(139,26,26,0.12)"
+            : scrolled
+            ? "1px solid rgba(212,175,55,0.12)"
+            : "none",
+          transition: "all 0.3s ease",
         }}
       >
         <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -92,8 +103,8 @@ export default function Navbar() {
                 height: 52,
                 borderRadius: "50%",
                 overflow: "hidden",
-                border: "2px solid rgba(212,175,55,0.6)",
-                boxShadow: "0 0 0 3px rgba(212,175,55,0.1), 0 2px 12px rgba(0,0,0,0.4)",
+                border: `2px solid ${isLight ? "rgba(139,26,26,0.4)" : "rgba(212,175,55,0.6)"}`,
+                boxShadow: `0 0 0 3px ${isLight ? "rgba(139,26,26,0.08)" : "rgba(212,175,55,0.1)"}, 0 2px 12px rgba(0,0,0,0.${isLight ? "1" : "4"})`,
                 flexShrink: 0,
                 background: "#fff",
               }}
@@ -105,10 +116,10 @@ export default function Navbar() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-serif text-xl font-bold" style={{ color: "var(--gold)" }}>
+              <span className="font-serif text-xl font-bold" style={{ color: isLight ? "var(--red)" : "var(--gold)" }}>
                 Cleopatra Delights
               </span>
-              <span className="text-xs tracking-[0.25em] uppercase" style={{ color: "rgba(250,240,230,0.45)" }}>
+              <span className="text-xs tracking-[0.25em] uppercase" style={{ color: isLight ? "rgba(26,14,6,0.4)" : "rgba(250,240,230,0.45)" }}>
                 Jacksonville, FL
               </span>
             </div>
@@ -122,14 +133,17 @@ export default function Navbar() {
                   <a
                     href={l.href}
                     className="text-sm font-medium tracking-wide transition-colors duration-200 relative"
-                    style={{ color: active ? "var(--gold)" : "rgba(250,240,230,0.75)" }}
+                    style={{ color: active
+                      ? (isLight ? "var(--red)" : "var(--gold)")
+                      : (isLight ? "rgba(26,14,6,0.65)" : "rgba(250,240,230,0.75)")
+                    }}
                   >
                     {l.label}
                     {active && (
                       <motion.span
                         layoutId="nav-underline"
                         className="absolute -bottom-1 left-0 right-0 h-px"
-                        style={{ background: "var(--gold)" }}
+                        style={{ background: isLight ? "var(--red)" : "var(--gold)" }}
                       />
                     )}
                   </a>
@@ -140,7 +154,21 @@ export default function Navbar() {
 
           <a
             href="/order"
-            className="hidden md:inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 btn-shimmer"
+            className={`hidden md:inline-flex items-center transition-all duration-200 hover:scale-105 ${isLight ? "" : "btn-shimmer"}`}
+            style={isLight ? {
+              padding: "10px 20px",
+              borderRadius: 999,
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              background: "var(--red)",
+              color: "var(--cream)",
+              display: "inline-flex",
+              alignItems: "center",
+            } : {
+              padding: "10px 20px",
+              borderRadius: 999,
+              fontSize: "0.875rem",
+            }}
           >
             Custom Order
           </a>
@@ -148,7 +176,7 @@ export default function Navbar() {
           <button
             onClick={() => setOpen(true)}
             className="md:hidden p-2 rounded-lg"
-            style={{ color: "var(--cream)" }}
+            style={{ color: isLight ? "var(--charcoal)" : "var(--cream)" }}
             aria-label="Open menu"
           >
             <Menu size={22} />

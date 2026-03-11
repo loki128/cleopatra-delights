@@ -1,10 +1,16 @@
 "use client";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { X } from "lucide-react";
-import { GALLERY_ITEMS } from "@/lib/locationData";
+
+const PHOTOS = [
+  { src: "/images/collage.jpg", label: "Our Full Spread", featured: true, position: "center 40%" },
+  { src: "/images/cookies-tray.jpg", label: "Cookie Collection", featured: false, position: "center 30%" },
+  { src: "/images/biscoff-brownies.jpg", label: "Biscoff Brownies", featured: false, position: "center 45%" },
+  { src: "/images/brownies-pb.jpg", label: "PB Pretzel Brownies", featured: false, position: "center 40%" },
+  { src: "/images/cookies-biscoff.jpg", label: "Biscoff Cookies", featured: false, position: "center 50%" },
+  { src: "/images/cookies-variety.jpg", label: "Cookie Variety", featured: false, position: "center 35%" },
+];
 
 export default function Gallery() {
   const ref = useRef(null);
@@ -12,83 +18,141 @@ export default function Gallery() {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <section style={{ background: "var(--cream-dark)" }} ref={ref}>
+    <section style={{ background: "var(--papyrus)" }} ref={ref}>
       <div className="max-w-6xl mx-auto px-6 md:px-8 py-20">
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="text-center mb-14"
         >
-          <p className="text-xs font-semibold tracking-[0.3em] uppercase mb-4" style={{ color: "var(--gold-muted)" }}>
-            Gallery
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4" style={{ color: "var(--red)" }}>
+          <span
+            className="eyebrow"
+            style={{
+              color: "#25A0A0",
+              marginBottom: "0.875rem",
+              display: "block",
+              textAlign: "center",
+            }}
+          >
+            Handcrafted Goods
+          </span>
+          <h2
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 700,
+              fontSize: "clamp(2rem, 4vw, 3rem)",
+              color: "var(--red)",
+              textAlign: "center",
+              marginBottom: "1rem",
+            }}
+          >
             Made to Be Seen
           </h2>
-          <div className="gold-divider mb-4" />
-          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-            Every dessert is a work of art. Click to get a closer look.
+          <div className="gold-divider" style={{ marginBottom: "1rem" }} />
+          <p
+            style={{
+              fontSize: "0.875rem",
+              color: "var(--text-muted)",
+              textAlign: "center",
+              marginBottom: "2.5rem",
+            }}
+          >
+            Every dessert is a work of art.
           </p>
         </motion.div>
 
-        {/* Masonry-style grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {GALLERY_ITEMS.map((item, i) => (
-            <motion.button
-              key={item.label}
-              initial={{ opacity: 0, scale: 0.95 }}
+        {/* Photo grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gridAutoRows: "260px",
+            gap: "0.75rem",
+          }}
+        >
+          {PHOTOS.map((photo, index) => (
+            <motion.div
+              key={photo.src}
+              initial={{ opacity: 0, scale: 0.97 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.4, delay: i * 0.07 }}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setSelected(i)}
-              className={`relative overflow-hidden rounded-2xl cursor-pointer ${i === 0 ? "col-span-2 md:col-span-1 row-span-2" : ""}`}
+              transition={{ duration: 0.45, delay: index * 0.07 }}
+              onClick={() => setSelected(index)}
               style={{
-                background: item.color,
-                aspectRatio: i === 0 ? "1/1.8" : "1/1",
+                position: "relative",
+                overflow: "hidden",
+                borderRadius: 16,
+                cursor: "pointer",
                 border: "1px solid rgba(212,175,55,0.15)",
+                gridColumn: photo.featured ? "1 / span 2" : undefined,
+                gridRow: photo.featured ? "1 / span 2" : undefined,
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4">
-                <span className="text-5xl">{item.emoji}</span>
-                <span className="text-xs font-semibold text-center leading-snug" style={{ color: "rgba(250,240,230,0.7)" }}>
-                  {item.label}
-                </span>
-              </div>
-              {/* Hover overlay */}
+              <img
+                src={photo.src}
+                alt={photo.label}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: photo.position,
+                  transition: "transform 0.5s ease",
+                  display: "block",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLImageElement).style.transform = "scale(1.04)")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLImageElement).style.transform = "scale(1)")
+                }
+              />
+              {/* Hover overlay — label slides up from bottom */}
               <div
-                className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
-                style={{ background: "rgba(212,175,55,0.1)" }}
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: "1.5rem 1.25rem 1rem",
+                  background:
+                    "linear-gradient(to top, rgba(8,4,4,0.85) 0%, rgba(8,4,4,0.4) 60%, transparent 100%)",
+                  transform: "translateY(4px)",
+                  transition: "transform 0.3s ease",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLDivElement).style.transform = "translateY(0)")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLDivElement).style.transform = "translateY(4px)")
+                }
               >
-                <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--gold)" }}>
-                  View
-                </span>
+                <p
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: "0.95rem",
+                    fontStyle: "italic",
+                    fontWeight: 600,
+                    color: "rgba(250,240,230,0.92)",
+                  }}
+                >
+                  {photo.label}
+                </p>
               </div>
-            </motion.button>
+            </motion.div>
           ))}
         </div>
 
         {/* Instagram prompt */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.8 }}
-          className="text-center text-sm mt-8"
-          style={{ color: "var(--text-muted)" }}
+        <p
+          style={{
+            fontSize: "0.875rem",
+            color: "var(--text-muted)",
+            textAlign: "center",
+            marginTop: "2rem",
+          }}
         >
-          Follow{" "}
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold transition-colors hover:opacity-80"
-            style={{ color: "var(--red)" }}
-          >
-            @CleopatraDelights
-          </a>{" "}
-          on Instagram for more photos and daily updates.
-        </motion.p>
+          Follow @CleopatraDelights on Instagram for more.
+        </p>
       </div>
 
       {/* Lightbox */}
@@ -98,40 +162,64 @@ export default function Gallery() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-6"
-            style={{ background: "rgba(10,5,5,0.92)", backdropFilter: "blur(10px)" }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 50,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "1.5rem",
+              background: "rgba(8,4,4,0.94)",
+              backdropFilter: "blur(12px)",
+            }}
             onClick={() => setSelected(null)}
           >
             <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
+              initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative rounded-3xl flex flex-col items-center justify-center gap-4 p-12 max-w-sm w-full"
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 280, damping: 26 }}
               style={{
-                background: GALLERY_ITEMS[selected].color,
+                position: "relative",
+                maxWidth: "90vw",
+                maxHeight: "85vh",
+                borderRadius: 12,
+                overflow: "hidden",
                 border: "1px solid rgba(212,175,55,0.2)",
               }}
               onClick={(e) => e.stopPropagation()}
             >
+              <img
+                src={PHOTOS[selected].src}
+                alt={PHOTOS[selected].label}
+                style={{
+                  display: "block",
+                  maxWidth: "90vw",
+                  maxHeight: "85vh",
+                  objectFit: "contain",
+                }}
+              />
               <button
                 onClick={() => setSelected(null)}
-                className="absolute top-4 right-4 p-2 rounded-full"
-                style={{ background: "rgba(255,255,255,0.1)", color: "var(--cream)" }}
+                style={{
+                  position: "absolute",
+                  top: 12,
+                  right: 12,
+                  background: "rgba(0,0,0,0.6)",
+                  border: "1px solid rgba(212,175,55,0.2)",
+                  borderRadius: "50%",
+                  width: 36,
+                  height: 36,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: "var(--cream)",
+                }}
               >
                 <X size={16} />
               </button>
-              <span className="text-8xl">{GALLERY_ITEMS[selected].emoji}</span>
-              <h3 className="font-serif text-2xl font-bold text-center" style={{ color: "var(--cream)" }}>
-                {GALLERY_ITEMS[selected].label}
-              </h3>
-              <a
-                href="/menu"
-                className="px-6 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-105"
-                style={{ background: "var(--gold)", color: "var(--charcoal)" }}
-              >
-                View on Menu
-              </a>
             </motion.div>
           </motion.div>
         )}
