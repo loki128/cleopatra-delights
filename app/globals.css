@@ -2,94 +2,307 @@
 @import "tailwindcss";
 
 :root {
-  --red:    #8B1A1A;
+  --red: #8B1A1A;
   --red-light: #A52020;
-  --red-dark:  #6B1212;
-  --gold:   #D4AF37;
+  --red-dark: #6B1212;
+  --gold: #D4AF37;
   --gold-light: #E8C84A;
   --gold-muted: #B8960C;
-  --cream:  #FAF0E6;
+  --cream: #FAF0E6;
   --cream-dark: #F0E0CC;
   --charcoal: #1C1C1C;
   --charcoal-soft: #2E2E2E;
   --text-muted: #6B5B4E;
+  --teal: #1B7878;
+  --teal-light: #25A0A0;
+  --teal-muted: #145E5E;
+  --lapis: #2A4A72;
+
+  /* Design system tokens */
+  --container-max: 1200px;
+  --container-wide: 1400px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.14);
+  --shadow-gold: 0 0 0 1px rgba(212,175,55,0.18), 0 8px 32px rgba(212,175,55,0.1);
+  --section-py: 5rem;
+  --section-py-lg: 7rem;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--cream);
   color: var(--charcoal);
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 
-h1, h2, h3, h4 {
-  font-family: 'Playfair Display', serif;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--cream-dark); }
-::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 6px; }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 5px; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Utility classes */
+/* ── Layout ── */
+.container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 768px) { .container { padding-inline: 2rem; } }
+@media (min-width: 1280px) { .container { padding-inline: 2.5rem; } }
+
+.container-wide {
+  max-width: var(--container-wide);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 768px) { .container-wide { padding-inline: 2rem; } }
+
+.section-py {
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+}
+@media (min-width: 1024px) {
+  .section-py {
+    padding-top: var(--section-py-lg);
+    padding-bottom: var(--section-py-lg);
+  }
+}
+
+/* ── Typography helpers ── */
 .font-serif { font-family: 'Playfair Display', serif; }
+.overline {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+}
+/* Egyptian eyebrow label — same as overline but unambiguous name */
+.eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
 .text-gold { color: var(--gold); }
+.text-teal { color: var(--teal); }
 .text-red { color: var(--red); }
 .text-muted { color: var(--text-muted); }
+
+/* ── Backgrounds ── */
 .bg-red { background-color: var(--red); }
 .bg-gold { background-color: var(--gold); }
 .bg-cream { background-color: var(--cream); }
 .bg-cream-dark { background-color: var(--cream-dark); }
 .bg-charcoal { background-color: var(--charcoal); }
 
-/* Gold divider */
+/* ── Gold divider ── */
 .gold-divider {
-  width: 60px;
-  height: 2px;
+  width: 80px;
+  height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
   margin: 0 auto;
 }
-
-/* Section padding */
-.section { padding: 80px 24px; }
-
-@media (min-width: 768px) {
-  .section { padding: 100px 48px; }
+.gold-divider-left {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+/* Egyptian teal-gold divider — for sections with Egyptian heritage */
+.teal-divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  margin: 0 auto;
 }
 
-/* Accessibility — focus styles */
-:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+/* ── Section padding (legacy) ── */
+.section { padding: 5rem 1.5rem; }
+@media (min-width: 768px) { .section { padding: 7rem 2rem; } }
 
-/* Skip to content link */
+/* ── Focus ── */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
+/* ── Skip link ── */
 .skip-link {
-  position: absolute;
-  top: -100%;
-  left: 16px;
-  padding: 8px 16px;
-  background: var(--gold);
-  color: var(--charcoal);
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 0 0 8px 8px;
-  z-index: 9999;
-  transition: top 0.2s;
+  position: absolute; top: -100%; left: 16px;
+  padding: 8px 16px; background: var(--gold); color: var(--charcoal);
+  font-weight: 600; font-size: 14px; border-radius: 0 0 8px 8px; z-index: 9999; transition: top 0.2s;
 }
-.skip-link:focus {
-  top: 0;
+.skip-link:focus { top: 0; }
+
+/* ── Shimmer button ── */
+@keyframes shimmer {
+  0% { background-position: -300% center; }
+  100% { background-position: 300% center; }
+}
+.btn-shimmer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(105deg, #9A7A10 0%, #D4AF37 20%, #F2D060 45%, #D4AF37 70%, #9A7A10 100%);
+  background-size: 300% auto;
+  animation: shimmer 4s linear infinite;
+  color: #120e00;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-shimmer:hover {
+  animation-duration: 1.5s;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 28px rgba(212,175,55,0.4);
+}
+.btn-shimmer:active { transform: scale(0.97); }
+
+/* ── Marquee ── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 30s linear infinite;
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ── Input gold focus ── */
+.input-gold { transition: border-color 0.2s, box-shadow 0.2s; }
+.input-gold:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.12) !important;
+  outline: none !important;
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+/* ── Noise grain overlay ── */
+.grain { position: relative; isolation: isolate; }
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
 }
+.grain > * { position: relative; z-index: 1; }
+
+/* ── Floating orb animations ── */
+@keyframes floatA {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(24px, -28px) scale(1.04); }
+  66% { transform: translate(-18px, 22px) scale(0.97); }
+}
+@keyframes floatB {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-28px, 14px) scale(0.96); }
+  66% { transform: translate(22px, -18px) scale(1.03); }
+}
+@keyframes floatC {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(12px, -28px) scale(1.05); }
+}
+.orb-a { animation: floatA 20s ease-in-out infinite; }
+.orb-b { animation: floatB 25s ease-in-out infinite; }
+.orb-c { animation: floatC 17s ease-in-out infinite; }
+
+/* ── Dot grid background ── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(212,175,55,0.1) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* ── Page hero ── */
+.page-hero {
+  padding-top: 7rem;
+  padding-bottom: 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--charcoal);
+}
+@media (min-width: 768px) {
+  .page-hero { padding-top: 8rem; padding-bottom: 5rem; }
+}
+
+/* ── Responsive grid utilities ── */
+@media (min-width: 640px) {
+  .sm\:grid-cols-2-order { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 768px) {
+  .md\:grid-cols-4-footer { grid-template-columns: 1.6fr 1fr 1.2fr 1.4fr; }
+  .md\:flex-row { flex-direction: row; }
+  .md\:justify-between { justify-content: space-between; }
+}
+@media (min-width: 1024px) {
+  .lg\:order-grid { grid-template-columns: 340px 1fr; }
+}
+
+/* ── input-gold for dark backgrounds ── */
+.input-gold-dark { transition: border-color 0.2s, box-shadow 0.2s; }
+.input-gold-dark:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.1) !important;
+  outline: none !important;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .marquee-track, .orb-a, .orb-b, .orb-c { animation: none !important; }
+}
+
+/* ── Spotlight grid ── */
+@media (min-width: 768px) {
+  .md\:spotlight-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── Spotlight image hover zoom ── */
+.spotlight-img:hover { transform: scale(1.06); }
+
+/* ── Teal / Egyptian palette helpers ── */
+.text-teal { color: var(--teal); }
+.bg-teal { background-color: var(--teal); }
+
+/* ── Egyptian corner bracket ── */
+.bracket-tl, .bracket-tr, .bracket-bl, .bracket-br {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+.bracket-tl { top: 10px; left: 10px; border-top: 1px solid rgba(212,175,55,0.22); border-left: 1px solid rgba(212,175,55,0.22); }
+.bracket-tr { top: 10px; right: 10px; border-top: 1px solid rgba(212,175,55,0.22); border-right: 1px solid rgba(212,175,55,0.22); }
+.bracket-bl { bottom: 10px; left: 10px; border-bottom: 1px solid rgba(212,175,55,0.22); border-left: 1px solid rgba(212,175,55,0.22); }
+.bracket-br { bottom: 10px; right: 10px; border-bottom: 1px solid rgba(212,175,55,0.22); border-right: 1px solid rgba(212,175,55,0.22); }
+
+/* ── Diamond divider ── */
+.diamond-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  margin: 0.75rem 0;
+}
+.diamond-divider::before, .diamond-divider::after {
+  content: '';
+  flex: 1;
+  max-width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4));
+}
+.diamond-divider::after { background: linear-gradient(270deg, transparent, rgba(212,175,55,0.4)); }

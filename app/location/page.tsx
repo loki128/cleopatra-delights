@@ -14,15 +14,12 @@ export default function LocationPage() {
       <main style={{ background: "var(--cream)" }}>
 
         {/* Hero */}
-        <div
-          className="pt-32 pb-16 px-6 text-center relative overflow-hidden"
-          style={{ background: "var(--charcoal)" }}
-        >
+        <div className="page-hero">
           <div className="absolute inset-0 pointer-events-none" style={{
             background: "radial-gradient(ellipse at 60% 40%, rgba(139,26,26,0.3) 0%, transparent 60%), radial-gradient(ellipse at 20% 70%, rgba(212,175,55,0.08) 0%, transparent 50%)"
           }} />
-          <div className="relative z-10 max-w-2xl mx-auto">
-            <p className="text-xs font-semibold tracking-[0.3em] uppercase mb-4" style={{ color: "var(--gold)" }}>
+          <div className="container" style={{ position: "relative", zIndex: 1 }}>
+            <p className="eyebrow" style={{ color: "#25A0A0", marginBottom: "1rem", display: "block" }}>
               Find Us
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4" style={{ color: "var(--cream)" }}>
@@ -54,7 +51,7 @@ export default function LocationPage() {
         </div>
 
         {/* Upcoming Events */}
-        <div className="max-w-5xl mx-auto px-6 md:px-8 py-16">
+        <div className="container" style={{ paddingTop: "4rem", paddingBottom: "4rem" }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -62,7 +59,7 @@ export default function LocationPage() {
             transition={{ duration: 0.6 }}
             className="mb-10"
           >
-            <p className="text-xs font-semibold tracking-[0.3em] uppercase mb-2" style={{ color: "var(--gold-muted)" }}>
+            <p className="eyebrow" style={{ color: "#25A0A0", marginBottom: "0.5rem", display: "block" }}>
               Schedule
             </p>
             <h2 className="font-serif text-3xl md:text-4xl font-bold" style={{ color: "var(--red)" }}>
@@ -165,7 +162,7 @@ export default function LocationPage() {
 
         {/* Map embed */}
         <div style={{ background: "var(--cream-dark)" }}>
-          <div className="max-w-5xl mx-auto px-6 md:px-8 py-16">
+          <div className="container" style={{ paddingTop: "4rem", paddingBottom: "4rem" }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -173,7 +170,7 @@ export default function LocationPage() {
               transition={{ duration: 0.6 }}
               className="mb-8"
             >
-              <p className="text-xs font-semibold tracking-[0.3em] uppercase mb-2" style={{ color: "var(--gold-muted)" }}>
+              <p className="eyebrow" style={{ color: "#25A0A0", marginBottom: "0.5rem", display: "block" }}>
                 Service Area
               </p>
               <h2 className="font-serif text-3xl font-bold" style={{ color: "var(--red)" }}>
@@ -209,12 +206,13 @@ export default function LocationPage() {
         <Testimonials />
 
         {/* Instagram CTA */}
-        <div className="px-6 py-16 text-center" style={{ background: "var(--cream)" }}>
+        <div style={{ background: "var(--cream)" }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-xl mx-auto"
+            className="container"
+            style={{ paddingTop: "4rem", paddingBottom: "4rem", textAlign: "center" }}
           >
             <Instagram size={28} className="mx-auto mb-4" style={{ color: "var(--red)" }} />
             <h3 className="font-serif text-2xl font-bold mb-3" style={{ color: "var(--charcoal)" }}>
