@@ -88,8 +88,8 @@ export default function FeaturedMenu() {
           <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: "var(--gold)" }}>
             Full Menu Includes
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {["NYC Cookies", "Cookie Cakes", "Brownies", "Blondies", "Cheesecakes", "Shortcakes", "Cake Bars", "Classic Cakes", "Flan"].map((cat) => (
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
+            {["NYC Cookies", "Cookie Cakes", "Brownies", "Blondies", "Cheesecakes", "Shortcakes", "Cake Bars", "Classic Delights", "Signature Cakes"].map((cat) => (
               <span
                 key={cat}
                 className="px-4 py-1.5 rounded-full text-xs font-medium"
@@ -99,6 +99,13 @@ export default function FeaturedMenu() {
               </span>
             ))}
           </div>
+          <a
+            href="/menu"
+            className="inline-flex items-center px-7 py-3 rounded-full text-sm font-semibold transition-all hover:scale-105"
+            style={{ background: "var(--gold)", color: "var(--charcoal)" }}
+          >
+            View Full Menu →
+          </a>
         </motion.div>
       </div>
     </section>
