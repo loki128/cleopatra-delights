@@ -281,7 +281,7 @@ export default function LocationPage() {
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224011.4737437698!2d-81.87697!3d30.33218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e5b716f1ceafeb%3A0xc4cd7d3896fcc7f9!2sJacksonville%2C%20FL!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
                 width="100%"
-                height="400"
+                height={300}
                 style={{ border: 0, display: "block", filter: "invert(0.9) hue-rotate(180deg) saturate(0.3) brightness(0.8)" }}
                 allowFullScreen
                 loading="lazy"

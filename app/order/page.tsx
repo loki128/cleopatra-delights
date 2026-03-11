@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, AlertCircle, Loader2, Send, ChevronDown, Sparkles, Clock, Shield } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -49,11 +49,17 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "Inter, sans-serif",
   borderRadius: "var(--radius-sm)",
   padding: "11px 15px",
-  fontSize: "0.875rem",
+  fontSize: "1rem",
   width: "100%",
   outline: "none",
   transition: "border-color 0.2s, box-shadow 0.2s",
+  colorScheme: "dark",
 };
+
+function getTodayString() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
 
 const inputFocusClass = "input-gold-dark";
 
@@ -93,6 +99,114 @@ function Field({
             <AlertCircle size={11} />
             {error}
           </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function CustomSelect({
+  value,
+  onChange,
+  options,
+  placeholder,
+  error,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  options: string[];
+  placeholder: string;
+  error?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="input-gold"
+        style={{
+          ...inputStyle,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          cursor: "pointer",
+          textAlign: "left",
+          borderColor: error ? "#f87171" : open ? "var(--gold)" : undefined,
+          boxShadow: open ? "0 0 0 3px rgba(212,175,55,0.12)" : undefined,
+        }}
+      >
+        <span style={{ color: value ? "var(--cream)" : "rgba(250,240,230,0.35)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {value || placeholder}
+        </span>
+        <ChevronDown
+          size={13}
+          style={{
+            color: "rgba(250,240,230,0.4)",
+            transition: "transform 0.2s",
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+          }}
+        />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.ul
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15 }}
+            style={{
+              position: "absolute",
+              top: "calc(100% + 4px)",
+              left: 0,
+              right: 0,
+              zIndex: 60,
+              background: "#1a1a1e",
+              border: "1px solid rgba(212,175,55,0.2)",
+              borderRadius: "var(--radius-sm)",
+              padding: "4px 0",
+              maxHeight: 240,
+              overflowY: "auto",
+              listStyle: "none",
+              boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
+            }}
+          >
+            {options.map((opt) => (
+              <li
+                key={opt}
+                onClick={() => {
+                  onChange(opt);
+                  setOpen(false);
+                }}
+                style={{
+                  padding: "10px 15px",
+                  fontSize: "0.875rem",
+                  color: value === opt ? "var(--gold)" : "var(--cream)",
+                  background: value === opt ? "rgba(212,175,55,0.08)" : "transparent",
+                  cursor: "pointer",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={(e) => {
+                  if (value !== opt) e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = value === opt ? "rgba(212,175,55,0.08)" : "transparent";
+                }}
+              >
+                {opt}
+              </li>
+            ))}
+          </motion.ul>
         )}
       </AnimatePresence>
     </div>
@@ -412,20 +526,23 @@ export default function OrderPage() {
                           <input type="tel" value={form.phone} onChange={set("phone")} placeholder="(904) 555-0000" className="input-gold" style={inputStyle} />
                         </Field>
                         <Field label="What Are You Craving?" required error={errors.orderType}>
-                          <div style={{ position: "relative" }}>
-                            <select value={form.orderType} onChange={set("orderType")} className="input-gold" style={{ ...inputStyle, appearance: "none", paddingRight: 36, borderColor: errors.orderType ? "#f87171" : undefined }}>
-                              <option value="">Select type...</option>
-                              {ORDER_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-                            </select>
-                            <ChevronDown size={13} style={{ position: "absolute", right: 13, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(250,240,230,0.4)" }} />
-                          </div>
+                          <CustomSelect
+                            value={form.orderType}
+                            onChange={(val) => {
+                              setForm((prev) => ({ ...prev, orderType: val }));
+                              if (errors.orderType) setErrors((prev) => ({ ...prev, orderType: "" }));
+                            }}
+                            options={ORDER_TYPES}
+                            placeholder="Select type..."
+                            error={!!errors.orderType}
+                          />
                         </Field>
                       </div>
 
                       {/* Date + Occasion */}
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "1.25rem" }} className="sm:grid-cols-2-order">
                         <Field label="When Do You Need It?">
-                          <input type="date" value={form.eventDate} onChange={set("eventDate")} className="input-gold" style={inputStyle} />
+                          <input type="date" value={form.eventDate} onChange={set("eventDate")} min={getTodayString()} className="input-gold" style={inputStyle} />
                         </Field>
                         <Field label="What's the Occasion?">
                           <input type="text" value={form.occasion} onChange={set("occasion")} placeholder="Birthday, Wedding, Corporate..." className="input-gold" style={inputStyle} />
@@ -446,13 +563,12 @@ export default function OrderPage() {
 
                       {/* How heard */}
                       <Field label="How Did You Hear About Us?">
-                        <div style={{ position: "relative" }}>
-                          <select value={form.howHeard} onChange={set("howHeard")} className="input-gold" style={{ ...inputStyle, appearance: "none", paddingRight: 36 }}>
-                            <option value="">Select...</option>
-                            {HOW_HEARD.map((h) => <option key={h} value={h}>{h}</option>)}
-                          </select>
-                          <ChevronDown size={13} style={{ position: "absolute", right: 13, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(250,240,230,0.4)" }} />
-                        </div>
+                        <CustomSelect
+                          value={form.howHeard}
+                          onChange={(val) => setForm((prev) => ({ ...prev, howHeard: val }))}
+                          options={HOW_HEARD}
+                          placeholder="Select..."
+                        />
                       </Field>
 
                       {/* Server error */}

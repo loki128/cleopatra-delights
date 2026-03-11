@@ -59,17 +59,17 @@ export default function Navbar() {
             className="fixed top-0 left-0 right-0 z-[60] overflow-hidden flex items-center justify-center"
             style={{ background: "#145E5E", borderBottom: "1px solid rgba(212,175,55,0.25)" }}
           >
-            <p className="text-xs font-medium tracking-wide text-center px-10" style={{ color: "rgba(255,255,255,0.9)" }}>
+            <p className="text-xs font-medium tracking-wide text-center px-12 sm:px-10" style={{ color: "rgba(255,255,255,0.9)" }}>
               &#10022; Now taking Spring 2026 custom orders — DM{" "}
               <span style={{ color: "var(--gold)" }}>@CleopatraDelights</span> on Instagram
             </p>
             <button
               onClick={() => setAnnounced(false)}
-              className="absolute right-4 p-1 rounded hover:opacity-70 transition-opacity"
+              className="absolute right-2 p-3 rounded hover:opacity-70 transition-opacity"
               style={{ color: "rgba(212,175,55,0.6)" }}
               aria-label="Dismiss announcement"
             >
-              <X size={14} />
+              <X size={16} />
             </button>
           </motion.div>
         )}
@@ -202,11 +202,11 @@ export default function Navbar() {
 
           <button
             onClick={() => setOpen(true)}
-            className="md:hidden p-2 rounded-lg"
+            className="md:hidden p-3 rounded-lg"
             style={{ color: isLight ? "var(--charcoal)" : "var(--cream)" }}
             aria-label="Open menu"
           >
-            <Menu size={22} />
+            <Menu size={24} />
           </button>
         </nav>
       </header>
@@ -228,7 +228,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed top-0 right-0 bottom-0 z-[100] w-72 flex flex-col"
+              className="fixed top-0 right-0 bottom-0 z-[100] w-[min(18rem,85vw)] flex flex-col"
               style={{
                 background: "rgba(18,6,6,0.98)",
                 borderLeft: "2px solid rgba(212,175,55,0.25)",

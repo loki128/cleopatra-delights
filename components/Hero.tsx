@@ -42,7 +42,7 @@ export default function Hero() {
     <section
       id="home"
       className="relative overflow-hidden"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "100dvh" }}
     >
       {/* ── Photo layer with next/image ── */}
       <div className="absolute inset-0" style={{ zIndex: 0 }}>
@@ -209,7 +209,7 @@ export default function Hero() {
         style={{
           position: "relative",
           zIndex: 10,
-          minHeight: "100vh",
+          minHeight: "100dvh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

@@ -268,6 +268,30 @@ h1, h2, h3, h4 {
 }
 .marquee-track:hover { animation-play-state: paused; }
 
+/* ── Gallery marquee ── */
+@keyframes marquee-gallery-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-gallery-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.marquee-gallery-left {
+  animation: marquee-gallery-left linear infinite;
+  will-change: transform;
+}
+.marquee-gallery-right {
+  animation: marquee-gallery-right linear infinite;
+  will-change: transform;
+}
+
+/* ── Select option styling for dark theme ── */
+select.input-gold option {
+  background: #1a1a1e;
+  color: #FAF0E6;
+}
+
 /* ── Input gold focus ── */
 .input-gold { transition: border-color 0.2s, box-shadow 0.2s; }
 .input-gold:focus {
@@ -342,6 +366,11 @@ h1, h2, h3, h4 {
   .lg\:order-grid { grid-template-columns: 340px 1fr; }
 }
 
+/* ── About stats responsive ── */
+@media (min-width: 768px) {
+  .about-stats-strip { grid-template-columns: repeat(4, 1fr) !important; gap: 0 !important; }
+}
+
 /* ── input-gold for dark backgrounds ── */
 .input-gold-dark { transition: border-color 0.2s, box-shadow 0.2s; }
 .input-gold-dark:focus {
@@ -353,7 +382,7 @@ h1, h2, h3, h4 {
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  .marquee-track, .orb-a, .orb-b, .orb-c { animation: none !important; }
+  .marquee-track, .marquee-gallery-left, .marquee-gallery-right, .orb-a, .orb-b, .orb-c { animation: none !important; }
 }
 
 /* ── Spotlight grid ── */

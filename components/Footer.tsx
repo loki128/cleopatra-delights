@@ -1,5 +1,5 @@
 "use client";
-import { Instagram, MapPin, Mail, ArrowRight } from "lucide-react";
+import { Instagram, MapPin, Mail } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
@@ -239,7 +239,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter */}
+          {/* Stay Connected */}
           <div>
             <h4
               style={{
@@ -254,43 +254,43 @@ export default function Footer() {
               Stay in the Loop
             </h4>
             <p style={{ fontSize: "0.8rem", color: "rgba(250,240,230,0.3)", lineHeight: 1.6, marginBottom: "1.25rem" }}>
-              New flavors, seasonal specials, and pop-up announcements.
+              New flavors, seasonal specials, and pop-up announcements — all on Instagram.
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="input-gold"
+            <a
+              href="https://instagram.com/cleopatradelights"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-shimmer"
+              style={{
+                padding: "10px 14px",
+                borderRadius: "var(--radius-sm)",
+                fontSize: "0.8rem",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+              }}
+            >
+              <Instagram size={14} />
+              Follow Us
+            </a>
+            <div style={{ marginTop: "1rem" }}>
+              <a
+                href="mailto:lukita@cleopatradelights.com"
                 style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(212,175,55,0.18)",
-                  color: "var(--cream)",
-                  fontFamily: "Inter, sans-serif",
-                  borderRadius: "var(--radius-sm)",
-                  padding: "10px 14px",
-                  fontSize: "0.8rem",
-                  outline: "none",
-                }}
-              />
-              <button
-                className="btn-shimmer"
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: "var(--radius-sm)",
-                  fontSize: "0.8rem",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
                   gap: 6,
+                  fontSize: "0.8rem",
+                  color: "rgba(250,240,230,0.35)",
+                  transition: "color 0.2s",
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(250,240,230,0.35)")}
               >
-                Subscribe
-                <ArrowRight size={12} />
-              </button>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: "0.75rem" }}>
-              <Mail size={10} style={{ color: "rgba(212,175,55,0.3)" }} />
-              <p style={{ fontSize: "0.7rem", color: "rgba(250,240,230,0.2)" }}>No spam. Unsubscribe anytime.</p>
+                <Mail size={12} style={{ color: "rgba(212,175,55,0.4)" }} />
+                lukita@cleopatradelights.com
+              </a>
             </div>
           </div>
         </div>

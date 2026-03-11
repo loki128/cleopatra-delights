@@ -183,11 +183,11 @@ export default function About() {
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.5 }}
+          className="about-stats-strip"
           style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: 0,
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "2rem 0",
             marginTop: "4rem",
             paddingTop: "3rem",
             borderTop: "1px solid rgba(212,175,55,0.08)",
@@ -198,9 +198,9 @@ export default function About() {
             { num: "50+", label: "Handcrafted Flavors" },
             { num: "1", label: "Food Trailer" },
             { num: "\u221E", label: "Passion" },
-          ].map((s, i, arr) => (
-            <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 0 }}>
-              <div style={{ textAlign: "center", padding: "0 2.5rem" }}>
+          ].map((s) => (
+            <div key={s.label}>
+              <div style={{ textAlign: "center", padding: "0 1.5rem" }}>
                 <p
                   style={{
                     fontFamily: "'Playfair Display', serif",
@@ -225,16 +225,6 @@ export default function About() {
                   {s.label}
                 </p>
               </div>
-              {i < arr.length - 1 && (
-                <div
-                  style={{
-                    width: 1,
-                    height: 36,
-                    background: "rgba(212,175,55,0.1)",
-                    flexShrink: 0,
-                  }}
-                />
-              )}
             </div>
           ))}
         </motion.div>

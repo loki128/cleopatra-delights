@@ -1,42 +1,7 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Instagram } from "lucide-react";
-
-function useCountUp(target: number, duration: number, start: boolean) {
-  const [count, setCount] = useState(0);
-  const started = useRef(false);
-
-  useEffect(() => {
-    if (!start || started.current) return;
-    started.current = true;
-    const startTime = performance.now();
-    const durationMs = duration * 1000;
-
-    function tick(now: number) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / durationMs, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * target));
-      if (progress < 1) requestAnimationFrame(tick);
-    }
-
-    requestAnimationFrame(tick);
-  }, [start, target, duration]);
-
-  return count;
-}
-
-const MARQUEE_ITEMS = [
-  "Riverside Arts Market",
-  "Springfield Farmers Market",
-  "Beaches Pop-Up",
-  "Jacksonville Food Festival",
-  "Avondale Spring Market",
-  "San Marco Pop-Up",
-  "Private Events Welcome",
-  "Corporate Catering Available",
-];
 
 const TILES = [
   {
@@ -58,196 +23,22 @@ const TILES = [
 
 export default function FindUs() {
   const ref = useRef(null);
-  const statsRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const statsInView = useInView(statsRef, { once: true, margin: "-50px" });
-
-  const orders = useCountUp(500, 1.8, statsInView);
-  const flavors = useCountUp(9, 1.2, statsInView);
 
   return (
-    <section id="find-us" style={{ background: "#0D0B08" }} ref={ref}>
+    <section id="find-us" style={{ background: "var(--surface-0)", position: "relative" }} ref={ref}>
+      {/* Dot grid */}
+      <div className="absolute inset-0 dot-grid pointer-events-none" aria-hidden="true" style={{ opacity: 0.12 }} />
 
-      {/* Stats strip */}
-      <div
-        ref={statsRef}
-        style={{
-          background: "#0A0804",
-          borderBottom: "1px solid rgba(212,175,55,0.08)",
-          padding: "3rem 0",
-        }}
-      >
-        {/* Decorative gold line above stats */}
-        <div
-          style={{
-            height: "1px",
-            background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent)",
-            marginBottom: "3rem",
-          }}
-        />
-
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 0,
-          }}
-        >
-          {/* Stat: Orders */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={statsInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            style={{ textAlign: "center", padding: "0 3rem" }}
-          >
-            <p
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "4rem",
-                fontWeight: 700,
-                color: "var(--gold)",
-                lineHeight: 1,
-                marginBottom: "0.5rem",
-              }}
-            >
-              {orders}+
-            </p>
-            <p
-              style={{
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "rgba(250,240,230,0.4)",
-              }}
-            >
-              Orders Fulfilled
-            </p>
-          </motion.div>
-
-          {/* Divider */}
-          <div
-            style={{
-              width: "1px",
-              height: "40px",
-              background: "rgba(212,175,55,0.15)",
-              alignSelf: "center",
-              flexShrink: 0,
-            }}
-          />
-
-          {/* Stat: Flavors */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={statsInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            style={{ textAlign: "center", padding: "0 3rem" }}
-          >
-            <p
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "4rem",
-                fontWeight: 700,
-                color: "var(--gold)",
-                lineHeight: 1,
-                marginBottom: "0.5rem",
-              }}
-            >
-              {flavors}
-            </p>
-            <p
-              style={{
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "rgba(250,240,230,0.4)",
-              }}
-            >
-              Flavor Traditions
-            </p>
-          </motion.div>
-
-          {/* Divider */}
-          <div
-            style={{
-              width: "1px",
-              height: "40px",
-              background: "rgba(212,175,55,0.15)",
-              alignSelf: "center",
-              flexShrink: 0,
-            }}
-          />
-
-          {/* Stat: #1 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={statsInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            style={{ textAlign: "center", padding: "0 3rem" }}
-          >
-            <p
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "4rem",
-                fontWeight: 700,
-                color: "var(--gold)",
-                lineHeight: 1,
-                marginBottom: "0.5rem",
-              }}
-            >
-              #1
-            </p>
-            <p
-              style={{
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "rgba(250,240,230,0.4)",
-              }}
-            >
-              Jacksonville&apos;s Favorite
-            </p>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Marquee strip — kept exactly as-is */}
-      <div style={{ background: "var(--red)", borderBottom: "1px solid rgba(212,175,55,0.15)", overflow: "hidden" }}>
-        <div className="py-3 flex overflow-hidden">
-          <div className="marquee-track">
-            {[0, 1].map((dupe) => (
-              <span
-                key={dupe}
-                className="flex items-center shrink-0"
-                aria-hidden={dupe === 1}
-              >
-                {MARQUEE_ITEMS.map((item, j) => (
-                  <span key={`${dupe}-${j}`} className="flex items-center gap-6 px-6 text-xs font-medium tracking-wide whitespace-nowrap" style={{ color: "rgba(250,240,230,0.8)" }}>
-                    <span>{item}</span>
-                    <span style={{ color: "var(--gold)" }}>&#10022;</span>
-                  </span>
-                ))}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="container section-py">
-
+      <div className="container section-py" style={{ position: "relative", zIndex: 1 }}>
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          style={{ textAlign: "center", marginBottom: "3.5rem" }}
+          initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
+          animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          style={{ textAlign: "center", marginBottom: "3rem" }}
         >
-          <p
-            className="eyebrow"
-            style={{ color: "#25A0A0", marginBottom: "0.875rem" }}
-          >
+          <p className="eyebrow" style={{ color: "#25A0A0", marginBottom: "0.875rem" }}>
             Come Find Us
           </p>
           <h2
@@ -257,6 +48,7 @@ export default function FindUs() {
               fontSize: "clamp(2rem, 4vw, 3rem)",
               color: "var(--cream)",
               lineHeight: 1.15,
+              marginBottom: "1rem",
             }}
           >
             We Come to You
@@ -264,17 +56,17 @@ export default function FindUs() {
           <div className="gold-divider" style={{ marginBottom: "1rem" }} />
           <p
             style={{
-              fontSize: "0.9rem",
-              color: "rgba(250,240,230,0.45)",
-              maxWidth: "480px",
-              margin: "1rem auto 0",
+              fontSize: "var(--text-small)",
+              color: "var(--text-tertiary)",
+              maxWidth: 480,
+              margin: "0 auto",
             }}
           >
             Our food trailer and canopy stand move through Jacksonville. Follow Instagram for real-time updates.
           </p>
         </motion.div>
 
-        {/* Three editorial info tiles */}
+        {/* Three info tiles */}
         <div
           style={{
             display: "grid",
@@ -286,27 +78,23 @@ export default function FindUs() {
           {TILES.map((tile, i) => (
             <motion.div
               key={tile.numeral}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
+              initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+              animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+              transition={{ duration: 0.6, delay: 0.15 + i * 0.1, ease: [0.16, 1, 0.3, 1] as const }}
               style={{
-                background: "rgba(212,175,55,0.03)",
-                border: "1px solid rgba(212,175,55,0.12)",
-                borderRadius: "16px",
+                background: "var(--surface-1)",
+                border: "1px solid rgba(212,175,55,0.08)",
+                borderRadius: 16,
                 padding: "2rem",
-                transition: "border-color 0.3s ease, transform 0.3s ease",
+                transition: "border-color 0.3s ease",
                 cursor: "default",
               }}
-              whileHover={{
-                borderColor: "rgba(212,175,55,0.3)",
-                y: -3,
-              }}
+              whileHover={{ borderColor: "rgba(212,175,55,0.25)", y: -3 }}
             >
-              {/* Egyptian ornament: thin gold line + roman numeral */}
               <div
                 style={{
-                  height: "1px",
-                  width: "40px",
+                  height: 1,
+                  width: 40,
                   background: "linear-gradient(90deg, var(--gold), transparent)",
                   marginBottom: "0.75rem",
                 }}
@@ -328,7 +116,7 @@ export default function FindUs() {
                   fontFamily: "'Playfair Display', serif",
                   fontSize: "1.1rem",
                   fontWeight: 600,
-                  color: "var(--cream)",
+                  color: "var(--text-primary)",
                   marginBottom: "0.75rem",
                 }}
               >
@@ -338,7 +126,7 @@ export default function FindUs() {
                 style={{
                   fontSize: "0.85rem",
                   lineHeight: 1.75,
-                  color: "rgba(250,240,230,0.45)",
+                  color: "var(--text-tertiary)",
                 }}
               >
                 {tile.desc}
@@ -347,15 +135,15 @@ export default function FindUs() {
           ))}
         </div>
 
-        {/* Bottom CTA banner — Egyptian-inspired horizontal */}
+        {/* Instagram CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
           style={{
-            background: "linear-gradient(105deg, rgba(139,26,26,0.15) 0%, rgba(212,175,55,0.05) 50%, rgba(139,26,26,0.1) 100%)",
-            border: "1px solid rgba(212,175,55,0.15)",
-            borderRadius: "20px",
+            background: "linear-gradient(105deg, rgba(139,26,26,0.12) 0%, rgba(212,175,55,0.04) 50%, rgba(139,26,26,0.08) 100%)",
+            border: "1px solid rgba(212,175,55,0.12)",
+            borderRadius: 20,
             padding: "2.5rem",
             display: "flex",
             alignItems: "center",
@@ -364,7 +152,6 @@ export default function FindUs() {
             flexWrap: "wrap",
           }}
         >
-          {/* Left copy */}
           <div>
             <p
               style={{
@@ -390,26 +177,19 @@ export default function FindUs() {
             >
               Follow @CleopatraDelights
             </h3>
-            <p
-              style={{
-                fontSize: "0.8rem",
-                color: "rgba(250,240,230,0.4)",
-              }}
-            >
+            <p style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>
               Real-time location drops, new flavors, event announcements.
             </p>
           </div>
-
-          {/* Right CTA */}
           <a
             href="/location"
             className="btn-shimmer"
             style={{
               padding: "11px 28px",
-              borderRadius: "999px",
+              borderRadius: 999,
               fontSize: "0.875rem",
               display: "inline-flex",
-              gap: "8px",
+              gap: 8,
               alignItems: "center",
               flexShrink: 0,
             }}
@@ -418,7 +198,6 @@ export default function FindUs() {
             View Full Schedule
           </a>
         </motion.div>
-
       </div>
     </section>
   );
