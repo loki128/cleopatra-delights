@@ -7,7 +7,7 @@ const links = [
   { label: "Home", href: "/" },
   { label: "About", href: "/#about" },
   { label: "Menu", href: "/menu" },
-  { label: "Find Us", href: "/#find-us" },
+  { label: "Find Us", href: "/location" },
 ];
 
 export default function Navbar() {

@@ -96,14 +96,12 @@ export default function FindUs() {
             Get real-time location drops, new flavors, and event announcements on Instagram.
           </p>
           <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/location"
             className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-semibold transition-all hover:scale-105"
             style={{ background: "var(--gold)", color: "var(--charcoal)" }}
           >
             <Instagram size={15} />
-            @CleopatraDelights
+            View Full Schedule
           </a>
         </motion.div>
       </div>
