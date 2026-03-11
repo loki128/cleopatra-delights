@@ -8,6 +8,7 @@ const links = [
   { label: "About", href: "/#about" },
   { label: "Menu", href: "/menu" },
   { label: "Find Us", href: "/location" },
+  { label: "Order", href: "/order" },
 ];
 
 export default function Navbar() {
@@ -57,14 +58,14 @@ export default function Navbar() {
 
         {/* CTA */}
         <a
-          href="#find-us"
+          href="/order"
           className="hidden md:inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105"
           style={{
             background: "var(--gold)",
             color: "var(--charcoal)",
           }}
         >
-          Find Our Trailer
+          Custom Order
         </a>
 
         {/* Mobile menu button */}
@@ -102,12 +103,12 @@ export default function Navbar() {
               ))}
               <li>
                 <a
-                  href="#find-us"
+                  href="/order"
                   onClick={() => setOpen(false)}
                   className="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold"
                   style={{ background: "var(--gold)", color: "var(--charcoal)" }}
                 >
-                  Find Our Trailer
+                  Custom Order
                 </a>
               </li>
             </ul>
