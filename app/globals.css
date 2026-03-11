@@ -1,26 +1,62 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --red:    #8B1A1A;
+  --red-light: #A52020;
+  --red-dark:  #6B1212;
+  --gold:   #D4AF37;
+  --gold-light: #E8C84A;
+  --gold-muted: #B8960C;
+  --cream:  #FAF0E6;
+  --cream-dark: #F0E0CC;
+  --charcoal: #1C1C1C;
+  --charcoal-soft: #2E2E2E;
+  --text-muted: #6B5B4E;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream-dark); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 6px; }
+
+/* Utility classes */
+.font-serif { font-family: 'Playfair Display', serif; }
+.text-gold { color: var(--gold); }
+.text-red { color: var(--red); }
+.text-muted { color: var(--text-muted); }
+.bg-red { background-color: var(--red); }
+.bg-gold { background-color: var(--gold); }
+.bg-cream { background-color: var(--cream); }
+.bg-cream-dark { background-color: var(--cream-dark); }
+.bg-charcoal { background-color: var(--charcoal); }
+
+/* Gold divider */
+.gold-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+}
+
+/* Section padding */
+.section { padding: 80px 24px; }
+
+@media (min-width: 768px) {
+  .section { padding: 100px 48px; }
 }
