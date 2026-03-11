@@ -2,6 +2,32 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+
+/* Framer Motion variants — Linear/Framer-inspired blur-in stagger */
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
+};
+
+const blurIn = {
+  hidden: { opacity: 0, y: 24, filter: "blur(8px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
 
 export default function Hero() {
   const [scrolled, setScrolled] = useState(false);
@@ -18,43 +44,67 @@ export default function Hero() {
       className="relative overflow-hidden"
       style={{ minHeight: "100vh" }}
     >
-      {/* ── Photo layer ── */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-        <img
+      {/* ── Photo layer with next/image ── */}
+      <div className="absolute inset-0" style={{ zIndex: 0 }}>
+        <Image
           src="/images/brownies-pb.jpg"
           alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+          style={{ objectPosition: "center 35%" }}
           aria-hidden="true"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center 35%",
-          }}
         />
-        {/* Left-dominant dark gradient — photo shows through on right */}
+        {/* Left-dominant dark gradient */}
         <div
+          className="absolute inset-0"
           style={{
-            position: "absolute",
-            inset: 0,
             background:
               "linear-gradient(105deg, #050202 0%, rgba(8,3,3,0.97) 20%, rgba(12,4,4,0.93) 38%, rgba(18,6,6,0.78) 55%, rgba(22,8,8,0.5) 72%, rgba(28,10,10,0.22) 100%)",
           }}
         />
-        {/* Bottom vignette for scroll indicator legibility */}
+        {/* Bottom vignette */}
         <div
+          className="absolute bottom-0 left-0 right-0"
           style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
             height: "30%",
             background: "linear-gradient(to top, rgba(5,2,2,0.7), transparent)",
           }}
         />
       </div>
 
-      {/* ── Animated glow orbs (above photo, below content) ── */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ zIndex: 1 }}>
+      {/* ── Gold dot grid (Linear-inspired) ── */}
+      <div
+        className="absolute inset-0 dot-grid pointer-events-none"
+        aria-hidden="true"
+        style={{ zIndex: 1, opacity: 0.3 }}
+      />
+
+      {/* ── Radial gold glow behind headline (Linear-inspired) ── */}
+      <div
+        className="absolute pointer-events-none"
+        aria-hidden="true"
+        style={{
+          zIndex: 1,
+          top: "30%",
+          left: "15%",
+          width: "50vw",
+          height: "50vw",
+          maxWidth: 600,
+          maxHeight: 600,
+          background:
+            "radial-gradient(ellipse at center, rgba(212,175,55,0.08) 0%, transparent 65%)",
+          filter: "blur(60px)",
+        }}
+      />
+
+      {/* ── Animated glow orbs ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        style={{ zIndex: 1 }}
+      >
         <div
           className="absolute orb-a"
           style={{
@@ -64,7 +114,8 @@ export default function Hero() {
             height: "45vw",
             maxWidth: 560,
             maxHeight: 560,
-            background: "radial-gradient(circle, rgba(139,26,26,0.45) 0%, rgba(100,15,15,0.2) 45%, transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(139,26,26,0.4) 0%, rgba(100,15,15,0.15) 45%, transparent 70%)",
             filter: "blur(55px)",
           }}
         />
@@ -77,34 +128,84 @@ export default function Hero() {
             height: "35vw",
             maxWidth: 420,
             maxHeight: 420,
-            background: "radial-gradient(circle, rgba(27,120,120,0.18) 0%, rgba(20,94,94,0.07) 55%, transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(27,120,120,0.15) 0%, rgba(20,94,94,0.06) 55%, transparent 70%)",
             filter: "blur(60px)",
           }}
         />
       </div>
 
       {/* ── Corner bracket decorations ── */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ zIndex: 2 }}>
-        {/* Top-left */}
-        <div style={{ position: "absolute", top: 28, left: 28 }}>
-          <div style={{ width: 44, height: 1, background: "linear-gradient(90deg, rgba(212,175,55,0.5), transparent)" }} />
-          <div style={{ width: 1, height: 44, background: "linear-gradient(180deg, rgba(212,175,55,0.5), transparent)", marginTop: -1 }} />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        style={{ zIndex: 2 }}
+      >
+        <div className="absolute" style={{ top: 28, left: 28 }}>
+          <div
+            style={{
+              width: 44,
+              height: 1,
+              background:
+                "linear-gradient(90deg, rgba(212,175,55,0.5), transparent)",
+            }}
+          />
+          <div
+            style={{
+              width: 1,
+              height: 44,
+              background:
+                "linear-gradient(180deg, rgba(212,175,55,0.5), transparent)",
+              marginTop: -1,
+            }}
+          />
         </div>
-        {/* Top-right */}
-        <div style={{ position: "absolute", top: 28, right: 28 }}>
-          <div style={{ width: 44, height: 1, background: "linear-gradient(270deg, rgba(212,175,55,0.5), transparent)" }} />
-          <div style={{ width: 1, height: 44, background: "linear-gradient(180deg, rgba(212,175,55,0.5), transparent)", marginLeft: "auto" }} />
+        <div className="absolute" style={{ top: 28, right: 28 }}>
+          <div
+            style={{
+              width: 44,
+              height: 1,
+              background:
+                "linear-gradient(270deg, rgba(212,175,55,0.5), transparent)",
+            }}
+          />
+          <div
+            style={{
+              width: 1,
+              height: 44,
+              background:
+                "linear-gradient(180deg, rgba(212,175,55,0.5), transparent)",
+              marginLeft: "auto",
+            }}
+          />
         </div>
-        {/* Bottom-left */}
-        <div style={{ position: "absolute", bottom: 28, left: 28 }}>
-          <div style={{ width: 1, height: 44, background: "linear-gradient(0deg, rgba(212,175,55,0.5), transparent)" }} />
-          <div style={{ width: 44, height: 1, background: "linear-gradient(90deg, rgba(212,175,55,0.5), transparent)", marginTop: -1 }} />
+        <div className="absolute" style={{ bottom: 28, left: 28 }}>
+          <div
+            style={{
+              width: 1,
+              height: 44,
+              background:
+                "linear-gradient(0deg, rgba(212,175,55,0.5), transparent)",
+            }}
+          />
+          <div
+            style={{
+              width: 44,
+              height: 1,
+              background:
+                "linear-gradient(90deg, rgba(212,175,55,0.5), transparent)",
+              marginTop: -1,
+            }}
+          />
         </div>
       </div>
 
-      {/* ── Content ── */}
-      <div
+      {/* ── Content — Blur-in staggered entrance ── */}
+      <motion.div
         className="container"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
         style={{
           position: "relative",
           zIndex: 10,
@@ -116,14 +217,10 @@ export default function Hero() {
           paddingBottom: "5rem",
         }}
       >
-        {/* Max-width container for text — left-biased on desktop */}
         <div style={{ maxWidth: 640 }}>
-
           {/* Live status pill */}
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            variants={blurIn}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -133,7 +230,7 @@ export default function Hero() {
               marginBottom: "2rem",
               background: "rgba(27,120,120,0.06)",
               border: "1px solid rgba(27,120,120,0.28)",
-              color: "rgba(250,240,230,0.65)",
+              color: "var(--text-tertiary)",
               backdropFilter: "blur(10px)",
               fontSize: "0.72rem",
               letterSpacing: "0.02em",
@@ -151,41 +248,37 @@ export default function Hero() {
             />
             <span>{"We're out this weekend"}</span>
             <span style={{ color: "rgba(212,175,55,0.45)" }}>·</span>
-            <span style={{ color: "rgba(212,175,55,0.85)" }}>Riverside Arts Market, Sat 10am–4pm</span>
+            <span style={{ color: "rgba(212,175,55,0.85)" }}>
+              Riverside Arts Market, Sat 10am-4pm
+            </span>
           </motion.div>
 
           {/* Eyebrow */}
           <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.12 }}
+            variants={blurIn}
             className="eyebrow"
             style={{ color: "#25A0A0", marginBottom: "1.25rem" }}
           >
             Jacksonville, Florida&nbsp;&nbsp;·&nbsp;&nbsp;Global Desserts
           </motion.p>
 
-          {/* Headline */}
+          {/* Headline — cinematic scale (Apple-inspired) */}
           <h1 style={{ marginBottom: "1.25rem", lineHeight: 0.95 }}>
             <motion.span
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              variants={blurIn}
               style={{
                 display: "block",
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: 700,
                 fontSize: "clamp(3.5rem, 9vw, 7.5rem)",
                 color: "var(--cream)",
-                letterSpacing: "-0.02em",
+                letterSpacing: "-0.025em",
               }}
             >
               Cleopatra
             </motion.span>
             <motion.span
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              variants={blurIn}
               style={{
                 display: "block",
                 fontFamily: "'Playfair Display', serif",
@@ -193,7 +286,7 @@ export default function Hero() {
                 fontStyle: "italic",
                 fontSize: "clamp(3.5rem, 9vw, 7.5rem)",
                 color: "var(--gold)",
-                letterSpacing: "-0.02em",
+                letterSpacing: "-0.025em",
               }}
             >
               Delights
@@ -202,64 +295,94 @@ export default function Hero() {
 
           {/* Diamond ornament divider */}
           <motion.div
-            initial={{ scaleX: 0, opacity: 0 }}
-            animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.5 }}
-            style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: "1.5rem" }}
+            variants={fadeUp}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              marginBottom: "1.5rem",
+            }}
           >
-            <div style={{ width: 52, height: 1, background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.55))" }} />
-            <div style={{ width: 5, height: 5, background: "var(--gold)", transform: "rotate(45deg)", opacity: 0.75 }} />
-            <div style={{ width: 52, height: 1, background: "linear-gradient(90deg, rgba(212,175,55,0.55), transparent)" }} />
+            <div
+              style={{
+                width: 52,
+                height: 1,
+                background:
+                  "linear-gradient(90deg, transparent, rgba(212,175,55,0.55))",
+              }}
+            />
+            <div
+              style={{
+                width: 5,
+                height: 5,
+                background: "var(--gold)",
+                transform: "rotate(45deg)",
+                opacity: 0.75,
+              }}
+            />
+            <div
+              style={{
+                width: 52,
+                height: 1,
+                background:
+                  "linear-gradient(90deg, rgba(212,175,55,0.55), transparent)",
+              }}
+            />
           </motion.div>
 
           {/* Tagline */}
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.62 }}
+            variants={fadeUp}
             style={{
               fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
               fontWeight: 300,
               lineHeight: 1.8,
-              color: "rgba(250,240,230,0.55)",
+              color: "var(--text-tertiary)",
               maxWidth: 440,
               marginBottom: "2.5rem",
             }}
           >
-            A world of extraordinary desserts — handcrafted with flavors from Africa, the Middle East, Asia, Europe & the Americas.
+            A world of extraordinary desserts — handcrafted with flavors from
+            Africa, the Middle East, Asia, Europe & the Americas.
           </motion.p>
 
-          {/* CTAs */}
+          {/* CTAs — Stripe dual-CTA pattern */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.75 }}
-            style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}
+            variants={fadeUp}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 12,
+              alignItems: "center",
+            }}
           >
             <a
               href="/menu"
               className="btn-shimmer"
               style={{
-                padding: "13px 32px",
+                padding: "14px 34px",
                 borderRadius: 999,
                 fontSize: "0.875rem",
-                boxShadow: "0 0 40px rgba(212,175,55,0.18), 0 4px 20px rgba(0,0,0,0.5)",
+                boxShadow:
+                  "0 0 40px rgba(212,175,55,0.18), 0 4px 20px rgba(0,0,0,0.5)",
               }}
             >
               Explore Our Menu
             </a>
             <a
               href="/location"
+              className="group"
               style={{
-                padding: "13px 28px",
+                padding: "14px 28px",
                 borderRadius: 999,
                 fontSize: "0.875rem",
                 fontWeight: 600,
                 border: "1px solid rgba(212,175,55,0.28)",
-                color: "rgba(250,240,230,0.8)",
+                color: "var(--text-secondary)",
                 background: "rgba(255,255,255,0.03)",
                 letterSpacing: "0.03em",
-                transition: "all 0.2s",
+                transition:
+                  "border-color 0.25s var(--ease-out-expo), background 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo)",
                 display: "inline-flex",
                 alignItems: "center",
               }}
@@ -282,9 +405,7 @@ export default function Hero() {
 
           {/* Region tags */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, delay: 1.0 }}
+            variants={fadeUp}
             style={{
               display: "flex",
               flexWrap: "wrap",
@@ -293,21 +414,33 @@ export default function Hero() {
               fontSize: "0.62rem",
               letterSpacing: "0.35em",
               textTransform: "uppercase",
-              color: "rgba(212,175,55,0.3)",
+              color: "var(--text-quaternary)",
               fontWeight: 600,
             }}
           >
-            {["Africa", "Middle East", "Asia", "Europe", "Americas"].map((r, i) => (
-              <span key={r} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                {i > 0 && (
-                  <span style={{ color: "rgba(212,175,55,0.15)", fontSize: "0.5rem" }}>✦</span>
-                )}
-                {r}
-              </span>
-            ))}
+            {["Africa", "Middle East", "Asia", "Europe", "Americas"].map(
+              (r, i) => (
+                <span
+                  key={r}
+                  style={{ display: "flex", alignItems: "center", gap: 10 }}
+                >
+                  {i > 0 && (
+                    <span
+                      style={{
+                        color: "rgba(212,175,55,0.15)",
+                        fontSize: "0.5rem",
+                      }}
+                    >
+                      &#10022;
+                    </span>
+                  )}
+                  {r}
+                </span>
+              ),
+            )}
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ── Scroll indicator ── */}
       <motion.div
@@ -331,7 +464,10 @@ export default function Hero() {
           animate={{ y: [0, 7, 0] }}
           transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown size={15} style={{ color: "rgba(212,175,55,0.3)" }} />
+          <ChevronDown
+            size={15}
+            style={{ color: "rgba(212,175,55,0.3)" }}
+          />
         </motion.div>
       </motion.div>
     </section>

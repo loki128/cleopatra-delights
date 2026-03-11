@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, Truck, Calendar, Instagram } from "lucide-react";
+import { Instagram } from "lucide-react";
 
 function useCountUp(target: number, duration: number, start: boolean) {
   const [count, setCount] = useState(0);
@@ -225,7 +225,7 @@ export default function FindUs() {
                 {MARQUEE_ITEMS.map((item, j) => (
                   <span key={`${dupe}-${j}`} className="flex items-center gap-6 px-6 text-xs font-medium tracking-wide whitespace-nowrap" style={{ color: "rgba(250,240,230,0.8)" }}>
                     <span>{item}</span>
-                    <span style={{ color: "var(--gold)" }}>✦</span>
+                    <span style={{ color: "var(--gold)" }}>&#10022;</span>
                   </span>
                 ))}
               </span>

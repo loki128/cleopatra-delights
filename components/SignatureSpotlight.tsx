@@ -2,6 +2,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const SIGNATURES = [
   {
@@ -39,30 +40,44 @@ const SIGNATURES = [
   },
 ];
 
+/* Linear-style stagger + blur-in */
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+const cardVariant = {
+  hidden: { opacity: 0, y: 32, filter: "blur(6px)" },
+  visible: {
+    opacity: 1, y: 0, filter: "blur(0px)",
+    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
 export default function SignatureSpotlight() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} style={{ background: "#0E0E0E", position: "relative", overflow: "hidden" }}>
-      {/* Subtle background texture */}
+    <section ref={ref} style={{ background: "var(--surface-0)", position: "relative", overflow: "hidden" }}>
+      {/* Radial glow backdrop (Linear-inspired) */}
       <div
         aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          position: "absolute",
-          inset: 0,
           background:
-            "radial-gradient(ellipse at 10% 50%, rgba(139,26,26,0.12) 0%, transparent 55%), radial-gradient(ellipse at 90% 30%, rgba(27,120,120,0.08) 0%, transparent 50%)",
-          pointerEvents: "none",
+            "radial-gradient(ellipse at 10% 50%, rgba(139,26,26,0.1) 0%, transparent 55%), radial-gradient(ellipse at 90% 30%, rgba(27,120,120,0.06) 0%, transparent 50%)",
         }}
       />
+
+      {/* Dot grid */}
+      <div className="absolute inset-0 dot-grid pointer-events-none" aria-hidden="true" style={{ opacity: 0.15 }} />
 
       <div className="container section-py" style={{ position: "relative", zIndex: 1 }}>
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+          animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           style={{ textAlign: "center", marginBottom: "3.5rem" }}
         >
           <p className="eyebrow" style={{ color: "#1B7878", marginBottom: "0.875rem" }}>
@@ -72,7 +87,7 @@ export default function SignatureSpotlight() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontWeight: 700,
-              fontSize: "clamp(2rem, 4vw, 3rem)",
+              fontSize: "var(--text-display)",
               color: "var(--cream)",
               lineHeight: 1.15,
               marginBottom: "1rem",
@@ -83,18 +98,21 @@ export default function SignatureSpotlight() {
           <div className="gold-divider" />
         </motion.div>
 
-        {/* 3-col photo cards grid */}
-        <div
+        {/* 3-col cards — Linear dark elevation */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
             gap: "1.5rem",
           }}
         >
-          {SIGNATURES.map((item, i) => (
-            <SpotlightCard key={item.name} item={item} index={i} inView={inView} />
+          {SIGNATURES.map((item) => (
+            <SpotlightCard key={item.name} item={item} />
           ))}
-        </div>
+        </motion.div>
 
         {/* Bottom CTA */}
         <motion.div
@@ -114,7 +132,7 @@ export default function SignatureSpotlight() {
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               color: "rgba(212,175,55,0.65)",
-              transition: "color 0.2s",
+              transition: "color 0.25s var(--ease-out-expo)",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(212,175,55,0.65)")}
@@ -130,30 +148,21 @@ export default function SignatureSpotlight() {
 
 type SignatureItem = (typeof SIGNATURES)[number];
 
-function SpotlightCard({
-  item,
-  index,
-  inView,
-}: {
-  item: SignatureItem;
-  index: number;
-  inView: boolean;
-}) {
+function SpotlightCard({ item }: { item: SignatureItem }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay: 0.08 + index * 0.12 }}
-      whileHover={{ y: -6 }}
+      variants={cardVariant}
+      whileHover={{ y: -6, transition: { duration: 0.3, ease: [0.2, 0.8, 0.2, 1] } }}
       style={{
-        borderRadius: 20,
+        borderRadius: 16,
         overflow: "hidden",
-        border: "1px solid rgba(255,255,255,0.07)",
-        background: "#1A1A1A",
+        /* Linear-inspired elevation: surface-1 + subtle border */
+        border: "1px solid rgba(255,255,255,0.06)",
+        background: "var(--surface-1)",
         display: "flex",
         flexDirection: "column",
         cursor: "default",
-        transition: "border-color 0.25s ease, box-shadow 0.25s ease",
+        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLDivElement;
@@ -162,45 +171,31 @@ function SpotlightCard({
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLDivElement;
-        el.style.borderColor = "rgba(255,255,255,0.07)";
+        el.style.borderColor = "rgba(255,255,255,0.06)";
         el.style.boxShadow = "none";
       }}
     >
       {/* Photo zone */}
-      <div
-        style={{
-          position: "relative",
-          aspectRatio: "4/3",
-          overflow: "hidden",
-        }}
-      >
-        <img
+      <div style={{ position: "relative", aspectRatio: "4/3", overflow: "hidden" }}>
+        <Image
           src={item.photo}
           alt={item.name}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: item.photoPosition,
-            transition: "transform 0.5s ease",
-          }}
-          onMouseEnter={(e) => ((e.currentTarget as HTMLImageElement).style.transform = "scale(1.05)")}
-          onMouseLeave={(e) => ((e.currentTarget as HTMLImageElement).style.transform = "scale(1)")}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover transition-transform duration-500 ease-out hover:scale-105"
+          style={{ objectPosition: item.photoPosition }}
+          loading="lazy"
         />
-        {/* Dark overlay at bottom for text legibility */}
+        {/* Bottom gradient */}
         <div
+          className="absolute bottom-0 left-0 right-0 pointer-events-none"
           style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
             height: "50%",
             background: "linear-gradient(to top, rgba(10,10,10,0.85), transparent)",
-            pointerEvents: "none",
           }}
         />
-        {/* Tag badge */}
-        <div style={{ position: "absolute", top: 14, left: 14 }}>
+        {/* Tag */}
+        <div className="absolute" style={{ top: 14, left: 14 }}>
           <span
             style={{
               fontSize: "0.6rem",
@@ -216,8 +211,8 @@ function SpotlightCard({
             {item.tag}
           </span>
         </div>
-        {/* Region label over photo bottom */}
-        <div style={{ position: "absolute", bottom: 14, left: 16 }}>
+        {/* Region */}
+        <div className="absolute" style={{ bottom: 14, left: 16 }}>
           <p
             style={{
               fontSize: "0.6rem",
@@ -239,7 +234,7 @@ function SpotlightCard({
             fontFamily: "'Playfair Display', serif",
             fontSize: "1.25rem",
             fontWeight: 600,
-            color: "rgba(250,240,230,0.92)",
+            color: "var(--text-primary)",
             lineHeight: 1.3,
           }}
         >
@@ -250,7 +245,7 @@ function SpotlightCard({
             fontSize: "0.85rem",
             lineHeight: 1.7,
             fontStyle: "italic",
-            color: "rgba(250,240,230,0.42)",
+            color: "var(--text-tertiary)",
             flex: 1,
           }}
         >

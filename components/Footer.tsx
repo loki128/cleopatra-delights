@@ -1,5 +1,6 @@
 "use client";
 import { Instagram, MapPin, Mail, ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -34,11 +35,15 @@ export default function Footer() {
             border: "2px solid rgba(212,175,55,0.35)",
             boxShadow: "0 0 0 4px rgba(212,175,55,0.06)",
             background: "#fff",
+            position: "relative",
           }}>
-            <img
+            <Image
               src="/images/logo.jpg"
               alt="Cleopatra Delights"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              width={72}
+              height={72}
+              className="object-cover"
+              style={{ width: "100%", height: "100%" }}
             />
           </div>
           {/* Brand name */}
@@ -100,12 +105,16 @@ export default function Footer() {
                   boxShadow: "0 0 0 4px rgba(212,175,55,0.06)",
                   flexShrink: 0,
                   background: "#fff",
+                  position: "relative",
                 }}
               >
-                <img
+                <Image
                   src="/images/logo.jpg"
                   alt="Cleopatra Delights"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  width={52}
+                  height={52}
+                  className="object-cover"
+                  style={{ width: "100%", height: "100%" }}
                 />
               </div>
               <div>

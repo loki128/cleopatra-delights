@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const links = [
   { label: "Home", href: "/" },
@@ -24,10 +25,8 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // close drawer on route change
   useEffect(() => { setOpen(false); }, [pathname]);
 
-  // lock body scroll when drawer open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -61,7 +60,7 @@ export default function Navbar() {
             style={{ background: "#145E5E", borderBottom: "1px solid rgba(212,175,55,0.25)" }}
           >
             <p className="text-xs font-medium tracking-wide text-center px-10" style={{ color: "rgba(255,255,255,0.9)" }}>
-              ✦ Now taking Spring 2026 custom orders — DM{" "}
+              &#10022; Now taking Spring 2026 custom orders — DM{" "}
               <span style={{ color: "var(--gold)" }}>@CleopatraDelights</span> on Instagram
             </p>
             <button
@@ -76,50 +75,70 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Main navbar */}
+      {/* Main navbar — Apple-style translucent glass */}
       <header
-        className="fixed left-0 right-0 z-50 transition-all duration-300"
+        className="fixed left-0 right-0 z-50"
         style={{
           top: barHeight,
+          /* Apple-inspired: saturate + blur glass */
           background: isLight
-            ? "rgba(242,228,200,0.97)"
+            ? "rgba(242,228,200,0.85)"
             : scrolled
-            ? "rgba(20,8,8,0.95)"
+            ? "rgba(8,7,10,0.82)"
             : "transparent",
-          backdropFilter: (isLight || scrolled) ? "blur(16px)" : "none",
+          backdropFilter: (isLight || scrolled) ? "saturate(180%) blur(20px)" : "none",
+          WebkitBackdropFilter: (isLight || scrolled) ? "saturate(180%) blur(20px)" : "none",
+          /* Gold hint bottom border (Linear-inspired) */
           borderBottom: isLight
             ? "1px solid rgba(139,26,26,0.12)"
             : scrolled
-            ? "1px solid rgba(212,175,55,0.12)"
-            : "none",
-          transition: "all 0.3s ease",
+            ? "1px solid rgba(212,175,55,0.1)"
+            : "1px solid transparent",
+          transition: "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
-        <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between" style={{ height: 64 }}>
           <a href="/" className="flex items-center gap-3 leading-none">
             <div
               style={{
-                width: 52,
-                height: 52,
+                width: 44,
+                height: 44,
                 borderRadius: "50%",
                 overflow: "hidden",
-                border: `2px solid ${isLight ? "rgba(139,26,26,0.4)" : "rgba(212,175,55,0.6)"}`,
-                boxShadow: `0 0 0 3px ${isLight ? "rgba(139,26,26,0.08)" : "rgba(212,175,55,0.1)"}, 0 2px 12px rgba(0,0,0,0.${isLight ? "1" : "4"})`,
+                border: `1.5px solid ${isLight ? "rgba(139,26,26,0.35)" : "rgba(212,175,55,0.5)"}`,
+                boxShadow: `0 0 0 3px ${isLight ? "rgba(139,26,26,0.06)" : "rgba(212,175,55,0.08)"}`,
                 flexShrink: 0,
-                background: "#fff",
+                position: "relative",
               }}
             >
-              <img
+              <Image
                 src="/images/logo.jpg"
                 alt="Cleopatra Delights"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                width={44}
+                height={44}
+                className="object-cover"
+                style={{ width: "100%", height: "100%" }}
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-serif text-xl font-bold" style={{ color: isLight ? "var(--red)" : "var(--gold)" }}>
+              <span
+                className="font-serif font-bold"
+                style={{
+                  fontSize: "1.1rem",
+                  color: isLight ? "var(--red)" : "var(--gold)",
+                  letterSpacing: "-0.01em",
+                }}
+              >
                 Cleopatra Delights
               </span>
-              <span className="text-xs tracking-[0.25em] uppercase" style={{ color: isLight ? "rgba(26,14,6,0.4)" : "rgba(250,240,230,0.45)" }}>
+              <span
+                style={{
+                  fontSize: "0.58rem",
+                  letterSpacing: "0.25em",
+                  textTransform: "uppercase" as const,
+                  color: isLight ? "rgba(26,14,6,0.4)" : "var(--text-quaternary)",
+                }}
+              >
                 Jacksonville, FL
               </span>
             </div>
@@ -132,10 +151,12 @@ export default function Navbar() {
                 <li key={l.href}>
                   <a
                     href={l.href}
-                    className="text-sm font-medium tracking-wide transition-colors duration-200 relative"
-                    style={{ color: active
-                      ? (isLight ? "var(--red)" : "var(--gold)")
-                      : (isLight ? "rgba(26,14,6,0.65)" : "rgba(250,240,230,0.75)")
+                    className="text-sm font-medium tracking-wide relative"
+                    style={{
+                      color: active
+                        ? (isLight ? "var(--red)" : "var(--gold)")
+                        : (isLight ? "rgba(26,14,6,0.65)" : "var(--text-secondary)"),
+                      transition: "color 0.2s ease",
                     }}
                   >
                     {l.label}
@@ -144,6 +165,7 @@ export default function Navbar() {
                         layoutId="nav-underline"
                         className="absolute -bottom-1 left-0 right-0 h-px"
                         style={{ background: isLight ? "var(--red)" : "var(--gold)" }}
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
                   </a>
@@ -154,20 +176,25 @@ export default function Navbar() {
 
           <a
             href="/order"
-            className={`hidden md:inline-flex items-center transition-all duration-200 hover:scale-105 ${isLight ? "" : "btn-shimmer"}`}
+            className={`hidden md:inline-flex items-center ${isLight ? "" : "btn-shimmer"}`}
             style={isLight ? {
-              padding: "10px 20px",
+              padding: "9px 20px",
               borderRadius: 999,
-              fontSize: "0.875rem",
+              fontSize: "0.8rem",
               fontWeight: 600,
               background: "var(--red)",
               color: "var(--cream)",
-              display: "inline-flex",
-              alignItems: "center",
+              transition: "transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo)",
             } : {
-              padding: "10px 20px",
+              padding: "9px 20px",
               borderRadius: 999,
-              fontSize: "0.875rem",
+              fontSize: "0.8rem",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-1px) scale(1.03)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0) scale(1)";
             }}
           >
             Custom Order
@@ -184,7 +211,7 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Mobile drawer overlay */}
+      {/* Mobile drawer */}
       <AnimatePresence>
         {open && (
           <>
@@ -207,8 +234,13 @@ export default function Navbar() {
                 borderLeft: "2px solid rgba(212,175,55,0.25)",
               }}
             >
-              <div className="flex items-center justify-between px-6 py-5" style={{ borderBottom: "1px solid rgba(212,175,55,0.1)" }}>
-                <span className="font-serif text-lg font-bold" style={{ color: "var(--gold)" }}>Menu</span>
+              <div
+                className="flex items-center justify-between px-6 py-5"
+                style={{ borderBottom: "1px solid rgba(212,175,55,0.1)" }}
+              >
+                <span className="font-serif text-lg font-bold" style={{ color: "var(--gold)" }}>
+                  Menu
+                </span>
                 <button
                   onClick={() => setOpen(false)}
                   className="p-2 rounded-lg"
@@ -220,14 +252,18 @@ export default function Navbar() {
               </div>
               <ul className="flex flex-col px-6 py-8 gap-6 flex-1">
                 {links.map((l) => {
-                  const active = pathname === l.href || (l.href !== "/" && pathname.startsWith(l.href.split("#")[0]));
+                  const active =
+                    pathname === l.href ||
+                    (l.href !== "/" && pathname.startsWith(l.href.split("#")[0]));
                   return (
                     <li key={l.href}>
                       <a
                         href={l.href}
                         onClick={() => setOpen(false)}
                         className="text-lg font-medium transition-colors"
-                        style={{ color: active ? "var(--gold)" : "rgba(250,240,230,0.8)" }}
+                        style={{
+                          color: active ? "var(--gold)" : "rgba(250,240,230,0.8)",
+                        }}
                       >
                         {l.label}
                       </a>

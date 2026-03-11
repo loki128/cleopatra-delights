@@ -19,11 +19,23 @@
   --lapis: #2A4A72;
 
   /* Egyptian palette */
-  --papyrus: #F2E4C8;        /* warm sandy cream — replaces flat #FAF0E6 */
-  --papyrus-dark: #E8D4A8;   /* deeper papyrus for cream-dark sections */
-  --obsidian: #08070A;       /* deep near-black warm — hero, featured menu */
-  --nile: #0A1F1F;           /* deep dark teal — testimonials section */
-  --sand: #C8A862;           /* warm desert gold accent */
+  --papyrus: #F2E4C8;
+  --papyrus-dark: #E8D4A8;
+  --obsidian: #08070A;
+  --nile: #0A1F1F;
+  --sand: #C8A862;
+
+  /* Dark surface elevation system (Linear-inspired) */
+  --surface-0: #08070A;
+  --surface-1: #121214;
+  --surface-2: #1A1A1D;
+  --surface-3: #222225;
+
+  /* Text opacity hierarchy (Linear-inspired) */
+  --text-primary: rgba(250,240,230,0.92);
+  --text-secondary: rgba(250,240,230,0.65);
+  --text-tertiary: rgba(250,240,230,0.48);
+  --text-quaternary: rgba(250,240,230,0.32);
 
   /* Design system tokens */
   --container-max: 1200px;
@@ -36,43 +48,67 @@
   --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
   --shadow-lg: 0 12px 48px rgba(0,0,0,0.14);
   --shadow-gold: 0 0 0 1px rgba(212,175,55,0.18), 0 8px 32px rgba(212,175,55,0.1);
+
+  /* Section padding — Apple-inspired generous whitespace */
   --section-py: 6rem;
   --section-py-lg: 9rem;
 
-  /* Type scale */
-  --text-xs:   0.6rem;
-  --text-sm:   0.75rem;
+  /* Fluid typography scale (Framer/Apple-inspired) */
+  --text-hero: clamp(3rem, 6vw, 5.5rem);
+  --text-display: clamp(2.25rem, 4vw, 3.5rem);
+  --text-h2: clamp(1.75rem, 3vw, 2.5rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --text-body: 1.0625rem;
+  --text-small: 0.875rem;
+  --text-eyebrow: 0.6875rem;
+  --text-xs: 0.6rem;
+  --text-sm: 0.75rem;
   --text-base: 0.9rem;
-  --text-md:   1rem;
-  --text-lg:   1.15rem;
-  --text-xl:   1.4rem;
-  --text-2xl:  1.75rem;
-  --text-3xl:  2.25rem;
-  --text-4xl:  3rem;
-  --text-5xl:  4rem;
+  --text-md: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: 1.4rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 4rem;
 
-  /* Spacing scale */
+  /* Spacing scale (8px base — Rauno/Vercel) */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-24: 6rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+  --space-9: 4rem;
+  --space-10: 5rem;
+  --space-11: 6rem;
+  --space-12: 8rem;
+  --space-13: 10rem;
+
+  /* Animation easings (Framer/Apple) */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+  --ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--papyrus);
-  color: var(--charcoal);
+  background: var(--obsidian);
+  color: var(--cream);
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
-h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+  text-wrap: balance;
+}
 
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--cream-dark); }
@@ -110,15 +146,14 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 /* ── Typography helpers ── */
 .font-serif { font-family: 'Playfair Display', serif; }
 .overline {
-  font-size: 0.68rem;
+  font-size: var(--text-eyebrow);
   font-weight: 700;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   text-decoration: none !important;
 }
-/* Egyptian eyebrow label — same as overline but unambiguous name */
 .eyebrow {
-  font-size: 0.68rem;
+  font-size: var(--text-eyebrow);
   font-weight: 700;
   letter-spacing: 0.38em;
   text-transform: uppercase;
@@ -148,7 +183,6 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   height: 1px;
   background: linear-gradient(90deg, var(--gold), transparent);
 }
-/* Egyptian teal-gold divider — for sections with Egyptian heritage */
 .teal-divider {
   width: 80px;
   height: 1px;
@@ -186,7 +220,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   color: #120e00;
   font-weight: 700;
   letter-spacing: 0.04em;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo);
 }
 .btn-shimmer:hover {
   animation-duration: 1.5s;
@@ -194,6 +228,32 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   box-shadow: 0 8px 28px rgba(212,175,55,0.4);
 }
 .btn-shimmer:active { transform: scale(0.97); }
+
+/* ── Gold glow system (3 tiers — Linear-inspired) ── */
+.gold-glow {
+  box-shadow: 0 0 60px rgba(212,175,55,0.12), 0 0 24px rgba(212,175,55,0.08);
+}
+.gold-glow-md {
+  box-shadow: 0 0 60px rgba(212,175,55,0.18), 0 0 24px rgba(212,175,55,0.12);
+}
+.gold-glow-intense {
+  box-shadow: 0 0 40px rgba(212,175,55,0.3), 0 0 16px rgba(212,175,55,0.2),
+              inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Glassmorphism (Linear-inspired) ── */
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(10,10,11,0.7);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.glass-light {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(242,228,200,0.85);
+  border: 1px solid rgba(212,175,55,0.1);
+}
 
 /* ── Marquee ── */
 @keyframes marquee {
@@ -216,7 +276,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   outline: none !important;
 }
 
-/* ── Noise grain overlay ── */
+/* ── Noise grain overlay (Awwwards-inspired) ── */
 .grain { position: relative; isolation: isolate; }
 .grain::before {
   content: '';
@@ -224,7 +284,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.032;
+  opacity: 0.028;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 200px 200px;
@@ -250,7 +310,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 .orb-b { animation: floatB 25s ease-in-out infinite; }
 .orb-c { animation: floatC 17s ease-in-out infinite; }
 
-/* ── Dot grid background ── */
+/* ── Dot grid background (Linear-inspired, gold) ── */
 .dot-grid {
   background-image: radial-gradient(circle, rgba(212,175,55,0.1) 1px, transparent 1px);
   background-size: 36px 36px;
@@ -305,7 +365,6 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 .spotlight-img:hover { transform: scale(1.06); }
 
 /* ── Teal / Egyptian palette helpers ── */
-.text-teal { color: var(--teal); }
 .bg-teal { background-color: var(--teal); }
 
 /* ── Egyptian corner bracket ── */
@@ -336,3 +395,44 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4));
 }
 .diamond-divider::after { background: linear-gradient(270deg, transparent, rgba(212,175,55,0.4)); }
+
+/* ── Animated gradient border (Awwwards/Framer-inspired) ── */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes border-rotate {
+  to { --border-angle: 360deg; }
+}
+.animated-border {
+  position: relative;
+  border-radius: var(--radius-md);
+}
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--border-angle), transparent 25%, var(--gold) 50%, transparent 75%);
+  animation: border-rotate 4s linear infinite;
+  z-index: -1;
+  opacity: 0.4;
+}
+
+/* ── Radial glow backdrop ── */
+.gold-radial::before {
+  content: '';
+  position: absolute;
+  inset: -60px;
+  background: radial-gradient(ellipse at center, rgba(212,175,55,0.12) 0%, transparent 65%);
+  filter: blur(40px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ── Blur-in animation keyframes (Linear-inspired) ── */
+@keyframes blur-in {
+  from { opacity: 0; filter: blur(8px); transform: translateY(20px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}

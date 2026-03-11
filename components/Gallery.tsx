@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 const PHOTOS = [
   { src: "/images/collage.jpg", label: "Our Full Spread", featured: true, position: "center 40%" },
@@ -12,19 +13,32 @@ const PHOTOS = [
   { src: "/images/cookies-variety.jpg", label: "Cookie Variety", featured: false, position: "center 35%" },
 ];
 
+/* Stagger entrance */
+const gridContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+};
+const gridItem = {
+  hidden: { opacity: 0, scale: 0.96, filter: "blur(4px)" },
+  visible: {
+    opacity: 1, scale: 1, filter: "blur(0px)",
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
 export default function Gallery() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <section style={{ background: "var(--papyrus)" }} ref={ref}>
-      <div className="max-w-6xl mx-auto px-6 md:px-8 py-20">
+    <section style={{ background: "var(--surface-0)" }} ref={ref}>
+      <div className="max-w-6xl mx-auto px-6 md:px-8 section-py">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
+          animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           <span
             className="eyebrow"
@@ -41,8 +55,8 @@ export default function Gallery() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontWeight: 700,
-              fontSize: "clamp(2rem, 4vw, 3rem)",
-              color: "var(--red)",
+              fontSize: "var(--text-display)",
+              color: "var(--cream)",
               textAlign: "center",
               marginBottom: "1rem",
             }}
@@ -52,8 +66,8 @@ export default function Gallery() {
           <div className="gold-divider" style={{ marginBottom: "1rem" }} />
           <p
             style={{
-              fontSize: "0.875rem",
-              color: "var(--text-muted)",
+              fontSize: "var(--text-small)",
+              color: "var(--text-tertiary)",
               textAlign: "center",
               marginBottom: "2.5rem",
             }}
@@ -62,8 +76,11 @@ export default function Gallery() {
           </p>
         </motion.div>
 
-        {/* Photo grid */}
-        <div
+        {/* Bento photo grid (Stripe-inspired varied spans) */}
+        <motion.div
+          variants={gridContainer}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
@@ -74,50 +91,48 @@ export default function Gallery() {
           {PHOTOS.map((photo, index) => (
             <motion.div
               key={photo.src}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.45, delay: index * 0.07 }}
+              variants={gridItem}
               onClick={() => setSelected(index)}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
               style={{
                 position: "relative",
                 overflow: "hidden",
                 borderRadius: 16,
                 cursor: "pointer",
-                border: "1px solid rgba(212,175,55,0.15)",
+                border: "1px solid rgba(212,175,55,0.12)",
                 gridColumn: photo.featured ? "1 / span 2" : undefined,
                 gridRow: photo.featured ? "1 / span 2" : undefined,
+                transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.borderColor = "rgba(212,175,55,0.35)";
+                el.style.boxShadow = "0 12px 40px rgba(212,175,55,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.borderColor = "rgba(212,175,55,0.12)";
+                el.style.boxShadow = "none";
               }}
             >
-              <img
+              <Image
                 src={photo.src}
                 alt={photo.label}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: photo.position,
-                  transition: "transform 0.5s ease",
-                  display: "block",
-                }}
-                onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLImageElement).style.transform = "scale(1.04)")
-                }
-                onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLImageElement).style.transform = "scale(1)")
-                }
+                fill
+                sizes={photo.featured ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 50vw, 33vw"}
+                className="object-cover transition-transform duration-500 ease-out"
+                style={{ objectPosition: photo.position }}
+                loading="lazy"
               />
-              {/* Hover overlay — label slides up from bottom */}
+              {/* Hover label overlay */}
               <div
+                className="absolute bottom-0 left-0 right-0"
                 style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
                   padding: "1.5rem 1.25rem 1rem",
                   background:
                     "linear-gradient(to top, rgba(8,4,4,0.85) 0%, rgba(8,4,4,0.4) 60%, transparent 100%)",
                   transform: "translateY(4px)",
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.3s var(--ease-out-expo)",
                 }}
                 onMouseEnter={(e) =>
                   ((e.currentTarget as HTMLDivElement).style.transform = "translateY(0)")
@@ -132,7 +147,7 @@ export default function Gallery() {
                     fontSize: "0.95rem",
                     fontStyle: "italic",
                     fontWeight: 600,
-                    color: "rgba(250,240,230,0.92)",
+                    color: "var(--text-primary)",
                   }}
                 >
                   {photo.label}
@@ -140,13 +155,13 @@ export default function Gallery() {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Instagram prompt */}
         <p
           style={{
-            fontSize: "0.875rem",
-            color: "var(--text-muted)",
+            fontSize: "var(--text-small)",
+            color: "var(--text-tertiary)",
             textAlign: "center",
             marginTop: "2rem",
           }}
@@ -155,7 +170,7 @@ export default function Gallery() {
         </p>
       </div>
 
-      {/* Lightbox */}
+      {/* Lightbox — glassmorphism backdrop */}
       <AnimatePresence>
         {selected !== null && (
           <motion.div
@@ -170,8 +185,9 @@ export default function Gallery() {
               alignItems: "center",
               justifyContent: "center",
               padding: "1.5rem",
-              background: "rgba(8,4,4,0.94)",
-              backdropFilter: "blur(12px)",
+              background: "rgba(8,4,4,0.92)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
             }}
             onClick={() => setSelected(null)}
           >
@@ -190,6 +206,7 @@ export default function Gallery() {
               }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={PHOTOS[selected].src}
                 alt={PHOTOS[selected].label}
@@ -216,6 +233,7 @@ export default function Gallery() {
                   justifyContent: "center",
                   cursor: "pointer",
                   color: "var(--cream)",
+                  backdropFilter: "blur(8px)",
                 }}
               >
                 <X size={16} />

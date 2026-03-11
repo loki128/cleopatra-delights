@@ -153,10 +153,10 @@ export default function OrderPage() {
   return (
     <>
       <Navbar />
-      <main style={{ background: "var(--charcoal)", minHeight: "100vh" }}>
+      <main style={{ background: "var(--obsidian)", minHeight: "100vh" }}>
 
         {/* Page hero */}
-        <div className="page-hero" style={{ background: "linear-gradient(180deg, #0D0505 0%, #1C1C1C 100%)" }}>
+        <div className="page-hero" style={{ background: "var(--obsidian)" }}>
           <div
             style={{
               position: "absolute",
@@ -204,12 +204,6 @@ export default function OrderPage() {
 
             {/* Left: Context panel (desktop only) */}
             <div
-              style={{
-                position: "sticky",
-                top: "6rem",
-                zIndex: 20,
-                isolation: "isolate",
-              }}
               className="hidden lg:block"
             >
               <div

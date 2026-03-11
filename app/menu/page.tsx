@@ -2,6 +2,7 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { MENU_ITEMS, CATEGORIES } from "@/lib/menuData";
@@ -33,7 +34,7 @@ const CATEGORY_HOVER_COLORS: Record<string, string> = {
   "Signature Cakes":  "rgba(160,100,220,0.45)",
 };
 
-/* Tag colors — dark-background friendly */
+/* Tag colors */
 const TAG_COLORS: Record<string, { bg: string; color: string }> = {
   bestseller:     { bg: "rgba(212,175,55,0.12)",  color: "rgba(212,175,55,0.8)" },
   "fan favorite": { bg: "rgba(139,26,26,0.2)",    color: "rgba(220,100,100,0.9)" },
@@ -70,28 +71,32 @@ export default function MenuPage() {
   return (
     <>
       <Navbar />
-      <main style={{ background: "var(--cream)", minHeight: "100vh" }}>
+      <main style={{ background: "var(--obsidian)", minHeight: "100vh" }}>
 
-        {/* Page hero */}
-        <div className="page-hero">
+        {/* Page hero — dark, consistent with homepage */}
+        <div className="page-hero" style={{ background: "var(--obsidian)" }}>
           <div
+            className="absolute inset-0 pointer-events-none"
             style={{
-              position: "absolute",
-              inset: 0,
               background:
-                "radial-gradient(ellipse at 25% 60%, rgba(139,26,26,0.42) 0%, transparent 55%), radial-gradient(ellipse at 80% 30%, rgba(212,175,55,0.1) 0%, transparent 50%)",
-              pointerEvents: "none",
+                "radial-gradient(ellipse at 25% 60%, rgba(139,26,26,0.35) 0%, transparent 55%), radial-gradient(ellipse at 80% 30%, rgba(212,175,55,0.08) 0%, transparent 50%)",
             }}
           />
-          <div
-            className="dot-grid"
-            style={{ position: "absolute", inset: 0, opacity: 0.32, pointerEvents: "none" }}
-          />
+          <div className="absolute inset-0 dot-grid pointer-events-none" style={{ opacity: 0.25 }} />
           <div className="container" style={{ position: "relative", zIndex: 1 }}>
-            <p className="eyebrow" style={{ color: "#25A0A0", marginBottom: "1rem" }}>
+            <motion.p
+              initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+              className="eyebrow"
+              style={{ color: "#25A0A0", marginBottom: "1rem" }}
+            >
               Full Menu
-            </p>
-            <h1
+            </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] as const }}
               style={{
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: 700,
@@ -99,29 +104,32 @@ export default function MenuPage() {
                 color: "var(--cream)",
                 lineHeight: 1.1,
                 marginBottom: "1.25rem",
-                letterSpacing: "-0.01em",
+                letterSpacing: "-0.015em",
               }}
             >
               Our Offerings
-            </h1>
+            </motion.h1>
             <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
-            <p
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
               style={{
-                fontSize: "1rem",
-                color: "rgba(250,240,230,0.55)",
+                fontSize: "var(--text-body)",
+                color: "var(--text-tertiary)",
                 maxWidth: 460,
                 margin: "0 auto",
               }}
             >
               {MENU_ITEMS.length} handcrafted desserts across {CATEGORIES.length - 1} categories.
               Custom orders always welcome.
-            </p>
+            </motion.p>
           </div>
         </div>
 
         <div className="container" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
 
-          {/* Search */}
+          {/* Search — dark themed */}
           <div style={{ maxWidth: 480, margin: "0 auto 2rem" }}>
             <div style={{ position: "relative" }}>
               <Search
@@ -131,7 +139,7 @@ export default function MenuPage() {
                   left: 16,
                   top: "50%",
                   transform: "translateY(-50%)",
-                  color: "var(--text-muted)",
+                  color: "var(--text-quaternary)",
                   pointerEvents: "none",
                 }}
               />
@@ -140,7 +148,7 @@ export default function MenuPage() {
                 placeholder="Search desserts..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="input-gold"
+                className="input-gold-dark"
                 style={{
                   width: "100%",
                   paddingLeft: 44,
@@ -149,12 +157,11 @@ export default function MenuPage() {
                   paddingBottom: 12,
                   borderRadius: 999,
                   fontSize: "0.875rem",
-                  background: "white",
-                  border: "1px solid rgba(212,175,55,0.22)",
-                  color: "var(--charcoal)",
+                  background: "var(--surface-1)",
+                  border: "1px solid rgba(212,175,55,0.15)",
+                  color: "var(--cream)",
                   fontFamily: "Inter, sans-serif",
                   outline: "none",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                 }}
               />
               {search && (
@@ -172,13 +179,13 @@ export default function MenuPage() {
                     padding: 0,
                   }}
                 >
-                  <X size={13} style={{ color: "var(--text-muted)" }} />
+                  <X size={13} style={{ color: "var(--text-tertiary)" }} />
                 </button>
               )}
             </div>
           </div>
 
-          {/* Category pills — centered */}
+          {/* Category pills — dark themed */}
           <div
             style={{
               display: "flex",
@@ -204,15 +211,15 @@ export default function MenuPage() {
                     fontSize: "0.75rem",
                     fontWeight: 600,
                     cursor: "pointer",
-                    transition: "all 0.2s",
-                    background: active ? "var(--gold)" : "white",
-                    color: active ? "#120e00" : "var(--text-muted)",
+                    transition: "all 0.25s var(--ease-out-expo)",
+                    background: active ? "var(--gold)" : "var(--surface-1)",
+                    color: active ? "#120e00" : "var(--text-secondary)",
                     border: active
                       ? "1px solid var(--gold)"
-                      : "1px solid rgba(212,175,55,0.22)",
+                      : "1px solid rgba(212,175,55,0.12)",
                     boxShadow: active
                       ? "0 4px 16px rgba(212,175,55,0.28)"
-                      : "0 1px 3px rgba(0,0,0,0.04)",
+                      : "none",
                   }}
                 >
                   {cat}
@@ -222,8 +229,8 @@ export default function MenuPage() {
                       fontWeight: 700,
                       padding: "1px 6px",
                       borderRadius: 999,
-                      background: active ? "rgba(18,14,0,0.15)" : "rgba(139,26,26,0.07)",
-                      color: active ? "#120e00" : "var(--red)",
+                      background: active ? "rgba(18,14,0,0.15)" : "rgba(212,175,55,0.08)",
+                      color: active ? "#120e00" : "rgba(212,175,55,0.6)",
                     }}
                   >
                     {counts[cat] ?? 0}
@@ -242,7 +249,7 @@ export default function MenuPage() {
               marginBottom: "1.5rem",
             }}
           >
-            <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 500 }}>
+            <p style={{ fontSize: "0.75rem", color: "var(--text-quaternary)", fontWeight: 500 }}>
               {filtered.length === 0 ? "No results" : `${filtered.length} item${filtered.length !== 1 ? "s" : ""}`}
               {search && ` matching "${search}"`}
             </p>
@@ -254,7 +261,7 @@ export default function MenuPage() {
                 }}
                 style={{
                   fontSize: "0.75rem",
-                  color: "var(--red)",
+                  color: "rgba(212,175,55,0.7)",
                   fontWeight: 600,
                   display: "flex",
                   alignItems: "center",
@@ -279,10 +286,10 @@ export default function MenuPage() {
                 exit={{ opacity: 0 }}
                 style={{ textAlign: "center", padding: "5rem 0" }}
               >
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.25rem", color: "var(--charcoal)", marginBottom: "0.5rem" }}>
+                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.25rem", color: "var(--cream)", marginBottom: "0.5rem" }}>
                   Nothing found
                 </p>
-                <p style={{ fontSize: "0.875rem", color: "var(--text-muted)" }}>
+                <p style={{ fontSize: "0.875rem", color: "var(--text-quaternary)" }}>
                   Try a different search or category
                 </p>
               </motion.div>
@@ -314,23 +321,24 @@ export default function MenuPage() {
             transition={{ duration: 0.6 }}
             style={{
               marginTop: "4rem",
-              borderRadius: 28,
+              borderRadius: 24,
               overflow: "hidden",
               position: "relative",
             }}
           >
-            {/* Background photo */}
-            <div style={{ position: "absolute", inset: 0 }}>
-              <img
+            <div className="absolute inset-0">
+              <Image
                 src="/images/collage.jpg"
                 alt=""
+                fill
+                sizes="100vw"
+                className="object-cover"
+                style={{ objectPosition: "center 40%" }}
                 aria-hidden="true"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}
               />
               <div
+                className="absolute inset-0"
                 style={{
-                  position: "absolute",
-                  inset: 0,
                   background:
                     "linear-gradient(105deg, rgba(30,5,5,0.97) 0%, rgba(45,8,8,0.93) 40%, rgba(60,12,12,0.82) 70%, rgba(30,5,5,0.88) 100%)",
                 }}
@@ -363,7 +371,7 @@ export default function MenuPage() {
                 style={{
                   fontSize: "0.9rem",
                   lineHeight: 1.75,
-                  color: "rgba(250,240,230,0.55)",
+                  color: "var(--text-tertiary)",
                   maxWidth: 440,
                   margin: "0 auto 2rem",
                 }}
@@ -380,7 +388,7 @@ export default function MenuPage() {
                   boxShadow: "0 0 28px rgba(212,175,55,0.2)",
                 }}
               >
-                Get in Touch →
+                Get in Touch &rarr;
               </a>
             </div>
           </motion.div>
@@ -392,32 +400,27 @@ export default function MenuPage() {
   );
 }
 
-/* ── MenuCard — unified typographic design, no image zone ── */
+/* ── MenuCard ── */
 function MenuCard({ item, index }: { item: MenuItem; index: number }) {
   const [hovered, setHovered] = useState(false);
 
-  const cardGradient =
-    CATEGORY_GRADIENTS[item.category] ??
-    "linear-gradient(155deg, #1A0A02 0%, #2E1608 100%)";
-
-  const hoverBorderColor =
-    CATEGORY_HOVER_COLORS[item.category] ?? "rgba(212,175,55,0.55)";
+  const cardGradient = CATEGORY_GRADIENTS[item.category] ?? "linear-gradient(155deg, #1A0A02 0%, #2E1608 100%)";
+  const hoverBorderColor = CATEGORY_HOVER_COLORS[item.category] ?? "rgba(212,175,55,0.55)";
 
   const firstTag = item.tags && item.tags.length > 0 ? item.tags[0] : null;
   const restTags = item.tags && item.tags.length > 1 ? item.tags.slice(1) : [];
-
   const isLongName = item.name.length > 30;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.4) }}
+      initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.03, 0.3), ease: [0.16, 1, 0.3, 1] as const }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
         background: cardGradient,
-        border: `1px solid ${hovered ? hoverBorderColor : "rgba(212,175,55,0.12)"}`,
+        border: `1px solid ${hovered ? hoverBorderColor : "rgba(212,175,55,0.08)"}`,
         borderRadius: 20,
         overflow: "hidden",
         display: "flex",
@@ -425,212 +428,82 @@ function MenuCard({ item, index }: { item: MenuItem; index: number }) {
         minHeight: 240,
         padding: "1.75rem",
         position: "relative",
-        transition: "all 0.25s ease",
+        transition: "all 0.3s var(--ease-out-expo)",
         transform: hovered ? "translateY(-5px)" : "translateY(0)",
         boxShadow: hovered
-          ? `0 16px 48px rgba(0,0,0,0.28), 0 0 0 1px ${hoverBorderColor}`
+          ? `0 16px 48px rgba(0,0,0,0.35), 0 0 0 1px ${hoverBorderColor}`
           : "0 2px 12px rgba(0,0,0,0.18)",
         cursor: "default",
       }}
     >
-      {/* Egyptian corner brackets */}
-      {/* top-left */}
-      <div
-        style={{
-          position: "absolute",
-          top: 12,
-          left: 12,
-          width: 16,
-          height: 16,
-          borderTop: "1px solid rgba(212,175,55,0.2)",
-          borderLeft: "1px solid rgba(212,175,55,0.2)",
-          pointerEvents: "none",
-        }}
-      />
-      {/* top-right */}
-      <div
-        style={{
-          position: "absolute",
-          top: 12,
-          right: 12,
-          width: 16,
-          height: 16,
-          borderTop: "1px solid rgba(212,175,55,0.2)",
-          borderRight: "1px solid rgba(212,175,55,0.2)",
-          pointerEvents: "none",
-        }}
-      />
-      {/* bottom-left */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 12,
-          left: 12,
-          width: 16,
-          height: 16,
-          borderBottom: "1px solid rgba(212,175,55,0.2)",
-          borderLeft: "1px solid rgba(212,175,55,0.2)",
-          pointerEvents: "none",
-        }}
-      />
-      {/* bottom-right */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 12,
-          right: 12,
-          width: 16,
-          height: 16,
-          borderBottom: "1px solid rgba(212,175,55,0.2)",
-          borderRight: "1px solid rgba(212,175,55,0.2)",
-          pointerEvents: "none",
-        }}
-      />
+      {/* Corner brackets */}
+      {[
+        { top: 12, left: 12, borderTop: "1px solid rgba(212,175,55,0.15)", borderLeft: "1px solid rgba(212,175,55,0.15)" },
+        { top: 12, right: 12, borderTop: "1px solid rgba(212,175,55,0.15)", borderRight: "1px solid rgba(212,175,55,0.15)" },
+        { bottom: 12, left: 12, borderBottom: "1px solid rgba(212,175,55,0.15)", borderLeft: "1px solid rgba(212,175,55,0.15)" },
+        { bottom: 12, right: 12, borderBottom: "1px solid rgba(212,175,55,0.15)", borderRight: "1px solid rgba(212,175,55,0.15)" },
+      ].map((pos, i) => (
+        <div key={i} style={{ position: "absolute", ...pos, width: 16, height: 16, pointerEvents: "none" }} />
+      ))}
 
-      {/* 1. Top row: category overline + first tag badge */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <span
-          style={{
-            fontSize: "0.6rem",
-            fontWeight: 700,
-            letterSpacing: "0.25em",
-            textTransform: "uppercase",
-            color: "rgba(212,175,55,0.6)",
-          }}
-        >
+      {/* Top row */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(212,175,55,0.55)" }}>
           {item.category}
         </span>
         {firstTag && (() => {
-          const s = TAG_COLORS[firstTag] ?? {
-            bg: "rgba(212,175,55,0.08)",
-            color: "rgba(212,175,55,0.65)",
-          };
+          const s = TAG_COLORS[firstTag] ?? { bg: "rgba(212,175,55,0.08)", color: "rgba(212,175,55,0.65)" };
           return (
-            <span
-              style={{
-                fontSize: "0.6rem",
-                fontWeight: 600,
-                padding: "3px 8px",
-                borderRadius: 999,
-                background: s.bg,
-                color: s.color,
-                border: "1px solid rgba(212,175,55,0.12)",
-                textTransform: "capitalize",
-                letterSpacing: "0.04em",
-              }}
-            >
+            <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "3px 8px", borderRadius: 999, background: s.bg, color: s.color, border: "1px solid rgba(212,175,55,0.1)", textTransform: "capitalize", letterSpacing: "0.04em" }}>
               {firstTag}
             </span>
           );
         })()}
       </div>
 
-      {/* 2. Decorative divider with diamond */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.35rem",
-          marginTop: "0.75rem",
-          opacity: 0.4,
-        }}
-      >
-        <div
-          style={{
-            width: 28,
-            height: 1,
-            background: "linear-gradient(90deg, transparent, rgba(212,175,55,1), transparent)",
-          }}
-        />
-        <span
-          style={{
-            fontSize: "0.5rem",
-            color: "rgba(212,175,55,1)",
-            lineHeight: 1,
-          }}
-        >
-          ✦
-        </span>
-        <div
-          style={{
-            flex: 1,
-            height: 1,
-            background: "linear-gradient(90deg, rgba(212,175,55,1), transparent)",
-          }}
-        />
+      {/* Divider */}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", marginTop: "0.75rem", opacity: 0.35 }}>
+        <div style={{ width: 28, height: 1, background: "linear-gradient(90deg, transparent, rgba(212,175,55,1), transparent)" }} />
+        <span style={{ fontSize: "0.5rem", color: "rgba(212,175,55,1)", lineHeight: 1 }}>&#10022;</span>
+        <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, rgba(212,175,55,1), transparent)" }} />
       </div>
 
-      {/* 3. Product name */}
-      <h3
-        style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: isLongName ? "1rem" : "1.1rem",
-          fontWeight: 600,
-          fontStyle: "italic",
-          color: "rgba(250,240,230,0.9)",
-          lineHeight: 1.35,
-          marginTop: "0.75rem",
-          marginBottom: 0,
-        }}
-      >
+      {/* Name */}
+      <h3 style={{
+        fontFamily: "'Playfair Display', serif",
+        fontSize: isLongName ? "1rem" : "1.1rem",
+        fontWeight: 600,
+        fontStyle: "italic",
+        color: "var(--text-primary)",
+        lineHeight: 1.35,
+        marginTop: "0.75rem",
+      }}>
         {item.name}
       </h3>
 
-      {/* 4. Description */}
-      <p
-        style={{
-          fontSize: "0.78rem",
-          lineHeight: 1.7,
-          color: hovered ? "rgba(250,240,230,0.6)" : "rgba(250,240,230,0.45)",
-          flex: 1,
-          marginTop: "0.75rem",
-          transition: "color 0.2s",
-          overflow: hovered ? "visible" : "hidden",
-          display: "-webkit-box",
-          WebkitLineClamp: hovered ? undefined : 3,
-          WebkitBoxOrient: "vertical",
-        }}
-      >
+      {/* Description */}
+      <p style={{
+        fontSize: "0.78rem",
+        lineHeight: 1.7,
+        color: hovered ? "var(--text-tertiary)" : "var(--text-quaternary)",
+        flex: 1,
+        marginTop: "0.75rem",
+        transition: "color 0.25s",
+        overflow: hovered ? "visible" : "hidden",
+        display: "-webkit-box",
+        WebkitLineClamp: hovered ? undefined : 3,
+        WebkitBoxOrient: "vertical",
+      }}>
         {item.description}
       </p>
 
-      {/* 5. Remaining tags row (skip first tag already shown in top row) */}
+      {/* Extra tags */}
       {restTags.length > 0 && (
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 5,
-            marginTop: "auto",
-            paddingTop: "0.75rem",
-          }}
-        >
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: "auto", paddingTop: "0.75rem" }}>
           {restTags.map((tag) => {
-            const s = TAG_COLORS[tag] ?? {
-              bg: "rgba(212,175,55,0.08)",
-              color: "rgba(212,175,55,0.65)",
-            };
+            const s = TAG_COLORS[tag] ?? { bg: "rgba(212,175,55,0.08)", color: "rgba(212,175,55,0.65)" };
             return (
-              <span
-                key={tag}
-                style={{
-                  fontSize: "0.62rem",
-                  fontWeight: 600,
-                  padding: "3px 9px",
-                  borderRadius: 999,
-                  background: s.bg,
-                  color: s.color,
-                  border: "1px solid rgba(212,175,55,0.12)",
-                  textTransform: "capitalize",
-                  letterSpacing: "0.04em",
-                }}
-              >
+              <span key={tag} style={{ fontSize: "0.62rem", fontWeight: 600, padding: "3px 9px", borderRadius: 999, background: s.bg, color: s.color, border: "1px solid rgba(212,175,55,0.1)", textTransform: "capitalize", letterSpacing: "0.04em" }}>
                 {tag}
               </span>
             );

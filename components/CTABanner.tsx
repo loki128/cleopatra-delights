@@ -17,41 +17,43 @@ export default function CTABanner() {
       }}
     >
       {/* Layered orbs */}
-      <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
         <div style={{
           position: "absolute", top: "50%", left: "55%",
           transform: "translate(-50%, -50%)",
           width: 600, height: 400,
-          background: "radial-gradient(ellipse, rgba(139,26,26,0.5) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse, rgba(139,26,26,0.45) 0%, transparent 70%)",
           filter: "blur(60px)",
         }} />
         <div style={{
           position: "absolute", top: "20%", right: "10%",
           width: 300, height: 300,
-          background: "radial-gradient(circle, rgba(27,120,120,0.18) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(27,120,120,0.15) 0%, transparent 70%)",
           filter: "blur(50px)",
         }} />
       </div>
 
       {/* Dot grid */}
-      <div className="absolute inset-0 dot-grid pointer-events-none" aria-hidden="true" style={{ opacity: 0.25 }} />
+      <div className="absolute inset-0 dot-grid pointer-events-none" aria-hidden="true" style={{ opacity: 0.2 }} />
 
       {/* Corner marks */}
-      <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-        {[["top-8 left-8", "90deg, rgba(212,175,55,0.3), transparent"], ["top-8 right-8", "270deg, rgba(212,175,55,0.3), transparent"]].map(([pos, grad], i) => (
-          <div key={i} className={`absolute ${pos}`}>
-            <div style={{ width: 48, height: 1, background: `linear-gradient(${grad})` }} />
-            <div style={{ width: 1, height: 48, background: `linear-gradient(${i === 0 ? "180" : "180"}deg, rgba(212,175,55,0.3), transparent)` }} />
-          </div>
-        ))}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+        <div className="absolute" style={{ top: 32, left: 32 }}>
+          <div style={{ width: 48, height: 1, background: "linear-gradient(90deg, rgba(212,175,55,0.3), transparent)" }} />
+          <div style={{ width: 1, height: 48, background: "linear-gradient(180deg, rgba(212,175,55,0.3), transparent)" }} />
+        </div>
+        <div className="absolute" style={{ top: 32, right: 32 }}>
+          <div style={{ width: 48, height: 1, background: "linear-gradient(270deg, rgba(212,175,55,0.3), transparent)" }} />
+          <div style={{ width: 1, height: 48, background: "linear-gradient(180deg, rgba(212,175,55,0.3), transparent)", marginLeft: "auto" }} />
+        </div>
       </div>
 
       <div className="container section-py" style={{ position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: 680, margin: "0 auto", textAlign: "center" }}>
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+            animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="eyebrow"
             style={{ color: "rgba(27,185,185,0.8)", marginBottom: "1.25rem" }}
           >
@@ -59,9 +61,9 @@ export default function CTABanner() {
           </motion.p>
 
           <motion.h2
-            initial={{ opacity: 0, y: 28 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1 }}
+            initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+            animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             style={{
               fontFamily: "'Playfair Display', serif",
               fontWeight: 700,
@@ -69,7 +71,7 @@ export default function CTABanner() {
               color: "var(--cream)",
               lineHeight: 1.12,
               marginBottom: "1.5rem",
-              letterSpacing: "-0.01em",
+              letterSpacing: "-0.015em",
             }}
           >
             Every bite tells a story.
@@ -94,9 +96,9 @@ export default function CTABanner() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
             style={{
-              fontSize: "1rem",
+              fontSize: "var(--text-body)",
               lineHeight: 1.8,
-              color: "rgba(250,240,230,0.5)",
+              color: "var(--text-tertiary)",
               maxWidth: 440,
               margin: "0 auto 2.5rem",
             }}
@@ -133,10 +135,10 @@ export default function CTABanner() {
                 borderRadius: 999,
                 fontSize: "0.875rem",
                 fontWeight: 600,
-                border: "1px solid rgba(250,240,230,0.2)",
-                color: "rgba(250,240,230,0.7)",
+                border: "1px solid rgba(250,240,230,0.18)",
+                color: "var(--text-secondary)",
                 background: "rgba(255,255,255,0.04)",
-                transition: "all 0.2s",
+                transition: "all 0.25s var(--ease-out-expo)",
                 letterSpacing: "0.03em",
                 display: "inline-flex",
                 alignItems: "center",
@@ -150,8 +152,8 @@ export default function CTABanner() {
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget;
-                el.style.borderColor = "rgba(250,240,230,0.2)";
-                el.style.color = "rgba(250,240,230,0.7)";
+                el.style.borderColor = "rgba(250,240,230,0.18)";
+                el.style.color = "var(--text-secondary)";
                 el.style.background = "rgba(255,255,255,0.04)";
               }}
             >
