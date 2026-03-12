@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cleopatra Delights — Order Management Dashboard (PRD)</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --ink-light: #444;
+      --ink-muted: #666;
+      --border: #ddd;
+      --code-bg: #f5f5f5;
+      --gold: #b8860b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.55;
+      color: var(--ink);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 2.5rem;
+      font-size: 11pt;
+    }
+    @media print {
+      body { padding: 1rem 1.5rem; font-size: 10pt; }
+      .no-print { display: none !important; }
+      a { color: var(--ink); text-decoration: none; }
+      h1, h2, h3 { page-break-after: avoid; }
+      pre, table { page-break-inside: avoid; }
+    }
+    .no-print {
+      background: #f8f8f8;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+    .no-print strong { color: var(--gold); }
+    h1 { font-size: 1.75rem; margin: 0 0 0.25rem; font-weight: 700; }
+    h2 { font-size: 1.35rem; margin: 2rem 0 0.75rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+    h4 { font-size: 1rem; margin: 1rem 0 0.35rem; }
+    p { margin: 0 0 0.75rem; }
+    ul, ol { margin: 0 0 0.75rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.25rem; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    strong { font-weight: 600; }
+    code, pre {
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.9em;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    code { background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 4px; }
+    pre code { background: none; padding: 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0;
+      font-size: 0.95em;
+    }
+    th, td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f5f5f5; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <p class="no-print"><strong>Download as PDF:</strong> Open this file in your browser, then use <kbd>Ctrl+P</kbd> (or Cmd+P on Mac) and choose <strong>Save as PDF</strong> or <strong>Microsoft Print to PDF</strong>.</p>
+
+  <h1>Cleopatra Delights — Order Management Dashboard</h1>
+  <h2>Product Requirements Document</h2>
+  <hr />
+
+  <h2>1. What Is This</h2>
+  <p>A private admin dashboard for Cleopatra Delights. Customer orders come in through the public website form and land in this dashboard instead of (or in addition to) email. The owner can track every order from inquiry to delivery, see business stats at a glance, and manage customers.</p>
+  <p><strong>Public site:</strong> cleopatradelights.com (already built)<br /><strong>Admin dashboard:</strong> cleopatradelights.com/dashboard (new — behind login)</p>
+  <p>Both live in the same Next.js app. One codebase, one deployment.</p>
+  <p><strong>Design stance:</strong> The current dashboard UI (if any exists) is to be treated as a <strong>rough wireframe only</strong>—something that defines content and flows, not something to preserve. The implementation should <strong>rethink visual hierarchy, spacing, component sizing, and overall composition from the ground up</strong> while keeping the same core functionality. The goal is a transformative redesign, not a visual match to the wireframe.</p>
+  <hr />
+
+  <h2>2. Core User</h2>
+  <p>Lukita (bakery owner). Single admin user to start. The dashboard is not customer-facing — customers still use the public order form. This keeps scope tight while still demonstrating auth, database, CRUD, and dashboard patterns.</p>
+  <p>Future: could add a customer portal where customers track their own order status, but that's v2.</p>
+  <hr />
+
+  <h2>3. Tech Stack (New Additions)</h2>
+  <table>
+    <thead><tr><th>Layer</th><th>Technology</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Database</td><td>Supabase (PostgreSQL)</td><td>Free tier, hosted, realtime option later</td></tr>
+      <tr><td>ORM</td><td>Prisma</td><td>Type-safe database queries, easy migrations</td></tr>
+      <tr><td>Auth</td><td>NextAuth.js v5</td><td>Google sign-in, session management, route protection</td></tr>
+      <tr><td>Charts</td><td>Recharts</td><td>Lightweight, React-native, good dark theme support</td></tr>
+      <tr><td>Tables</td><td>TanStack Table</td><td>Sorting, filtering, pagination — industry standard</td></tr>
+      <tr><td>Date handling</td><td>date-fns</td><td>Lightweight date formatting and manipulation</td></tr>
+    </tbody>
+  </table>
+  <p>Everything else stays the same (Next.js 16, TypeScript, Tailwind v4, Framer Motion).</p>
+  <hr />
+
+  <h2>4. Data Model</h2>
+  <h3>Orders Table</h3>
+  <pre><code>id              String    @id @default(cuid())
+createdAt       DateTime  @default(now())
+updatedAt       DateTime  @updatedAt
+
+// Customer info (from form submission)
+customerName    String
+customerEmail   String
+customerPhone   String?
+orderType       String        // "NYC Cookie Box", "Brownie Tray", etc.
+occasion        String?
+eventDate       DateTime?
+notes           String        // the "Tell Us Everything" field
+howHeard        String?
+
+// Dashboard-only fields (admin manages these)
+status          OrderStatus   @default(NEW)
+total           Float?        // price quoted, nullable until confirmed
+internalNotes   String?       // private notes (not visible to customer)</code></pre>
+
+  <h3>OrderStatus Enum</h3>
+  <pre><code>NEW           — just came in, hasn't been reviewed
+REVIEWED      — owner has seen it, thinking about it
+CONFIRMED     — accepted, price quoted, customer agreed
+IN_PROGRESS   — currently being made
+READY         — done, waiting for pickup/delivery
+DELIVERED     — handed off to customer
+CANCELLED     — cancelled by either party</code></pre>
+
+  <h3>Customers Table (auto-created from orders)</h3>
+  <pre><code>id              String    @id @default(cuid())
+name            String
+email           String    @unique
+phone           String?
+firstOrderAt    DateTime
+orderCount      Int       @default(1)
+totalSpent      Float     @default(0)
+notes           String?   // "always wants extra frosting", "allergic to nuts"</code></pre>
+
+  <h3>User Table (for auth — just the admin)</h3>
+  <pre><code>id              String    @id
+email           String    @unique
+name            String?
+role            Role      @default(ADMIN)</code></pre>
+  <hr />
+
+  <h2>5. Pages &amp; Layout</h2>
+  <h3>Layout: Sidebar + Main Content</h3>
+  <p>Dark theme; brand alignment with Cleopatra Delights (obsidian/gold). Fixed sidebar on desktop, collapsible on mobile. <strong>Exact proportions, spacing, and visual weight are to be redesigned</strong>—treat any existing layout as wireframe-only.</p>
+  <pre><code>/dashboard              → Overview (stats + recent orders)
+/dashboard/orders       → All orders table (filterable, sortable)
+/dashboard/orders/[id]  → Single order detail + edit
+/dashboard/customers    → Customer list
+/dashboard/customers/[id] → Single customer + order history
+/dashboard/settings     → Account settings (future)</code></pre>
+  <h3>Sidebar Navigation</h3>
+  <ul>
+    <li>Logo (small, top)</li>
+    <li>Overview</li>
+    <li>Orders (with count badge for NEW orders)</li>
+    <li>Customers</li>
+    <li>Divider</li>
+    <li>Back to Public Site (link to /)</li>
+    <li>Sign Out</li>
+  </ul>
+  <hr />
+
+  <h2>6. Page-by-Page Breakdown</h2>
+  <h3>6A. Overview Dashboard (<code>/dashboard</code>)</h3>
+  <p>The home screen. Answers: "How's business doing?"</p>
+  <p><strong>Top row — 4 stat cards:</strong></p>
+  <table>
+    <thead><tr><th>Card</th><th>Value</th><th>Subtext</th></tr></thead>
+    <tbody>
+      <tr><td>New Orders</td><td>count of status=NEW</td><td>"Needs your attention"</td></tr>
+      <tr><td>In Progress</td><td>count of IN_PROGRESS</td><td>"Currently being made"</td></tr>
+      <tr><td>Revenue (This Month)</td><td>sum of total where DELIVERED this month</td><td>vs last month % change</td></tr>
+      <tr><td>Total Customers</td><td>distinct customer count</td><td>"X new this month"</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Middle row — Revenue chart:</strong> Bar chart or area chart showing revenue by week for the last 8 weeks. Clean, minimal, dark theme (gold accent bars on obsidian background).</p>
+  <p><strong>Bottom row — Recent Orders table (last 10):</strong> Columns: Customer, Order Type, Date, Status (color-coded badge), Total. Click any row → goes to /dashboard/orders/[id]. "View All Orders" link at bottom.</p>
+  <p><strong>Bottom row — Order Status Breakdown:</strong> Simple donut or horizontal bar showing distribution across statuses. Visual at-a-glance: how many orders are in each stage.</p>
+
+  <h3>6B. Orders Page (<code>/dashboard/orders</code>)</h3>
+  <p>Full table of all orders. This is the workhorse page.</p>
+  <p><strong>Filters bar (top):</strong> Status dropdown (All, New, Confirmed, In Progress, Ready, etc.), Order Type dropdown (Cookie Box, Brownie Tray, etc.), Date range picker (This Week, This Month, Last 30 Days, Custom), Search box (searches customer name, email, notes).</p>
+  <p><strong>Table columns:</strong></p>
+  <table>
+    <thead><tr><th>Column</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Order #</td><td>Short ID or incremental number</td></tr>
+      <tr><td>Customer</td><td>Name + email below in smaller text</td></tr>
+      <tr><td>Type</td><td>Order type with category color</td></tr>
+      <tr><td>Event Date</td><td>When they need it</td></tr>
+      <tr><td>Status</td><td>Color-coded pill badge</td></tr>
+      <tr><td>Total</td><td>Dollar amount or "—" if not quoted</td></tr>
+      <tr><td>Created</td><td>Relative time ("2 hours ago", "Mar 8")</td></tr>
+      <tr><td>Actions</td><td>Quick status change dropdown, view button</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Table features:</strong> Sortable by any column (click header), Pagination (20 per page), Bulk select + bulk status change (nice to have, not v1 critical).</p>
+  <p><strong>Empty state:</strong> Friendly message when no orders match filters.</p>
+
+  <h3>6C. Single Order Detail (<code>/dashboard/orders/[id]</code>)</h3>
+  <p>Full view of one order with ability to edit.</p>
+  <p><strong>Left column (2/3 width):</strong> Order header: status badge, order type, created date. Customer info card: name, email, phone (click to call/email). Order details: occasion, event date, notes (the full "Tell Us Everything" text). Timeline: chronological log of status changes.</p>
+  <p><strong>Right column (1/3 width):</strong> Status changer: dropdown to update status (triggers timeline entry). Price field: input to set/update the total. Internal notes: textarea for private notes. Quick actions: "Email Customer" (opens mailto), "Cancel Order" (with confirmation).</p>
+
+  <h3>6D. Customers Page (<code>/dashboard/customers</code>)</h3>
+  <p>Table of all customers, auto-populated from orders.</p>
+  <table>
+    <thead><tr><th>Column</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Customer</td><td>Name + email</td></tr>
+      <tr><td>Orders</td><td>Total order count</td></tr>
+      <tr><td>Total Spent</td><td>Lifetime spend</td></tr>
+      <tr><td>First Order</td><td>When they first ordered</td></tr>
+      <tr><td>Last Order</td><td>Most recent order date</td></tr>
+    </tbody>
+  </table>
+  <p>Click a row → customer detail page.</p>
+
+  <h3>6E. Customer Detail (<code>/dashboard/customers/[id]</code>)</h3>
+  <ul>
+    <li>Customer info (name, email, phone)</li>
+    <li>Private notes about this customer (editable textarea)</li>
+    <li>Full order history table (all their orders, same format as orders page)</li>
+    <li>Stats: total spent, order count, average order value</li>
+  </ul>
+  <hr />
+
+  <h2>7. Auth Flow</h2>
+  <p><strong>Sign in page:</strong> <code>/dashboard/login</code> — Clean centered card, dark theme. "Sign in with Google" button (single method). Only whitelisted email(s) can access (Lukita's Google account). Unauthorized emails see "Access denied — this dashboard is private".</p>
+  <p><strong>Route protection:</strong> All <code>/dashboard/*</code> routes are protected via NextAuth middleware. Unauthenticated users get redirected to <code>/dashboard/login</code>. Public site routes (<code>/</code>, <code>/menu</code>, <code>/location</code>, <code>/order</code>) remain unprotected.</p>
+  <hr />
+
+  <h2>8. How Orders Flow In</h2>
+  <p>Current flow: Customer fills form → API route → Resend email → Lukita checks email.</p>
+  <p>New flow: Customer fills form → API route → Save to database + Send email → Dashboard shows new order.</p>
+  <p>The existing <code>/api/order</code> route gets updated to: (1) Validate input (same as now), (2) Save to Supabase via Prisma (NEW), (3) Auto-create or link customer record (NEW), (4) Send notification email via Resend (same as now), (5) Return success.</p>
+  <p>Email becomes a notification, not the source of truth. The database is the source of truth.</p>
+  <hr />
+
+  <h2>9. Design Direction — Transformative Redesign</h2>
+  <p><strong>Treat existing UI as wireframe only.</strong> Do not preserve current spacing, component sizes, or hierarchy. Rethink the dashboard from the ground up while keeping the same features and data. The outcome should feel intentional and production-grade, not a copy of the wireframe.</p>
+
+  <h3>9.1 Brand and Theme (Constraints Only)</h3>
+  <ul>
+    <li><strong>Theme:</strong> Dark, luxury-adjacent. Use the Cleopatra Delights palette as a constraint: obsidian/surface tones, gold accent, cream text, teal for secondary emphasis. Layout and composition are not bound by the current site—they can diverge where it improves clarity and efficiency.</li>
+    <li><strong>Tokens to reuse (or refine):</strong> Background (--obsidian, --surface-0–3), accent (--gold), text hierarchy, status semantics (gold = new, teal = in progress, green = done, red = cancelled, gray = reviewed). Typography: Playfair for titles, Inter for UI and data—scale, weight, and spacing are open for redesign.</li>
+  </ul>
+
+  <h3>9.2 Visual Hierarchy (Redesign)</h3>
+  <ul>
+    <li>Define a clear information hierarchy per page: primary (glanceable), secondary (supporting), tertiary (detail). Do not assume the wireframe's hierarchy is correct.</li>
+    <li><strong>Overview:</strong> Decide what deserves the most visual weight and size/place elements accordingly. Consider a single hero metric or a reordered grid.</li>
+    <li><strong>Lists (orders, customers):</strong> Rethink table density, row height, and column emphasis. Primary actions and key identifiers should win attention.</li>
+    <li><strong>Detail views:</strong> Rethink the 2/3–1/3 split and the order of blocks to improve scanability and workflow.</li>
+  </ul>
+
+  <h3>9.3 Spacing and Rhythm (Redesign)</h3>
+  <ul>
+    <li>Establish a spacing system (e.g. 4/8/16/24/32/48) and use it consistently. Do not copy existing padding/margins from the wireframe.</li>
+    <li>Use generous spacing where it reduces cognitive load; tighten where density helps (e.g. table rows, compact filters).</li>
+    <li>Headings, sections, and cards should follow a clear vertical rhythm.</li>
+  </ul>
+
+  <h3>9.4 Component Sizing and Proportions (Redesign)</h3>
+  <ul>
+    <li><strong>Stat cards:</strong> Size and proportion should reflect importance (e.g. primary KPI larger, secondary smaller).</li>
+    <li><strong>Sidebar:</strong> Width, icon size, and label prominence are design decisions.</li>
+    <li><strong>Tables:</strong> Row height, font size for primary vs. secondary columns, and action affordances should be chosen deliberately.</li>
+    <li><strong>Charts:</strong> Chart height, label size, and legend placement for quick reading.</li>
+  </ul>
+
+  <h3>9.5 Composition and Layout (Redesign)</h3>
+  <ul>
+    <li><strong>Overview:</strong> Composition is open—e.g. one large chart + compact stats, or stats-first with chart below, or a bento-style grid.</li>
+    <li><strong>Orders list:</strong> Filters can sit inline, in a collapsible bar, or in a dedicated strip.</li>
+    <li><strong>Order/Customer detail:</strong> Content order and column widths are open. Prefer a composition that supports the main task without unnecessary scrolling.</li>
+  </ul>
+
+  <h3>9.6 Polish and Motion</h3>
+  <ul>
+    <li>Use Framer Motion with restraint. Transitions should support orientation and feedback. Avoid decorative motion.</li>
+    <li>Loading and empty states: design as first-class, clear, calm, and consistent with the new hierarchy and spacing.</li>
+  </ul>
+
+  <h3>9.7 Out of Scope for This PRD</h3>
+  <p>No requirement to match the public site's component styling unless it clearly serves the dashboard. Reuse tokens and brand, not layout or component proportions.</p>
+  <hr />
+
+  <h2>10. Build Phases</h2>
+  <h3>Phase 1: Foundation (Database + Auth + Layout)</h3>
+  <ul>
+    <li>Set up Supabase project + Prisma schema</li>
+    <li>Configure NextAuth with Google provider</li>
+    <li>Build dashboard layout (sidebar + main content shell)</li>
+    <li>Protect routes with middleware</li>
+    <li>Update /api/order to save to database</li>
+  </ul>
+  <h3>Phase 2: Orders Core</h3>
+  <ul>
+    <li>Orders list page with table (TanStack Table)</li>
+    <li>Order detail page with status management</li>
+    <li>Status change + timeline logging</li>
+    <li>Filters and search</li>
+  </ul>
+  <h3>Phase 3: Overview Dashboard</h3>
+  <ul>
+    <li>Stat cards with real data</li>
+    <li>Revenue chart (Recharts)</li>
+    <li>Recent orders widget</li>
+    <li>Status breakdown chart</li>
+  </ul>
+  <h3>Phase 4: Customers</h3>
+  <ul>
+    <li>Customer list page</li>
+    <li>Customer detail + order history</li>
+    <li>Auto-link customers from orders</li>
+  </ul>
+  <h3>Phase 5: Polish</h3>
+  <ul>
+    <li>Loading states and skeletons</li>
+    <li>Empty states</li>
+    <li>Mobile responsive sidebar (collapsible)</li>
+    <li>Error handling and edge cases</li>
+    <li>Framer Motion page transitions</li>
+  </ul>
+  <hr />
+
+  <h2>11. Definition of Done (per phase)</h2>
+  <ul>
+    <li><code>npm run build</code> passes clean</li>
+    <li>No console errors</li>
+    <li>Responsive (mobile + desktop)</li>
+    <li>All CRUD operations work end-to-end</li>
+    <li>Auth blocks unauthorized access</li>
+    <li>Dark theme and brand tokens aligned with public site</li>
+    <li><strong>Design:</strong> Visual hierarchy, spacing system, component sizing, and composition follow a deliberate ground-up redesign (Section 9), not a visual clone of the wireframe</li>
+  </ul>
+  <hr />
+
+  <h2>12. What This Proves on a Resume</h2>
+  <ul>
+    <li><strong>Database design:</strong> Schema, relations, migrations, ORM</li>
+    <li><strong>Authentication:</strong> OAuth, session management, route protection</li>
+    <li><strong>CRUD operations:</strong> Create, read, update, delete with validation</li>
+    <li><strong>Data visualization:</strong> Charts, stats, real-time aggregation</li>
+    <li><strong>Full-stack architecture:</strong> Public site + private admin in one codebase</li>
+    <li><strong>Business logic:</strong> Order lifecycle, status management, customer tracking</li>
+    <li><strong>Professional tooling:</strong> Prisma, TanStack Table, Recharts — tools used in real companies</li>
+  </ul>
+</body>
+</html>

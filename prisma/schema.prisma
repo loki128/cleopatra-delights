@@ -1,0 +1,86 @@
+// Prisma schema for Cleopatra Delights dashboard
+// Database: Supabase (PostgreSQL)
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum OrderStatus {
+  NEW
+  REVIEWED
+  CONFIRMED
+  IN_PROGRESS
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum Role {
+  ADMIN
+}
+
+enum OrderTimelineType {
+  CREATED
+  STATUS_CHANGE
+  NOTE_ADDED
+}
+
+model Customer {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  phone        String?
+  firstOrderAt DateTime
+  orderCount   Int       @default(1)
+  totalSpent   Float     @default(0)
+  notes        String?
+  orders       Order[]
+}
+
+model Order {
+  id              String         @id @default(cuid())
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  customerName   String
+  customerEmail  String
+  customerPhone  String?
+  orderType      String
+  occasion       String?
+  eventDate      DateTime?
+  notes          String
+  howHeard       String?
+  status         OrderStatus    @default(NEW)
+  total          Float?
+  internalNotes  String?
+  customerId     String
+  customer       Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  timelineEntries OrderTimelineEntry[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([customerId])
+}
+
+model OrderTimelineEntry {
+  id        String            @id @default(cuid())
+  orderId   String
+  order     Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  createdAt DateTime          @default(now())
+  type      OrderTimelineType
+  payload   Json?
+
+  @@index([orderId])
+  @@index([createdAt])
+}
+
+model User {
+  id    String @id
+  email String @unique
+  name  String?
+  role  Role   @default(ADMIN)
+}

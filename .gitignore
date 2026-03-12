@@ -41,3 +41,9 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+/lib/generated/prisma
+
+# local tool config
+.firecrawl/
+.mcp.json
