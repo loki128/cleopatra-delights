@@ -49,9 +49,11 @@ export default async function DashboardOverviewPage() {
             <br />
             3. Restart dev server: <code className="bg-black/20 px-1 rounded">npm run dev</code>
           </p>
-          <pre className="text-xs text-left p-3 rounded bg-black/20 overflow-auto max-w-lg whitespace-pre-wrap text-[var(--dash-text-tertiary)]">
-            {message || "Check the terminal running npm run dev for the error."}
-          </pre>
+          {process.env.NODE_ENV === "development" && (
+            <pre className="text-xs text-left p-3 rounded bg-black/20 overflow-auto max-w-lg whitespace-pre-wrap text-[var(--dash-text-tertiary)]">
+              {message || "Check the terminal running npm run dev for the error."}
+            </pre>
+          )}
         </div>
       </div>
     );
