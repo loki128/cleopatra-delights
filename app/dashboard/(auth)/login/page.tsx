@@ -3,49 +3,54 @@
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { motion } from "framer-motion";
 
 function LoginContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--dash-bg)]">
-      {/* Ambient glow */}
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[var(--dash-gold)] opacity-[0.03] blur-[120px] pointer-events-none" />
-
-      <div className="relative w-full max-w-md rounded-2xl p-10 bg-[var(--dash-surface-1)] border border-[var(--dash-border-gold)] shadow-[var(--dash-shadow-elevated)]">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#0a0a0a]">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full max-w-sm bg-[#141414] border border-[#1e1e1e] rounded-xl p-8"
+      >
         {/* Logo */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--dash-gold)] to-[#9A7A10] flex items-center justify-center shadow-[0_2px_8px_rgba(212,175,55,0.3)]">
-            <span className="font-serif text-sm font-bold text-[#0a0a0c]">
-              CD
-            </span>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2563eb] to-[#3b82f6] flex items-center justify-center">
+            <span className="text-sm font-bold text-white">CD</span>
           </div>
           <div>
-            <h1 className="font-serif text-[20px] font-bold text-[var(--dash-text-primary)] leading-tight">
+            <h1 className="text-lg font-semibold text-[var(--dash-text-primary)] leading-tight">
               Cleopatra Delights
             </h1>
-            <p className="text-[12px] text-[var(--dash-text-tertiary)] font-medium">
+            <p className="text-xs text-[#525252]">
               Admin Dashboard
             </p>
           </div>
         </div>
 
-        <p className="text-[var(--dash-text-secondary)] text-[14px] mb-8">
+        <p className="text-[var(--dash-text-secondary)] text-sm mb-6 leading-relaxed">
           Sign in to manage orders, customers, and business metrics.
         </p>
 
         {error === "AccessDenied" && (
-          <div className="mb-6 p-4 rounded-xl text-[14px] bg-[var(--dash-error-muted)] border border-[rgba(248,113,113,0.15)] text-[var(--dash-error)]">
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-5 p-3 rounded-xl text-[13px] bg-[var(--dash-error-muted)] border border-[rgba(248,113,113,0.15)] text-[var(--dash-error)]"
+          >
             Access denied. Only whitelisted admins can sign in to the
             dashboard.
-          </div>
+          </motion.div>
         )}
 
         <button
           type="button"
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-xl font-semibold text-[15px] bg-[var(--dash-surface-2)] border border-[var(--dash-border-strong)] text-[var(--dash-text-primary)] hover:bg-[var(--dash-surface-3)] hover:border-[var(--dash-border-gold)] transition-all duration-200"
+          className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl font-semibold text-sm text-[var(--dash-text-primary)] bg-[#141414] border border-[#2e2e2e] hover:border-[#3b3b3b] transition-all duration-200 active:scale-[0.98]"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
@@ -68,10 +73,10 @@ function LoginContent() {
           Sign in with Google
         </button>
 
-        <p className="text-[var(--dash-text-quaternary)] text-[12px] text-center mt-6">
+        <p className="text-[#525252] text-xs text-center mt-5">
           Restricted to authorized admins only.
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -80,7 +85,7 @@ export default function DashboardLoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[var(--dash-bg)]">
+        <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
           <div className="dash-skeleton w-8 h-8 rounded-full" />
         </div>
       }

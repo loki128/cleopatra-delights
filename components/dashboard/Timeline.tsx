@@ -43,7 +43,7 @@ export default function Timeline({
       {entries.map((entry) => (
         <div key={entry.id} className="relative">
           {/* Dot */}
-          <div className="absolute -left-6 top-1.5 w-[14px] h-[14px] rounded-full border-2 border-[var(--dash-surface-1)] bg-[var(--dash-gold)] shadow-[0_0_8px_rgba(212,175,55,0.3)]" />
+          <div className="absolute -left-6 top-1.5 w-[14px] h-[14px] rounded-full border-2 border-[var(--dash-surface-1)] bg-[var(--dash-accent)] shadow-[0_0_6px_rgba(59,130,246,0.3)]" />
 
           <div className="text-[12px] text-[var(--dash-text-tertiary)] font-medium">
             {format(new Date(entry.createdAt), "MMM d, yyyy — h:mm a")}

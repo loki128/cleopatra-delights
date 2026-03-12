@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 type Breadcrumb = { label: string; href?: string };
 
@@ -47,17 +48,22 @@ export default function DashboardHeader({
   const { title, breadcrumbs } = getPageInfo(pathname);
 
   return (
-    <header className="flex items-center justify-between gap-4 mb-8">
+    <motion.header
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="relative flex items-center justify-between gap-4 mb-2 pb-5 border-b border-[var(--dash-border)]"
+    >
       <div className="min-w-0">
         {/* Breadcrumbs */}
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav className="flex items-center gap-1.5 mb-1.5">
+          <nav className="flex items-center gap-1.5 mb-1">
             {breadcrumbs.map((crumb, i) => (
               <span key={i} className="flex items-center gap-1.5">
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
-                    className="text-[var(--dash-text-tertiary)] hover:text-[var(--dash-gold)] text-[13px] font-medium transition-colors"
+                    className="text-[var(--dash-text-tertiary)] hover:text-[var(--dash-accent)] text-[13px] font-medium transition-colors"
                   >
                     {crumb.label}
                   </Link>
@@ -76,7 +82,7 @@ export default function DashboardHeader({
         )}
 
         {/* Page title */}
-        <h1 className="font-serif text-[var(--dash-text-xl)] font-bold text-[var(--dash-text-primary)] tracking-tight truncate">
+        <h1 className="text-[20px] font-semibold text-[var(--dash-text-primary)] tracking-tight truncate">
           {title}
         </h1>
       </div>
@@ -85,6 +91,6 @@ export default function DashboardHeader({
       {actions && (
         <div className="flex items-center gap-3 shrink-0">{actions}</div>
       )}
-    </header>
+    </motion.header>
   );
 }

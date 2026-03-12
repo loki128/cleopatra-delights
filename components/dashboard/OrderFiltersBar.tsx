@@ -57,6 +57,7 @@ export default function OrderFiltersBar() {
           value={search}
           onChange={(e) => setParam("search", e.target.value)}
           className="dash-input w-full !pl-10"
+          aria-label="Search orders"
         />
       </div>
 
@@ -65,6 +66,7 @@ export default function OrderFiltersBar() {
         value={status}
         onChange={(e) => setParam("status", e.target.value)}
         className="dash-select"
+        aria-label="Filter by status"
       >
         {STATUS_OPTIONS.map((opt) => (
           <option key={opt.value || "all"} value={opt.value}>
@@ -77,6 +79,7 @@ export default function OrderFiltersBar() {
         value={orderType}
         onChange={(e) => setParam("orderType", e.target.value)}
         className="dash-select"
+        aria-label="Filter by order type"
       >
         <option value="">All types</option>
         {ORDER_TYPES.map((t) => (
@@ -90,6 +93,7 @@ export default function OrderFiltersBar() {
         value={datePreset}
         onChange={(e) => setParam("date", e.target.value)}
         className="dash-select"
+        aria-label="Filter by date range"
       >
         {DATE_PRESETS.map((opt) => (
           <option key={opt.value || "all"} value={opt.value}>

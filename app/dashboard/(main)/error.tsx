@@ -20,11 +20,11 @@ export default function DashboardError({
       <div className="w-14 h-14 rounded-2xl bg-[var(--dash-error-muted)] flex items-center justify-center mb-5">
         <AlertTriangle size={28} className="text-[var(--dash-error)]" />
       </div>
-      <h2 className="text-[var(--dash-text-lg)] font-semibold text-[var(--dash-text-primary)] mb-2">
+      <h2 className="text-lg font-semibold text-[var(--dash-text-primary)] mb-2">
         Something went wrong
       </h2>
-      <p className="text-[var(--dash-text-sm)] text-[var(--dash-text-tertiary)] mb-8 max-w-md">
-        {error.message}
+      <p className="text-sm text-[var(--dash-text-tertiary)] mb-8 max-w-md">
+        {process.env.NODE_ENV === "development" ? error.message : "Something went wrong. Please try again."}
       </p>
       <div className="flex gap-3 justify-center flex-wrap">
         <button type="button" onClick={reset} className="dash-btn-primary">

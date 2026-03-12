@@ -94,45 +94,56 @@
   --ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* ── Dashboard design tokens ── */
-  /* Warm dark surfaces (subtle warmth, not cold gray) */
-  --dash-bg: #0a0a0c;
-  --dash-surface-0: #0f0f12;
-  --dash-surface-1: #151518;
-  --dash-surface-2: #1c1c20;
-  --dash-surface-3: #242428;
-  --dash-surface-4: #2c2c31;
+  /* ── Dashboard design tokens (Frost — cool neutral + blue accent) ── */
+  --dash-bg: #0a0a0a;
+  --dash-surface-0: #0f0f0f;
+  --dash-surface-1: #141414;
+  --dash-surface-2: #1a1a1a;
+  --dash-surface-3: #222222;
+  --dash-surface-4: #2a2a2a;
 
-  /* Dashboard borders */
-  --dash-border: rgba(255, 255, 255, 0.06);
-  --dash-border-strong: rgba(255, 255, 255, 0.1);
-  --dash-border-gold: rgba(212, 175, 55, 0.15);
+  /* Dashboard borders — cool neutral */
+  --dash-border: #1e1e1e;
+  --dash-border-strong: #2e2e2e;
+  --dash-border-accent: rgba(59, 130, 246, 0.25);
+  --dash-border-accent-strong: rgba(59, 130, 246, 0.4);
 
-  /* Dashboard text (warm cream base) */
-  --dash-text-primary: rgba(250, 243, 230, 0.95);
-  --dash-text-secondary: rgba(250, 243, 230, 0.68);
-  --dash-text-tertiary: rgba(250, 243, 230, 0.45);
-  --dash-text-quaternary: rgba(250, 243, 230, 0.28);
+  /* Dashboard text — pure cool white */
+  --dash-text-primary: #ebebeb;
+  --dash-text-secondary: #a3a3a3;
+  --dash-text-tertiary: #737373;
+  --dash-text-quaternary: #525252;
 
-  /* Dashboard gold accents */
-  --dash-gold: #D4AF37;
-  --dash-gold-hover: #E0C04A;
-  --dash-gold-muted: rgba(212, 175, 55, 0.12);
-  --dash-gold-glow: 0 0 24px rgba(212, 175, 55, 0.15), 0 0 48px rgba(212, 175, 55, 0.08);
+  /* Dashboard accent — blue */
+  --dash-accent: #3b82f6;
+  --dash-accent-hover: #60a5fa;
+  --dash-accent-soft: #2563eb;
+  --dash-accent-muted: rgba(59, 130, 246, 0.10);
+  --dash-accent-glow: 0 0 20px rgba(59, 130, 246, 0.15), 0 0 40px rgba(59, 130, 246, 0.06);
+
+  /* Backward-compat aliases (gold → accent) */
+  --dash-gold: var(--dash-accent);
+  --dash-gold-hover: var(--dash-accent-hover);
+  --dash-gold-soft: var(--dash-accent-soft);
+  --dash-gold-muted: var(--dash-accent-muted);
+  --dash-border-gold: var(--dash-border-accent);
+  --dash-border-gold-strong: var(--dash-border-accent-strong);
 
   /* Dashboard semantic colors */
-  --dash-success: #34D399;
-  --dash-success-muted: rgba(52, 211, 153, 0.15);
-  --dash-warning: #FBBF24;
-  --dash-warning-muted: rgba(251, 191, 36, 0.15);
-  --dash-error: #F87171;
-  --dash-error-muted: rgba(248, 113, 113, 0.15);
-  --dash-info: #60A5FA;
-  --dash-info-muted: rgba(96, 165, 250, 0.15);
-  --dash-teal: #2DD4BF;
-  --dash-teal-muted: rgba(45, 212, 191, 0.15);
+  --dash-success: #22c55e;
+  --dash-success-muted: rgba(34, 197, 94, 0.12);
+  --dash-warning: #eab308;
+  --dash-warning-muted: rgba(234, 179, 8, 0.12);
+  --dash-error: #ef4444;
+  --dash-error-muted: rgba(239, 68, 68, 0.12);
+  --dash-info: #60a5fa;
+  --dash-info-muted: rgba(96, 165, 250, 0.12);
+  --dash-teal: #2dd4bf;
+  --dash-teal-muted: rgba(45, 212, 191, 0.12);
 
-  /* Dashboard typography (fixed, not fluid — data needs precision) */
+  /* Dashboard typography (Geist Sans + Geist Mono) */
+  --dash-font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --dash-font-mono: var(--font-geist-mono), ui-monospace, 'SF Mono', monospace;
   --dash-text-xs: 0.6875rem;     /* 11px */
   --dash-text-sm: 0.8125rem;     /* 13px */
   --dash-text-base: 0.875rem;    /* 14px */
@@ -141,24 +152,24 @@
   --dash-text-xl: 1.5rem;        /* 24px */
   --dash-text-2xl: 1.875rem;     /* 30px */
   --dash-text-3xl: 2.25rem;      /* 36px */
-  --dash-text-stat: 2.75rem;     /* 44px — big KPI numbers */
+  --dash-text-stat: 2rem;        /* 32px — KPI numbers */
 
   /* Dashboard spacing */
-  --dash-sidebar-w: 260px;
-  --dash-sidebar-collapsed: 68px;
-  --dash-header-h: 64px;
+  --dash-sidebar-w: 200px;
+  --dash-sidebar-collapsed: 64px;
+  --dash-header-h: 56px;
   --dash-content-px: 32px;
-  --dash-content-py: 32px;
-  --dash-gap: 24px;
-  --dash-gap-sm: 16px;
-  --dash-gap-xs: 12px;
-  --dash-card-padding: 24px;
-  --dash-card-radius: 16px;
+  --dash-content-py: 28px;
+  --dash-gap: 20px;
+  --dash-gap-sm: 14px;
+  --dash-gap-xs: 10px;
+  --dash-card-padding: 20px;
+  --dash-card-radius: 12px;
 
-  /* Dashboard shadows */
-  --dash-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
-  --dash-shadow-elevated: 0 4px 24px rgba(0, 0, 0, 0.4), 0 8px 48px rgba(0, 0, 0, 0.2);
-  --dash-shadow-sidebar: 4px 0 24px rgba(0, 0, 0, 0.3);
+  /* Dashboard shadows — minimal */
+  --dash-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --dash-shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.5), 0 8px 32px rgba(0, 0, 0, 0.3);
+  --dash-shadow-sidebar: 1px 0 0 #1e1e1e;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -532,9 +543,27 @@ select.input-gold option {
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
 
+/* ── Dashboard shell offset — sidebar width on desktop ── */
+@media (min-width: 1024px) {
+  .dash-root { --shell-offset: 64px; }
+}
+
 /* ══════════════════════════════════════════════════════
-   DASHBOARD DESIGN SYSTEM
+   DASHBOARD DESIGN SYSTEM — Frost (cool neutral + blue)
+   Typography: Geist Sans + Geist Mono
    ══════════════════════════════════════════════════════ */
+
+/* ── Dashboard base font ── */
+.dash-root {
+  font-family: var(--dash-font-sans);
+  color: var(--dash-text-primary);
+  background: var(--dash-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.dash-root h1, .dash-root h2, .dash-root h3, .dash-root h4 {
+  font-family: var(--dash-font-sans);
+}
 
 /* ── Dashboard card base ── */
 .dash-card {
@@ -542,37 +571,63 @@ select.input-gold option {
   border: 1px solid var(--dash-border);
   border-radius: var(--dash-card-radius);
   padding: var(--dash-card-padding);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.15s ease;
 }
 .dash-card:hover {
   border-color: var(--dash-border-strong);
 }
 
-/* ── Dashboard card with gold accent ── */
+/* ── Dashboard stat card ── */
+.dash-stat {
+  background: var(--dash-surface-1);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-card-radius);
+  transition: border-color 0.15s ease;
+}
+.dash-stat:hover {
+  border-color: var(--dash-border-strong);
+}
+
+/* ── Dashboard stat card — accent ── */
+.dash-stat-accent {
+  background: var(--dash-surface-1);
+  border: 1px solid var(--dash-border-accent);
+  border-radius: var(--dash-card-radius);
+  transition: border-color 0.15s ease;
+}
+.dash-stat-accent:hover {
+  border-color: var(--dash-border-accent-strong);
+}
+
+/* ── Dashboard card with accent ── */
 .dash-card-accent {
   background: var(--dash-surface-1);
-  border: 1px solid var(--dash-border-gold);
+  border: 1px solid var(--dash-border-accent);
   border-radius: var(--dash-card-radius);
   padding: var(--dash-card-padding);
-  box-shadow: var(--dash-shadow-card);
+  transition: border-color 0.15s ease;
+}
+.dash-card-accent:hover {
+  border-color: var(--dash-border-accent-strong);
 }
 
 /* ── Dashboard input styling ── */
 .dash-input {
   background: var(--dash-surface-0);
   border: 1px solid var(--dash-border-strong);
-  border-radius: 10px;
-  padding: 10px 14px;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: var(--dash-font-sans);
   font-size: var(--dash-text-base);
   color: var(--dash-text-primary);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .dash-input::placeholder {
   color: var(--dash-text-quaternary);
 }
 .dash-input:focus {
-  border-color: var(--dash-gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  border-color: var(--dash-accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
   outline: none;
 }
 
@@ -580,19 +635,20 @@ select.input-gold option {
 .dash-select {
   background: var(--dash-surface-0);
   border: 1px solid var(--dash-border-strong);
-  border-radius: 10px;
-  padding: 10px 36px 10px 14px;
+  border-radius: 8px;
+  padding: 8px 32px 8px 12px;
+  font-family: var(--dash-font-sans);
   font-size: var(--dash-text-base);
   color: var(--dash-text-primary);
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='rgba(250,243,230,0.45)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='rgba(163,163,163,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center;
-  transition: border-color 0.2s ease;
+  background-position: right 10px center;
+  transition: border-color 0.15s ease;
 }
 .dash-select:focus {
-  border-color: var(--dash-gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  border-color: var(--dash-accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
   outline: none;
 }
 .dash-select option {
@@ -600,28 +656,28 @@ select.input-gold option {
   color: var(--dash-text-primary);
 }
 
-/* ── Dashboard button primary (gold shimmer) ── */
+/* ── Dashboard button primary (solid blue) ── */
 .dash-btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #9A7A10 0%, #D4AF37 40%, #E8C84A 60%, #D4AF37 100%);
-  color: #0a0a0c;
-  font-weight: 600;
+  gap: 6px;
+  background: var(--dash-accent);
+  color: #fff;
+  font-family: var(--dash-font-sans);
+  font-weight: 500;
   font-size: var(--dash-text-base);
-  padding: 10px 20px;
-  border-radius: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: background 0.15s ease;
 }
 .dash-btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+  background: var(--dash-accent-soft);
 }
 .dash-btn-primary:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.98);
 }
 
 /* ── Dashboard button secondary ── */
@@ -629,20 +685,21 @@ select.input-gold option {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: var(--dash-surface-2);
+  gap: 6px;
+  background: transparent;
   color: var(--dash-text-primary);
+  font-family: var(--dash-font-sans);
   font-weight: 500;
   font-size: var(--dash-text-base);
-  padding: 10px 20px;
-  border-radius: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
   border: 1px solid var(--dash-border-strong);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 .dash-btn-secondary:hover {
-  background: var(--dash-surface-3);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--dash-surface-2);
+  border-color: #3a3a3a;
 }
 
 /* ── Dashboard button ghost ── */
@@ -650,19 +707,20 @@ select.input-gold option {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   background: transparent;
   color: var(--dash-text-secondary);
+  font-family: var(--dash-font-sans);
   font-weight: 500;
   font-size: var(--dash-text-base);
-  padding: 10px 20px;
-  border-radius: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
 .dash-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--dash-text-primary);
 }
 
@@ -671,19 +729,20 @@ select.input-gold option {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: var(--dash-error-muted);
+  gap: 6px;
+  background: transparent;
   color: var(--dash-error);
+  font-family: var(--dash-font-sans);
   font-weight: 500;
   font-size: var(--dash-text-base);
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: 1px solid rgba(248, 113, 113, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
   cursor: pointer;
   transition: background 0.15s ease;
 }
 .dash-btn-danger:hover {
-  background: rgba(248, 113, 113, 0.2);
+  background: rgba(239, 68, 68, 0.1);
 }
 
 /* ── Dashboard shimmer skeleton ── */
@@ -694,8 +753,8 @@ select.input-gold option {
 .dash-skeleton {
   background: linear-gradient(90deg, var(--dash-surface-2) 25%, var(--dash-surface-3) 50%, var(--dash-surface-2) 75%);
   background-size: 400px 100%;
-  animation: dash-shimmer 1.5s ease-in-out infinite;
-  border-radius: 8px;
+  animation: dash-shimmer 1.6s ease-in-out infinite;
+  border-radius: 6px;
 }
 
 /* ── Dashboard table styles ── */
@@ -703,14 +762,15 @@ select.input-gold option {
   width: 100%;
   text-align: left;
   font-size: var(--dash-text-base);
+  font-family: var(--dash-font-sans);
 }
 .dash-table thead th {
   font-size: var(--dash-text-xs);
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--dash-text-tertiary);
-  padding: 14px 20px;
+  color: var(--dash-text-quaternary);
+  padding: 10px 16px;
   border-bottom: 1px solid var(--dash-border-strong);
   background: var(--dash-surface-0);
   position: sticky;
@@ -719,19 +779,54 @@ select.input-gold option {
 }
 .dash-table tbody tr {
   border-bottom: 1px solid var(--dash-border);
-  transition: background 0.15s ease;
+  transition: background 0.1s ease;
 }
 .dash-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.03);
+}
+.dash-table tbody tr:hover td:first-child {
+  box-shadow: inset 2px 0 0 var(--dash-accent);
 }
 .dash-table tbody td {
-  padding: 16px 20px;
+  padding: 12px 16px;
   color: var(--dash-text-secondary);
   vertical-align: middle;
 }
 
-/* ── Dashboard scrollbar (subtle) ── */
+/* ── Dashboard scrollbar ── */
 .dash-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
 .dash-scroll::-webkit-scrollbar-track { background: transparent; }
-.dash-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 4px; }
-.dash-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+.dash-scroll::-webkit-scrollbar-thumb { background: var(--dash-surface-3); border-radius: 4px; }
+.dash-scroll::-webkit-scrollbar-thumb:hover { background: var(--dash-surface-4); }
+
+/* ── Status badge pulse ── */
+@keyframes dash-pulse-accent {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0); }
+}
+.dash-badge-pulse {
+  animation: dash-pulse-accent 2.5s ease-in-out infinite;
+}
+
+/* ── Interactive card lift ── */
+.dash-card-interactive {
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.dash-card-interactive:hover {
+  transform: translateY(-1px);
+  border-color: var(--dash-border-strong);
+}
+
+/* ── Chart tooltip ── */
+.dash-tooltip {
+  background: var(--dash-surface-2) !important;
+  border: 1px solid var(--dash-border-strong) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--dash-shadow-elevated) !important;
+}
+
+/* ── Monospace numbers ── */
+.dash-mono {
+  font-family: var(--dash-font-mono);
+  font-variant-numeric: tabular-nums;
+}

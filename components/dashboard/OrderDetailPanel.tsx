@@ -32,7 +32,7 @@ export default function OrderDetailPanel({
           <>
             <span className="text-[var(--dash-text-quaternary)]">|</span>
             <span
-              className="text-[var(--dash-gold)] font-bold text-[16px]"
+              className="text-[var(--dash-accent)] font-bold text-[16px]"
               style={{ fontVariantNumeric: "tabular-nums" }}
             >
               ${order.total.toFixed(2)}
@@ -63,7 +63,7 @@ export default function OrderDetailPanel({
             />
             <a
               href={`mailto:${order.customerEmail}`}
-              className="text-[14px] text-[var(--dash-gold)] hover:text-[var(--dash-gold-hover)] transition-colors"
+              className="text-[14px] text-[var(--dash-accent)] hover:text-[var(--dash-accent-hover)] transition-colors"
             >
               {order.customerEmail}
             </a>
@@ -76,7 +76,7 @@ export default function OrderDetailPanel({
               />
               <a
                 href={`tel:${order.customerPhone}`}
-                className="text-[14px] text-[var(--dash-gold)] hover:text-[var(--dash-gold-hover)] transition-colors"
+                className="text-[14px] text-[var(--dash-accent)] hover:text-[var(--dash-accent-hover)] transition-colors"
               >
                 {order.customerPhone}
               </a>

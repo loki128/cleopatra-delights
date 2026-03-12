@@ -1,4 +1,30 @@
+"use client";
+
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { motion } from "framer-motion";
+import AnimatedNumber from "./AnimatedNumber";
+
+function parseNumericValue(value: string | number): {
+  prefix: string;
+  number: number;
+  suffix: string;
+  decimals: number;
+} | null {
+  if (typeof value === "number") {
+    return { prefix: "", number: value, suffix: "", decimals: 0 };
+  }
+  const match = value.match(/^([^0-9]*)([0-9,]+\.?\d*)(.*)$/);
+  if (!match) return null;
+  const num = parseFloat(match[2].replace(/,/g, ""));
+  if (isNaN(num)) return null;
+  const decimalPart = match[2].split(".")[1];
+  return {
+    prefix: match[1],
+    number: num,
+    suffix: match[3],
+    decimals: decimalPart ? decimalPart.length : 0,
+  };
+}
 
 export default function StatCard({
   title,
@@ -13,7 +39,6 @@ export default function StatCard({
   trend?: string;
   accent?: boolean;
 }) {
-  // Parse trend direction from string
   const trendDirection = trend
     ? trend.startsWith("+")
       ? "up"
@@ -22,70 +47,71 @@ export default function StatCard({
         : "flat"
     : null;
 
+  const parsed = parseNumericValue(value);
+
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className={`
-        relative overflow-hidden rounded-2xl p-6
-        border transition-all duration-200
-        ${
-          accent
-            ? "bg-[var(--dash-surface-1)] border-[var(--dash-border-gold)] shadow-[var(--dash-shadow-card)]"
-            : "bg-[var(--dash-surface-1)] border-[var(--dash-border)] hover:border-[var(--dash-border-strong)]"
-        }
+        relative overflow-hidden rounded-2xl p-5
+        ${accent ? "dash-stat-accent border-l-2 border-l-[var(--dash-accent)]" : "dash-stat"}
       `}
     >
-      {/* Subtle gold glow on accent card */}
-      {accent && (
-        <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-[var(--dash-gold)] opacity-[0.04] blur-3xl pointer-events-none" />
-      )}
-
-      {/* Label */}
-      <p className="text-[var(--dash-text-xs)] font-semibold uppercase tracking-[0.08em] text-[var(--dash-text-tertiary)] mb-3">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--dash-text-tertiary)] mb-2">
         {title}
       </p>
 
-      {/* Value — dominant element */}
-      <p
-        className={`
-          text-[var(--dash-text-3xl)] font-bold leading-none tracking-tight
-          ${accent ? "text-[var(--dash-gold)]" : "text-[var(--dash-text-primary)]"}
-        `}
-        style={{ fontVariantNumeric: "tabular-nums" }}
-      >
-        {value}
-      </p>
+      {parsed ? (
+        <AnimatedNumber
+          value={parsed.number}
+          prefix={parsed.prefix}
+          suffix={parsed.suffix}
+          decimals={parsed.decimals}
+          className="block text-[28px] font-bold leading-none tracking-tight dash-mono text-[var(--dash-text-primary)]"
+        />
+      ) : (
+        <p
+          className="text-[28px] font-bold leading-none tracking-tight dash-mono text-[var(--dash-text-primary)]"
+        >
+          {value}
+        </p>
+      )}
 
-      {/* Subtext + trend */}
-      <div className="flex items-center gap-2 mt-3">
+      <div className="flex items-center gap-2 mt-2.5">
         {trend && trendDirection && (
-          <span
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className={`
-              inline-flex items-center gap-1 text-[12px] font-semibold px-2 py-0.5 rounded-md
+              inline-flex items-center gap-1 text-[11px] font-semibold px-1.5 py-0.5 rounded-md
               ${
                 trendDirection === "up"
                   ? "text-[var(--dash-success)] bg-[var(--dash-success-muted)]"
                   : trendDirection === "down"
                     ? "text-[var(--dash-error)] bg-[var(--dash-error-muted)]"
-                    : "text-[var(--dash-text-tertiary)] bg-[rgba(255,255,255,0.05)]"
+                    : "text-[var(--dash-text-tertiary)] bg-white/[0.05]"
               }
             `}
           >
             {trendDirection === "up" ? (
-              <TrendingUp size={12} />
+              <TrendingUp size={11} />
             ) : trendDirection === "down" ? (
-              <TrendingDown size={12} />
+              <TrendingDown size={11} />
             ) : (
-              <Minus size={12} />
+              <Minus size={11} />
             )}
             {trend}
-          </span>
+          </motion.span>
         )}
         {subtext && (
-          <p className="text-[var(--dash-text-sm)] text-[var(--dash-text-tertiary)]">
+          <p className="text-[12px] text-[var(--dash-text-tertiary)]">
             {subtext}
           </p>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

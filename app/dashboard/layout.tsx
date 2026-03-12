@@ -1,22 +1,12 @@
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import DashboardShell from "@/components/dashboard/DashboardShell";
-import SessionProvider from "@/components/dashboard/SessionProvider";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
-export default async function DashboardLayout({
+export default function DashboardRootLayout({
   children,
 }: { children: React.ReactNode }) {
-  const session = await auth();
-  let newOrdersCount = 0;
-  try {
-    newOrdersCount = await prisma.order.count({ where: { status: "NEW" } });
-  } catch {
-    // DB not configured or not migrated yet
-  }
-
   return (
-    <SessionProvider session={session}>
-      <DashboardShell newOrdersCount={newOrdersCount}>{children}</DashboardShell>
-    </SessionProvider>
+    <div className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      {children}
+    </div>
   );
 }

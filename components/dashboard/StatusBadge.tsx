@@ -6,8 +6,8 @@ const STATUS_STYLES: Record<
 > = {
   NEW: {
     label: "New",
-    color: "var(--dash-gold)",
-    bg: "var(--dash-gold-muted)",
+    color: "var(--dash-accent)",
+    bg: "var(--dash-accent-muted)",
   },
   REVIEWED: {
     label: "Reviewed",
@@ -48,13 +48,16 @@ export default function StatusBadge({ status }: { status: OrderStatus }) {
     bg: "rgba(255, 255, 255, 0.06)",
   };
 
+  const isNew = status === "NEW";
+
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[12px] font-semibold"
+      className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[12px] font-semibold ${isNew ? "dash-badge-pulse" : ""}`}
       style={{ color: style.color, backgroundColor: style.bg }}
+      aria-label={`Status: ${style.label}`}
     >
       <span
-        className="w-1.5 h-1.5 rounded-full"
+        className="w-1.5 h-1.5 rounded-full shrink-0"
         style={{ backgroundColor: style.color }}
       />
       {style.label}

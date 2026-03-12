@@ -80,7 +80,7 @@ export default async function DashboardCustomerDetailPage({
                         <td>
                           <Link
                             href={`/dashboard/orders/${order.id}`}
-                            className="font-semibold text-[var(--dash-text-primary)] hover:text-[var(--dash-gold)] transition-colors"
+                            className="font-semibold text-[var(--dash-text-primary)] hover:text-[var(--dash-accent)] transition-colors"
                           >
                             #{order.id.slice(-8)}
                           </Link>
@@ -122,15 +122,15 @@ export default async function DashboardCustomerDetailPage({
             </h2>
 
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[var(--dash-gold-muted)] flex items-center justify-center shrink-0">
-                <DollarSign size={18} className="text-[var(--dash-gold)]" />
+              <div className="w-9 h-9 rounded-xl bg-[var(--dash-accent-muted)] flex items-center justify-center shrink-0">
+                <DollarSign size={18} className="text-[var(--dash-accent)]" />
               </div>
               <div>
                 <p className="text-[var(--dash-text-tertiary)] text-[12px] font-medium">
                   Total Spent
                 </p>
                 <p
-                  className="text-[20px] font-bold text-[var(--dash-gold)]"
+                  className="text-[20px] font-bold text-[var(--dash-accent)]"
                   style={{ fontVariantNumeric: "tabular-nums" }}
                 >
                   ${customer.totalSpent.toFixed(2)}

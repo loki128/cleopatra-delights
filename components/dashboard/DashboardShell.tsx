@@ -8,16 +8,11 @@ export default async function DashboardShell({
   newOrdersCount?: number;
 }) {
   return (
-    <div className="min-h-screen bg-[var(--dash-bg)] text-[var(--dash-text-primary)]">
+    <div className="dash-root min-h-screen relative">
       <DashboardSidebar newOrdersCount={newOrdersCount} />
-
-      {/* Main content area — offset by sidebar width on desktop */}
-      <main className="lg:pl-[var(--dash-sidebar-w)] min-h-screen">
-        {/* Mobile top bar spacer */}
-        <div className="h-16 lg:hidden" />
-
-        {/* Content wrapper with consistent padding */}
-        <div className="px-5 py-6 md:px-8 md:py-8 lg:px-[var(--dash-content-px)] lg:py-[var(--dash-content-py)] max-w-[1600px]">
+      <main className="min-h-screen" style={{ paddingLeft: "var(--shell-offset, 0px)" }}>
+        <div className="h-12 lg:hidden" />
+        <div className="px-4 py-5 md:px-6 md:py-6 lg:px-8 lg:py-7 max-w-[1400px] mx-auto">
           {children}
         </div>
       </main>

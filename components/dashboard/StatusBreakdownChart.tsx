@@ -7,7 +7,9 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import { motion } from "framer-motion";
 import type { OrderStatus } from "@prisma/client";
+import AnimatedNumber from "./AnimatedNumber";
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
   NEW: "#D4AF37",
@@ -49,7 +51,12 @@ export default function StatusBreakdownChart({
   }
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      className="flex flex-col items-center gap-6"
+    >
       {/* Donut chart */}
       <div className="relative h-[200px] w-[200px]">
         <ResponsiveContainer width="100%" height="100%">
@@ -64,17 +71,22 @@ export default function StatusBreakdownChart({
               outerRadius={90}
               paddingAngle={3}
               strokeWidth={0}
+              animationDuration={800}
+              animationEasing="ease-out"
             >
               {chartData.map((entry) => (
                 <Cell
                   key={entry.status}
                   fill={STATUS_COLORS[entry.status]}
+                  className="transition-opacity duration-200 hover:opacity-80"
                 />
               ))}
             </Pie>
             <Tooltip
               contentStyle={{
-                background: "var(--dash-surface-3)",
+                background: "rgba(36, 36, 40, 0.92)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
                 border: "1px solid var(--dash-border-gold)",
                 borderRadius: "12px",
                 padding: "10px 14px",
@@ -83,6 +95,7 @@ export default function StatusBreakdownChart({
               labelStyle={{
                 color: "var(--dash-text-primary)",
                 fontWeight: 600,
+                fontSize: 13,
               }}
               formatter={(value) => [value ?? 0, "Orders"]}
             />
@@ -90,12 +103,10 @@ export default function StatusBreakdownChart({
         </ResponsiveContainer>
         {/* Center label */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          <span
-            className="text-[28px] font-bold text-[var(--dash-text-primary)]"
-            style={{ fontVariantNumeric: "tabular-nums" }}
-          >
-            {total}
-          </span>
+          <AnimatedNumber
+            value={total}
+            className="text-[28px] font-bold text-[var(--dash-text-primary)] block"
+          />
           <span className="text-[11px] font-medium text-[var(--dash-text-tertiary)] uppercase tracking-wider">
             Total
           </span>
@@ -104,8 +115,14 @@ export default function StatusBreakdownChart({
 
       {/* Custom legend */}
       <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 w-full">
-        {chartData.map((entry) => (
-          <div key={entry.status} className="flex items-center gap-2.5">
+        {chartData.map((entry, i) => (
+          <motion.div
+            key={entry.status}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 + i * 0.06, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center gap-2.5"
+          >
             <div
               className="w-2.5 h-2.5 rounded-full shrink-0"
               style={{ backgroundColor: STATUS_COLORS[entry.status] }}
@@ -114,14 +131,14 @@ export default function StatusBreakdownChart({
               {entry.name}
             </span>
             <span
-              className="text-[13px] font-semibold text-[var(--dash-text-primary)] tabular-nums"
+              className="text-[13px] font-semibold text-[var(--dash-text-primary)]"
               style={{ fontVariantNumeric: "tabular-nums" }}
             >
               {entry.count}
             </span>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
