@@ -81,7 +81,7 @@ export default function OrdersTable({
       accessorKey: "eventDate",
       cell: ({ getValue }) => {
         const d = getValue() as Date | null;
-        if (!d) return <span className="text-[var(--dash-text-quaternary)]">---</span>;
+        if (!d || isNaN(new Date(d).getTime())) return <span className="text-[var(--dash-text-quaternary)]">---</span>;
         return (
           <span className="text-[var(--dash-text-secondary)]">
             {new Date(d).toLocaleDateString()}

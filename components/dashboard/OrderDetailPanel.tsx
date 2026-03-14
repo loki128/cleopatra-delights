@@ -107,7 +107,7 @@ export default function OrderDetailPanel({
               </div>
             </div>
           )}
-          {order.eventDate && (
+          {order.eventDate && !isNaN(new Date(order.eventDate).getTime()) && (
             <div className="flex items-start gap-3">
               <Calendar
                 size={16}
