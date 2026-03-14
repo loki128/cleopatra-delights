@@ -4,28 +4,74 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 
-/* Framer Motion variants — Linear/Framer-inspired blur-in stagger */
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
-};
+/* ═══════════════════════════════════════════════════════
+   era.shopping-inspired animation system
+   ═══════════════════════════════════════════════════════
+   Phase 1 (0–2.1s):  Headline rises 640px — heavy cinematic easing
+   Phase 2 (2.0–2.1s): Sub-elements — spring physics, fade + rise
+   Phase 3 (2.1–2.4s): Region tags — tight cascade (90ms stagger)
+   Phase 4 (2.4s+):    Scroll indicator fades in
+   ═══════════════════════════════════════════════════════ */
 
-const blurIn = {
-  hidden: { opacity: 0, y: 24, filter: "blur(8px)" },
-  visible: {
+/* The signature era.shopping easing — slow heavy deceleration */
+const CINEMATIC_EASE: [number, number, number, number] = [0.56, 0.22, 0.05, 0.99];
+const HERO_DURATION = 2.1;
+
+/* Phase 1 — Dramatic headline rise */
+const headlineRise = {
+  initial: { opacity: 0, y: 640 },
+  animate: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: HERO_DURATION, ease: CINEMATIC_EASE },
   },
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
+/* Phase 2 — Spring follow-ups (sub-headline, tagline, CTAs) */
+const springFollow = (delay: number, yOffset = 170) => ({
+  initial: { opacity: 0, y: yOffset },
+  animate: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
+    transition: {
+      type: "spring" as const,
+      stiffness: 121,
+      damping: 27,
+      mass: 0.3,
+      delay,
+    },
+  },
+});
+
+/* Phase 3 — Tight cascade for small elements */
+const cascadeItem = (delay: number) => ({
+  initial: { y: 31, opacity: 0 },
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 255,
+      damping: 30,
+      mass: 1,
+      delay,
+    },
+  },
+});
+
+/* Status pill — early fade (matches nav timing) */
+const pillReveal = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 219,
+      damping: 27,
+      mass: 0.3,
+      delay: 0.5,
+    },
   },
 };
 
@@ -44,7 +90,7 @@ export default function Hero() {
       className="relative overflow-hidden"
       style={{ minHeight: "100dvh" }}
     >
-      {/* ── Photo layer with next/image ── */}
+      {/* ── Photo layer ── */}
       <div className="absolute inset-0" style={{ zIndex: 0 }}>
         <Image
           src="/images/brownies-pb.jpg"
@@ -56,7 +102,7 @@ export default function Hero() {
           style={{ objectPosition: "center 35%" }}
           aria-hidden="true"
         />
-        {/* Left-dominant dark gradient */}
+        {/* Dramatic dark gradient — cinematic vignette */}
         <div
           className="absolute inset-0"
           style={{
@@ -74,32 +120,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* ── Gold dot grid (Linear-inspired) ── */}
-      <div
-        className="absolute inset-0 dot-grid pointer-events-none"
-        aria-hidden="true"
-        style={{ zIndex: 1, opacity: 0.3 }}
-      />
-
-      {/* ── Radial gold glow behind headline (Linear-inspired) ── */}
-      <div
-        className="absolute pointer-events-none"
-        aria-hidden="true"
-        style={{
-          zIndex: 1,
-          top: "30%",
-          left: "15%",
-          width: "50vw",
-          height: "50vw",
-          maxWidth: 600,
-          maxHeight: 600,
-          background:
-            "radial-gradient(ellipse at center, rgba(212,175,55,0.08) 0%, transparent 65%)",
-          filter: "blur(60px)",
-        }}
-      />
-
-      {/* ── Animated glow orbs ── */}
+      {/* ── Animated glow orbs — ambient motion behind text ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
@@ -133,6 +154,24 @@ export default function Hero() {
             filter: "blur(60px)",
           }}
         />
+        {/* Gold glow behind headline — reveals as text rises */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 3, delay: 0.8 }}
+          className="absolute"
+          style={{
+            top: "25%",
+            left: "8%",
+            width: "50vw",
+            height: "50vw",
+            maxWidth: 700,
+            maxHeight: 700,
+            background:
+              "radial-gradient(ellipse at center, rgba(212,175,55,0.1) 0%, transparent 60%)",
+            filter: "blur(80px)",
+          }}
+        />
       </div>
 
       {/* ── Corner bracket decorations ── */}
@@ -141,7 +180,12 @@ export default function Hero() {
         aria-hidden="true"
         style={{ zIndex: 2 }}
       >
-        <div className="absolute" style={{ top: 28, left: 28 }}>
+        {/* Top-left */}
+        <motion.div
+          className="absolute"
+          style={{ top: 28, left: 28 }}
+          {...cascadeItem(2.2)}
+        >
           <div
             style={{
               width: 44,
@@ -159,8 +203,13 @@ export default function Hero() {
               marginTop: -1,
             }}
           />
-        </div>
-        <div className="absolute" style={{ top: 28, right: 28 }}>
+        </motion.div>
+        {/* Top-right */}
+        <motion.div
+          className="absolute"
+          style={{ top: 28, right: 28 }}
+          {...cascadeItem(2.29)}
+        >
           <div
             style={{
               width: 44,
@@ -178,8 +227,13 @@ export default function Hero() {
               marginLeft: "auto",
             }}
           />
-        </div>
-        <div className="absolute" style={{ bottom: 28, left: 28 }}>
+        </motion.div>
+        {/* Bottom-left */}
+        <motion.div
+          className="absolute"
+          style={{ bottom: 28, left: 28 }}
+          {...cascadeItem(2.38)}
+        >
           <div
             style={{
               width: 1,
@@ -197,15 +251,12 @@ export default function Hero() {
               marginTop: -1,
             }}
           />
-        </div>
+        </motion.div>
       </div>
 
-      {/* ── Content — Blur-in staggered entrance ── */}
-      <motion.div
+      {/* ── Content — Cinematic staggered entrance ── */}
+      <div
         className="container"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
         style={{
           position: "relative",
           zIndex: 10,
@@ -218,9 +269,9 @@ export default function Hero() {
         }}
       >
         <div style={{ maxWidth: 640 }}>
-          {/* Live status pill */}
+          {/* Live status pill — early reveal */}
           <motion.div
-            variants={blurIn}
+            {...pillReveal}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -253,19 +304,19 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Eyebrow */}
+          {/* Eyebrow — appears with sub-elements */}
           <motion.p
-            variants={blurIn}
+            {...springFollow(1.9, 100)}
             className="eyebrow"
             style={{ color: "#25A0A0", marginBottom: "1.25rem" }}
           >
             Jacksonville, Florida&nbsp;&nbsp;·&nbsp;&nbsp;Global Desserts
           </motion.p>
 
-          {/* Headline — cinematic scale (Apple-inspired) */}
-          <h1 style={{ marginBottom: "1.25rem", lineHeight: 0.95 }}>
+          {/* ═══ THE HEADLINE — 640px cinematic rise ═══ */}
+          <h1 style={{ marginBottom: "1.25rem", lineHeight: 0.95, overflow: "hidden" }}>
             <motion.span
-              variants={blurIn}
+              {...headlineRise}
               style={{
                 display: "block",
                 fontFamily: "'Playfair Display', serif",
@@ -278,7 +329,13 @@ export default function Hero() {
               Cleopatra
             </motion.span>
             <motion.span
-              variants={blurIn}
+              initial={{ opacity: 0, y: 640 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: HERO_DURATION,
+                ease: CINEMATIC_EASE,
+                delay: 0.08,
+              }}
               style={{
                 display: "block",
                 fontFamily: "'Playfair Display', serif",
@@ -295,7 +352,7 @@ export default function Hero() {
 
           {/* Diamond ornament divider */}
           <motion.div
-            variants={fadeUp}
+            {...springFollow(2.08, 60)}
             style={{
               display: "flex",
               alignItems: "center",
@@ -330,9 +387,9 @@ export default function Hero() {
             />
           </motion.div>
 
-          {/* Tagline */}
+          {/* Tagline — spring follow */}
           <motion.p
-            variants={fadeUp}
+            {...springFollow(2.1, 120)}
             style={{
               fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
               fontWeight: 300,
@@ -346,9 +403,9 @@ export default function Hero() {
             Africa, the Middle East, Asia, Europe & the Americas.
           </motion.p>
 
-          {/* CTAs — Stripe dual-CTA pattern */}
+          {/* CTAs — spring follow */}
           <motion.div
-            variants={fadeUp}
+            {...springFollow(2.15, 80)}
             style={{
               display: "flex",
               flexWrap: "wrap",
@@ -403,9 +460,8 @@ export default function Hero() {
             </a>
           </motion.div>
 
-          {/* Region tags */}
-          <motion.div
-            variants={fadeUp}
+          {/* Region tags — tight cascade (era.shopping-style 90ms stagger) */}
+          <div
             style={{
               display: "flex",
               flexWrap: "wrap",
@@ -414,15 +470,20 @@ export default function Hero() {
               fontSize: "0.62rem",
               letterSpacing: "0.35em",
               textTransform: "uppercase",
-              color: "var(--text-quaternary)",
               fontWeight: 600,
             }}
           >
             {["Africa", "Middle East", "Asia", "Europe", "Americas"].map(
               (r, i) => (
-                <span
+                <motion.span
                   key={r}
-                  style={{ display: "flex", alignItems: "center", gap: 10 }}
+                  {...cascadeItem(2.2 + i * 0.09)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    color: "var(--text-quaternary)",
+                  }}
                 >
                   {i > 0 && (
                     <span
@@ -435,17 +496,21 @@ export default function Hero() {
                     </span>
                   )}
                   {r}
-                </span>
+                </motion.span>
               ),
             )}
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* ── Scroll indicator ── */}
+      {/* ── Scroll indicator — fades in after the cascade completes ── */}
       <motion.div
-        animate={{ opacity: scrolled ? 0 : 1 }}
-        transition={{ duration: 0.4 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: scrolled ? 0 : 1, y: scrolled ? 10 : 0 }}
+        transition={{
+          opacity: { duration: 0.4, delay: scrolled ? 0 : 2.8 },
+          y: { type: "spring", stiffness: 200, damping: 20, delay: scrolled ? 0 : 2.8 },
+        }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
         style={{ zIndex: 10 }}
         aria-hidden="true"

@@ -13,6 +13,22 @@ const links = [
   { label: "Order", href: "/order" },
 ];
 
+/* era.shopping-inspired nav entrance */
+const navSpring = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 219,
+      damping: 27,
+      mass: 0.3,
+      delay: 0.5,
+    },
+  },
+};
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -75,11 +91,14 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Main navbar — Apple-style translucent glass */}
-      <header
+      {/* Main navbar — Apple-style translucent glass + era.shopping blend mode */}
+      <motion.header
+        {...navSpring}
         className="fixed left-0 right-0 z-50"
         style={{
           top: barHeight,
+          /* mix-blend-mode: difference when transparent (era.shopping effect) */
+          mixBlendMode: (!isLight && !scrolled) ? "difference" : "normal",
           /* Apple-inspired: saturate + blur glass */
           background: isLight
             ? "rgba(242,228,200,0.85)"
@@ -94,7 +113,7 @@ export default function Navbar() {
             : scrolled
             ? "1px solid rgba(212,175,55,0.1)"
             : "1px solid transparent",
-          transition: "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+          transition: "background 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
         <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between" style={{ height: 64 }}>
@@ -209,7 +228,7 @@ export default function Navbar() {
             <Menu size={24} />
           </button>
         </nav>
-      </header>
+      </motion.header>
 
       {/* Mobile drawer */}
       <AnimatePresence>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LenisProvider from "@/components/LenisProvider";
 import "./globals.css";
 
 const SITE_URL = "https://cleopatradelights.com";
@@ -98,7 +99,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        {children}
+        <LenisProvider>
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );
