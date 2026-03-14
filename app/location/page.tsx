@@ -202,7 +202,7 @@ export default function LocationPage() {
 
                   {/* Action */}
                   <a
-                    href="https://instagram.com/cleopatradelights"
+                    href="https://www.instagram.com/cleopatra.delights/"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -243,7 +243,7 @@ export default function LocationPage() {
             style={{ fontSize: "0.78rem", textAlign: "center", marginTop: "1.5rem", color: "var(--text-quaternary)" }}
           >
             Schedule updated regularly. Follow{" "}
-            <a href="https://instagram.com/cleopatradelights" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(212,175,55,0.7)", fontWeight: 600 }}>
+            <a href="https://www.instagram.com/cleopatra.delights/" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(212,175,55,0.7)", fontWeight: 600 }}>
               @CleopatraDelights
             </a>{" "}
             for last-minute pop-ups.
@@ -323,7 +323,7 @@ export default function LocationPage() {
               Follow us for daily location updates, new flavors, and behind-the-scenes content.
             </p>
             <a
-              href="https://instagram.com/cleopatradelights"
+              href="https://www.instagram.com/cleopatra.delights/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-shimmer"

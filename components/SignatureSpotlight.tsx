@@ -17,14 +17,14 @@ const SIGNATURES = [
     accentColor: "rgba(212,175,55,0.5)",
   },
   {
-    name: "Cookie Duo Tray",
+    name: "Our First Batch",
     tag: "Best Seller",
     tagStyle: { background: "var(--red)", color: "var(--cream)" },
     region: "House Favorites",
     photo: "/images/biscoff-brownies.jpg",
     photoPosition: "center 40%",
     story:
-      "A rich chocolate cookie paired with a Lotus Biscoff cookie, served together in a tray. The combo customers always come back for.",
+      "Where it all started. A rich chocolate cookie paired with a Lotus Biscoff cookie — the original duo that launched Cleopatra Delights.",
     accentColor: "rgba(180,110,40,0.5)",
   },
   {

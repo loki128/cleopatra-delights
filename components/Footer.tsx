@@ -143,7 +143,7 @@ export default function Footer() {
             </p>
 
             <a
-              href="https://instagram.com/cleopatradelights"
+              href="https://www.instagram.com/cleopatra.delights/"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -218,7 +218,7 @@ export default function Footer() {
               <p style={{ fontSize: "0.875rem", color: "rgba(250,240,230,0.4)", paddingLeft: "1.3rem" }}>Food Trailer &amp; Canopy Stand</p>
               <p style={{ fontSize: "0.875rem", color: "rgba(250,240,230,0.4)", paddingLeft: "1.3rem" }}>Available at markets &amp; events</p>
               <a
-                href="https://instagram.com/cleopatradelights"
+                href="https://www.instagram.com/cleopatra.delights/"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -257,7 +257,7 @@ export default function Footer() {
               New flavors, seasonal specials, and pop-up announcements — all on Instagram.
             </p>
             <a
-              href="https://instagram.com/cleopatradelights"
+              href="https://www.instagram.com/cleopatra.delights/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-shimmer"

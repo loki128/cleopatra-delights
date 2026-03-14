@@ -76,7 +76,7 @@ const jsonLd = {
     name: "Jacksonville",
     sameAs: "https://en.wikipedia.org/wiki/Jacksonville,_Florida",
   },
-  sameAs: ["https://www.instagram.com/cleopatradelights"],
+  sameAs: ["https://www.instagram.com/cleopatra.delights/"],
   hasMap: "https://maps.google.com/?q=Jacksonville,FL",
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",

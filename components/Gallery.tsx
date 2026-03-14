@@ -6,7 +6,7 @@ import Image from "next/image";
 const ROW_1 = [
   { src: "/images/collage.jpg", label: "Our Full Spread", position: "center 40%" },
   { src: "/images/cookies-tray.jpg", label: "Cookie Collection", position: "center 30%" },
-  { src: "/images/biscoff-brownies.jpg", label: "Cookie Duo Tray", position: "center 45%" },
+  { src: "/images/biscoff-brownies.jpg", label: "Our First Batch", position: "center 45%" },
   { src: "/images/brownies-pb.jpg", label: "PB Pretzel Brownies", position: "center 40%" },
   { src: "/images/cookies-biscoff.jpg", label: "Biscoff Cookies", position: "center 50%" },
   { src: "/images/cookies-variety.jpg", label: "Cookie Variety", position: "center 35%" },
@@ -17,7 +17,7 @@ const ROW_2 = [
   { src: "/images/brownies-pb.jpg", label: "PB Pretzel Brownies", position: "center 40%" },
   { src: "/images/collage.jpg", label: "Our Full Spread", position: "center 40%" },
   { src: "/images/cookies-biscoff.jpg", label: "Biscoff Cookies", position: "center 50%" },
-  { src: "/images/biscoff-brownies.jpg", label: "Cookie Duo Tray", position: "center 45%" },
+  { src: "/images/biscoff-brownies.jpg", label: "Our First Batch", position: "center 45%" },
   { src: "/images/cookies-tray.jpg", label: "Cookie Collection", position: "center 30%" },
 ];
 
