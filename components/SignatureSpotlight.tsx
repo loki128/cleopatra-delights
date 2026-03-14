@@ -17,14 +17,14 @@ const SIGNATURES = [
     accentColor: "rgba(212,175,55,0.5)",
   },
   {
-    name: "Biscoff Brownie",
+    name: "Cookie Duo Tray",
     tag: "Best Seller",
     tagStyle: { background: "var(--red)", color: "var(--cream)" },
-    region: "European Inspired",
+    region: "House Favorites",
     photo: "/images/biscoff-brownies.jpg",
     photoPosition: "center 40%",
     story:
-      "Fudgy brownie base crowned with cookie butter glaze and a whole Lotus Biscoff biscuit. The one customers always come back for.",
+      "A rich chocolate cookie paired with a Lotus Biscoff cookie, served together in a tray. The combo customers always come back for.",
     accentColor: "rgba(180,110,40,0.5)",
   },
   {
