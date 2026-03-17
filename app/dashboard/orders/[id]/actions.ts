@@ -61,9 +61,12 @@ export async function updateOrderInternalNotes(orderId: string, internalNotes: s
   const session = await auth();
   if (!session?.user) return { error: "Unauthorized" };
 
+  const parsed = orderUpdateSchema.partial().safeParse({ internalNotes });
+  if (!parsed.success) return { error: "Internal notes are too long" };
+
   await prisma.order.update({
     where: { id: orderId },
-    data: { internalNotes: internalNotes ?? null },
+    data: { internalNotes: parsed.data.internalNotes ?? null },
   });
 
   revalidatePath(`/dashboard/orders/${orderId}`);

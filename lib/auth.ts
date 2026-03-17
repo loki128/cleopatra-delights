@@ -27,6 +27,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (!email) return false;
       const allowed = getAdminEmails();
       if (allowed.length === 0) {
+        if (process.env.NODE_ENV === "production") {
+          console.error("SECURITY: No ADMIN_EMAILS set in production. Blocking all sign-ins.");
+          return false;
+        }
         console.warn("No ADMIN_EMAILS or NEXTAUTH_ADMIN_EMAIL set; allowing any email (dev only).");
         return true;
       }

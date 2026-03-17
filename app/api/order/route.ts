@@ -5,6 +5,22 @@ import { orderSchema } from "@/lib/validations/order";
 
 const TO_EMAIL = process.env.CONTACT_EMAIL ?? "cleopatradelights@gmail.com";
 
+// Simple in-memory rate limiter: max 5 submissions per IP per 15 minutes
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const RATE_LIMIT_MAX = 5;
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
+}
+
 function parseEventDate(value: string | undefined): Date | null {
   if (!value?.trim()) return null;
   const d = new Date(value.trim());
@@ -13,6 +29,14 @@ function parseEventDate(value: string | undefined): Date | null {
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json().catch(() => ({}));
 
     // Honeypot — bots fill the hidden field; do not persist or email
