@@ -91,7 +91,7 @@ export default function MenuPage() {
               className="eyebrow"
               style={{ color: "#25A0A0", marginBottom: "1rem" }}
             >
-              Full Menu
+              Our Menu
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
@@ -302,8 +302,8 @@ export default function MenuPage() {
                 transition={{ duration: 0.2 }}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-                  gap: "1.25rem",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                  gap: "1.5rem",
                 }}
               >
                 {filtered.map((item, i) => (
@@ -403,113 +403,144 @@ export default function MenuPage() {
 /* ── MenuCard ── */
 function MenuCard({ item, index }: { item: MenuItem; index: number }) {
   const [hovered, setHovered] = useState(false);
-
-  const cardGradient = CATEGORY_GRADIENTS[item.category] ?? "linear-gradient(155deg, #1A0A02 0%, #2E1608 100%)";
-  const hoverBorderColor = CATEGORY_HOVER_COLORS[item.category] ?? "rgba(212,175,55,0.55)";
-
-  const firstTag = item.tags && item.tags.length > 0 ? item.tags[0] : null;
-  const restTags = item.tags && item.tags.length > 1 ? item.tags.slice(1) : [];
-  const isLongName = item.name.length > 30;
+  const tags = item.tags || [];
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+      initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.4, delay: Math.min(index * 0.03, 0.3), ease: [0.16, 1, 0.3, 1] as const }}
+      transition={{ duration: 0.5, delay: Math.min(index * 0.06, 0.4), ease: [0.16, 1, 0.3, 1] as const }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: cardGradient,
-        border: `1px solid ${hovered ? hoverBorderColor : "rgba(212,175,55,0.08)"}`,
-        borderRadius: 20,
+        borderRadius: 24,
         overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        minHeight: 240,
-        padding: "1.75rem",
         position: "relative",
-        transition: "all 0.3s var(--ease-out-expo)",
-        transform: hovered ? "translateY(-5px)" : "translateY(0)",
-        boxShadow: hovered
-          ? `0 16px 48px rgba(0,0,0,0.35), 0 0 0 1px ${hoverBorderColor}`
-          : "0 2px 12px rgba(0,0,0,0.18)",
         cursor: "default",
+        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+        transform: hovered ? "translateY(-8px) scale(1.02)" : "translateY(0) scale(1)",
+        boxShadow: hovered
+          ? "0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.3)"
+          : "0 4px 20px rgba(0,0,0,0.3)",
       }}
     >
-      {/* Corner brackets */}
-      {[
-        { top: 12, left: 12, borderTop: "1px solid rgba(212,175,55,0.15)", borderLeft: "1px solid rgba(212,175,55,0.15)" },
-        { top: 12, right: 12, borderTop: "1px solid rgba(212,175,55,0.15)", borderRight: "1px solid rgba(212,175,55,0.15)" },
-        { bottom: 12, left: 12, borderBottom: "1px solid rgba(212,175,55,0.15)", borderLeft: "1px solid rgba(212,175,55,0.15)" },
-        { bottom: 12, right: 12, borderBottom: "1px solid rgba(212,175,55,0.15)", borderRight: "1px solid rgba(212,175,55,0.15)" },
-      ].map((pos, i) => (
-        <div key={i} style={{ position: "absolute", ...pos, width: 16, height: 16, pointerEvents: "none" }} />
-      ))}
+      {/* Full photo background */}
+      <div style={{ position: "relative", height: 420 }}>
+        <Image
+          src={item.photo}
+          alt={item.name}
+          fill
+          sizes="(max-width: 768px) 100vw, 400px"
+          className="object-cover"
+          style={{
+            objectPosition: "center 40%",
+            transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            transform: hovered ? "scale(1.06)" : "scale(1)",
+          }}
+        />
 
-      {/* Top row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(212,175,55,0.55)" }}>
-          {item.category}
-        </span>
-        {firstTag && (() => {
-          const s = TAG_COLORS[firstTag] ?? { bg: "rgba(212,175,55,0.08)", color: "rgba(212,175,55,0.65)" };
-          return (
-            <span style={{ fontSize: "0.6rem", fontWeight: 600, padding: "3px 8px", borderRadius: 999, background: s.bg, color: s.color, border: "1px solid rgba(212,175,55,0.1)", textTransform: "capitalize", letterSpacing: "0.04em" }}>
-              {firstTag}
-            </span>
-          );
-        })()}
-      </div>
+        {/* Gradient overlay — stronger at bottom for text */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to top, rgba(15,10,5,0.95) 0%, rgba(15,10,5,0.7) 30%, rgba(15,10,5,0.15) 55%, transparent 100%)",
+          }}
+        />
 
-      {/* Divider */}
-      <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", marginTop: "0.75rem", opacity: 0.35 }}>
-        <div style={{ width: 28, height: 1, background: "linear-gradient(90deg, transparent, rgba(212,175,55,1), transparent)" }} />
-        <span style={{ fontSize: "0.5rem", color: "rgba(212,175,55,1)", lineHeight: 1 }}>&#10022;</span>
-        <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, rgba(212,175,55,1), transparent)" }} />
-      </div>
+        {/* Tags — top right */}
+        {tags.length > 0 && (
+          <div style={{ position: "absolute", top: 16, right: 16, display: "flex", gap: 6, zIndex: 2 }}>
+            {tags.map((tag) => {
+              const s = TAG_COLORS[tag] ?? { bg: "rgba(212,175,55,0.15)", color: "rgba(212,175,55,0.8)" };
+              return (
+                <span
+                  key={tag}
+                  style={{
+                    fontSize: "0.65rem",
+                    fontWeight: 600,
+                    padding: "4px 10px",
+                    borderRadius: 999,
+                    background: "rgba(0,0,0,0.5)",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+                    color: s.color,
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textTransform: "capitalize",
+                    letterSpacing: "0.04em",
+                  }}
+                >
+                  {tag}
+                </span>
+              );
+            })}
+          </div>
+        )}
 
-      {/* Name */}
-      <h3 style={{
-        fontFamily: "'Playfair Display', serif",
-        fontSize: isLongName ? "1rem" : "1.1rem",
-        fontWeight: 600,
-        fontStyle: "italic",
-        color: "var(--text-primary)",
-        lineHeight: 1.35,
-        marginTop: "0.75rem",
-      }}>
-        {item.name}
-      </h3>
+        {/* Glassmorphism text overlay — bottom */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "1.5rem",
+            zIndex: 2,
+          }}
+        >
+          {/* Category label */}
+          <span
+            style={{
+              fontSize: "0.6rem",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "rgba(212,175,55,0.7)",
+            }}
+          >
+            {item.category}
+          </span>
 
-      {/* Description */}
-      <p style={{
-        fontSize: "0.78rem",
-        lineHeight: 1.7,
-        color: hovered ? "var(--text-tertiary)" : "var(--text-quaternary)",
-        flex: 1,
-        marginTop: "0.75rem",
-        transition: "color 0.25s",
-        overflow: hovered ? "visible" : "hidden",
-        display: "-webkit-box",
-        WebkitLineClamp: hovered ? undefined : 3,
-        WebkitBoxOrient: "vertical",
-      }}>
-        {item.description}
-      </p>
+          {/* Name */}
+          <h3
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: "1.35rem",
+              fontWeight: 600,
+              fontStyle: "italic",
+              color: "#F2E4C8",
+              lineHeight: 1.3,
+              marginTop: "0.35rem",
+              textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+            }}
+          >
+            {item.name}
+          </h3>
 
-      {/* Extra tags */}
-      {restTags.length > 0 && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: "auto", paddingTop: "0.75rem" }}>
-          {restTags.map((tag) => {
-            const s = TAG_COLORS[tag] ?? { bg: "rgba(212,175,55,0.08)", color: "rgba(212,175,55,0.65)" };
-            return (
-              <span key={tag} style={{ fontSize: "0.62rem", fontWeight: 600, padding: "3px 9px", borderRadius: 999, background: s.bg, color: s.color, border: "1px solid rgba(212,175,55,0.1)", textTransform: "capitalize", letterSpacing: "0.04em" }}>
-                {tag}
-              </span>
-            );
-          })}
+          {/* Description — glassmorphism card */}
+          <div
+            style={{
+              marginTop: "0.75rem",
+              padding: "0.75rem 1rem",
+              borderRadius: 14,
+              background: "rgba(30,20,10,0.55)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              border: "1px solid rgba(212,175,55,0.12)",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "0.8rem",
+                lineHeight: 1.65,
+                color: "rgba(242,228,200,0.8)",
+                margin: 0,
+              }}
+            >
+              {item.description}
+            </p>
+          </div>
         </div>
-      )}
+      </div>
     </motion.div>
   );
 }

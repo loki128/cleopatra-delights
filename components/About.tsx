@@ -24,18 +24,31 @@ export default function About() {
       ref={ref}
       style={{ background: "var(--surface-0)", position: "relative", overflow: "hidden" }}
     >
-      {/* Radial glow backdrop */}
+      {/* Cinematic video background — Kinder cookie swirls */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        style={{ opacity: 0.12, filter: "blur(2px)" }}
+      >
+        <source src="/products/kinder-swirls-video.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay to ensure text readability */}
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 20%, rgba(139,26,26,0.1) 0%, transparent 55%), radial-gradient(ellipse at 50% 80%, rgba(27,120,120,0.05) 0%, transparent 50%)",
+            "radial-gradient(ellipse at 50% 20%, rgba(139,26,26,0.15) 0%, transparent 55%), radial-gradient(ellipse at 50% 80%, rgba(27,120,120,0.08) 0%, transparent 50%), linear-gradient(to bottom, rgba(8,7,10,0.6), rgba(8,7,10,0.4), rgba(8,7,10,0.6))",
         }}
       />
 
       {/* Dot grid */}
-      <div className="absolute inset-0 dot-grid pointer-events-none" aria-hidden="true" style={{ opacity: 0.15 }} />
+      <div className="absolute inset-0 dot-grid pointer-events-none" aria-hidden="true" style={{ opacity: 0.1 }} />
 
       <div className="container section-py" style={{ position: "relative", zIndex: 1 }}>
         <motion.div

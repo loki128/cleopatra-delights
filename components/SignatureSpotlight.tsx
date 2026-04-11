@@ -10,8 +10,8 @@ const SIGNATURES = [
     tag: "Fan Favorite",
     tagStyle: { background: "#1B7878", color: "#E8F5F5" },
     region: "Middle Eastern Inspired",
-    photo: "/images/cookies-tray.jpg",
-    photoPosition: "center 30%",
+    photo: "/products/pistachio-floating.png",
+    photoPosition: "center 40%",
     story:
       "Inspired by the viral pistachio kataifi bar that broke the internet. Crispy chocolate shell, silky pistachio cream center, kataifi crunch in every bite.",
     accentColor: "rgba(212,175,55,0.5)",
@@ -21,7 +21,7 @@ const SIGNATURES = [
     tag: "Best Seller",
     tagStyle: { background: "var(--red)", color: "var(--cream)" },
     region: "House Favorites",
-    photo: "/images/biscoff-brownies.jpg",
+    photo: "/products/lotus-floating.png",
     photoPosition: "center 40%",
     story:
       "Where it all started. A rich chocolate cookie paired with a Lotus Biscoff cookie — the original duo that launched Cleopatra Delights.",
@@ -32,7 +32,7 @@ const SIGNATURES = [
     tag: "Signature",
     tagStyle: { background: "rgba(255,255,255,0.1)", color: "rgba(250,240,230,0.8)", border: "1px solid rgba(255,255,255,0.15)" },
     region: "American Inspired",
-    photo: "/images/brownies-pb.jpg",
+    photo: "/products/pb-dreams-vortex.png",
     photoPosition: "center 45%",
     story:
       "Dense fudgy brownie with rivers of peanut butter, topped with crushed pretzels for a salty-sweet crunch. Pure indulgence.",
