@@ -1,7 +1,13 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import { Settings } from "lucide-react";
 
-export default function DashboardSettingsPage() {
+export default async function DashboardSettingsPage() {
+  // SECURITY: verify auth independently -- defense in depth
+  const session = await auth();
+  if (!session?.user) redirect("/dashboard/login");
+
   return (
     <div className="space-y-6">
       <DashboardHeader />

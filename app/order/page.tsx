@@ -1,9 +1,21 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, AlertCircle, Loader2, Send, ChevronDown, Sparkles, Clock, Shield } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+      reset: (id: string) => void;
+      remove: (id: string) => void;
+    };
+  }
+}
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 type FormData = {
   name: string;
@@ -15,6 +27,7 @@ type FormData = {
   notes: string;
   howHeard: string;
   website: string;
+  company: string;
 };
 
 type FieldError = Partial<Record<keyof FormData, string>>;
@@ -216,11 +229,42 @@ function CustomSelect({
 export default function OrderPage() {
   const [form, setForm] = useState<FormData>({
     name: "", email: "", phone: "", orderType: "",
-    eventDate: "", occasion: "", notes: "", howHeard: "", website: "",
+    eventDate: "", occasion: "", notes: "", howHeard: "", website: "", company: "",
   });
+  const [loadedAt] = useState(() => Date.now());
   const [errors, setErrors] = useState<FieldError>({});
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [serverError, setServerError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const turnstileWidgetId = useRef<string | null>(null);
+
+  // Load Cloudflare Turnstile
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY) return;
+    if (document.getElementById("cf-turnstile-script")) return;
+
+    const script = document.createElement("script");
+    script.id = "cf-turnstile-script";
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad";
+    script.async = true;
+
+    (window as unknown as Record<string, unknown>).onTurnstileLoad = () => {
+      if (turnstileRef.current && window.turnstile) {
+        turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          theme: "dark",
+          callback: (token: string) => setTurnstileToken(token),
+          "expired-callback": () => setTurnstileToken(""),
+        });
+      }
+    };
+
+    document.head.appendChild(script);
+    return () => {
+      delete (window as unknown as Record<string, unknown>).onTurnstileLoad;
+    };
+  }, []);
 
   const set =
     (field: keyof FormData) =>
@@ -243,18 +287,32 @@ export default function OrderPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setServerError("Please complete the verification check.");
+      setStatus("error");
+      return;
+    }
     setStatus("loading");
     setServerError("");
     try {
       const res = await fetch("/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          _loadedAt: loadedAt,
+          _turnstileToken: turnstileToken || undefined,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
         setServerError(data.error || "Something went wrong.");
         setStatus("error");
+        // Reset Turnstile on failure so user can retry
+        if (turnstileWidgetId.current && window.turnstile) {
+          window.turnstile.reset(turnstileWidgetId.current);
+          setTurnstileToken("");
+        }
       } else {
         setStatus("success");
       }
@@ -458,7 +516,7 @@ export default function OrderPage() {
                     <button
                       onClick={() => {
                         setStatus("idle");
-                        setForm({ name: "", email: "", phone: "", orderType: "", eventDate: "", occasion: "", notes: "", howHeard: "", website: "" });
+                        setForm({ name: "", email: "", phone: "", orderType: "", eventDate: "", occasion: "", notes: "", howHeard: "", website: "", company: "" });
                       }}
                       style={{
                         padding: "11px 24px",
@@ -491,8 +549,11 @@ export default function OrderPage() {
                       padding: "2.5rem",
                     }}
                   >
-                    {/* Honeypot */}
-                    <input type="text" name="website" value={form.website} onChange={set("website")} style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+                    {/* Honeypot fields — invisible to humans, bots auto-fill them */}
+                    <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", height: 0, overflow: "hidden" }}>
+                      <input type="text" name="website" value={form.website} onChange={set("website")} tabIndex={-1} autoComplete="off" />
+                      <input type="text" name="company" value={form.company} onChange={set("company")} tabIndex={-1} autoComplete="off" />
+                    </div>
 
                     <h2
                       style={{
@@ -595,6 +656,11 @@ export default function OrderPage() {
                           </motion.div>
                         )}
                       </AnimatePresence>
+
+                      {/* Cloudflare Turnstile */}
+                      {TURNSTILE_SITE_KEY && (
+                        <div ref={turnstileRef} style={{ display: "flex", justifyContent: "center" }} />
+                      )}
 
                       {/* Submit */}
                       <motion.button

@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import OrderFiltersBar from "@/components/dashboard/OrderFiltersBar";
 import OrdersTable from "@/components/dashboard/OrdersTable";
@@ -39,6 +41,10 @@ export default async function DashboardOrdersPage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
+  // SECURITY: verify auth independently -- defense in depth
+  const session = await auth();
+  if (!session?.user) redirect("/dashboard/login");
+
   const params = await searchParams;
   const status =
     typeof params.status === "string" ? params.status : undefined;

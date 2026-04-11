@@ -1,5 +1,7 @@
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import { getOverviewStats, getRevenueByWeek } from "@/lib/dashboard-stats";
 import StatCard from "@/components/dashboard/StatCard";
 import RevenueChart from "@/components/dashboard/RevenueChart";
@@ -12,6 +14,10 @@ import { ArrowRight } from "lucide-react";
 import type { OrderStatus } from "@prisma/client";
 
 export default async function DashboardOverviewPage() {
+  // SECURITY: verify auth independently -- defense in depth
+  const session = await auth();
+  if (!session?.user) redirect("/dashboard/login");
+
   let stats;
   let revenueByWeek: { weekLabel: string; revenue: number }[] = [];
   let recentOrders: Awaited<ReturnType<typeof prisma.order.findMany>> = [];

@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import CustomersTable from "@/components/dashboard/CustomersTable";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -11,6 +13,10 @@ type CustomerWithOrders = Awaited<
 };
 
 export default async function DashboardCustomersPage() {
+  // SECURITY: verify auth independently -- defense in depth
+  const session = await auth();
+  if (!session?.user) redirect("/dashboard/login");
+
   let customers: CustomerWithOrders[] = [];
   try {
     customers = (await prisma.customer.findMany({
